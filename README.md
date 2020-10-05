@@ -20,8 +20,8 @@ Result of PIT project is desktop application
 
 Author decided to develop both projects on one repository as long as it will be possible
 
-Common source code will be at the branch: `origin\master_common`
+Common source code will be at the branch: `origin\master_common` [Link](https://github.com/abdarum/Erasmus_course_Java/tree/master_common)
 
-AOOP source code will be at the branch: `origin\master_AOOP`
+AOOP source code will be at the branch: `origin\master_AOOP` [Link](https://github.com/abdarum/Erasmus_course_Java/tree/master_AOOP)
 
-PIT source code will be at the branch: `origin\master_PIT`
+PIT source code will be at the branch: `origin\master_PIT` [Link](https://github.com/abdarum/Erasmus_course_Java/tree/master_PIT)
