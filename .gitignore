@@ -1,1 +1,7 @@
 /excluded/*
+/Source_code/RestAPI/src/target
+/Source_code/RestAPI/src/bin/
+/Source_code/RestAPI/src/.settings
+/Source_code/RestAPI/src/.classpath
+/Source_code/RestAPI/src/.project
+/Source_code/RestAPI/src/test.db
