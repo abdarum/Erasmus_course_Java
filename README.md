@@ -14,6 +14,9 @@ Result of PIT project is desktop application
     * Java Web (Werver side - Servlet, JSP, Client side – HTML, CSS, JavaScript)
         * Web server with Java web container – Apache Tomcat, Jetty
     * Possible using of Spring or ActiveJ frameworks
+ * Notes:
+   - Communication should be bidirectional. [Differences between SSE and WebSocket](https://medium.com/better-programming/server-sent-events-on-react-and-spring-webflux-5f532b04633)
+   - Tutorial of [React and Spring Websocket and SSE](https://developer.okta.com/blog/2018/09/25/spring-webflux-websockets-react)
 
 
 ## Branch convention
