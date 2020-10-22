@@ -5,3 +5,6 @@
 /Source_code/RestAPI/src/.classpath
 /Source_code/RestAPI/src/.project
 /Source_code/RestAPI/src/test.db
+/Source_code/RestAPI/src/**/*.orig
+/Source_code/RestAPI/spring-server-generated
+/Source_code/RestAPI/spring-server-generated.zip

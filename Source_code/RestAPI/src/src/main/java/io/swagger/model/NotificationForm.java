@@ -10,55 +10,77 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * BorrowPlace
+ * NotificationForm
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
 
 
-public class BorrowPlace   {
+public class NotificationForm   {
   @JsonProperty("id")
-  private Long id = null;
+  private Integer id = null;
 
-  @JsonProperty("name")
-  private String name = null;
+  @JsonProperty("event")
+  private String event = null;
 
-  public BorrowPlace id(Long id) {
+  @JsonProperty("data")
+  private Object data = null;
+
+  public NotificationForm id(Integer id) {
     this.id = id;
     return this;
   }
 
   /**
-   * Get id
+   * my event id
    * @return id
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(value = "my event id")
   
-    public Long getId() {
+    public Integer getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
-  public BorrowPlace name(String name) {
-    this.name = name;
+  public NotificationForm event(String event) {
+    this.event = event;
     return this;
   }
 
   /**
-   * Get name
-   * @return name
+   * my event type
+   * @return event
+  **/
+  @ApiModelProperty(value = "my event type")
+  
+    public String getEvent() {
+    return event;
+  }
+
+  public void setEvent(String event) {
+    this.event = event;
+  }
+
+  public NotificationForm data(Object data) {
+    this.data = data;
+    return this;
+  }
+
+  /**
+   * Get data
+   * @return data
   **/
   @ApiModelProperty(value = "")
   
-    public String getName() {
-    return name;
+    public Object getData() {
+    return data;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setData(Object data) {
+    this.data = data;
   }
 
 
@@ -70,23 +92,25 @@ public class BorrowPlace   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    BorrowPlace borrowPlace = (BorrowPlace) o;
-    return Objects.equals(this.id, borrowPlace.id) &&
-        Objects.equals(this.name, borrowPlace.name);
+    NotificationForm notificationForm = (NotificationForm) o;
+    return Objects.equals(this.id, notificationForm.id) &&
+        Objects.equals(this.event, notificationForm.event) &&
+        Objects.equals(this.data, notificationForm.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name);
+    return Objects.hash(id, event, data);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class BorrowPlace {\n");
+    sb.append("class NotificationForm {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    event: ").append(toIndentedString(event)).append("\n");
+    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
   }

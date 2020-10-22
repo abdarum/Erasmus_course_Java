@@ -2,6 +2,7 @@ package io.swagger.api;
 
 import io.swagger.model.Borrowed;
 import io.swagger.model.LibraryStats;
+import io.swagger.model.NotificationForm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -16,6 +17,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -23,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-14T17:03:29.621Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
 @Controller
 public class LibraryApiController implements LibraryApi {
 
@@ -57,6 +62,41 @@ public class LibraryApiController implements LibraryApi {
         }
 
         return new ResponseEntity<LibraryStats>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public SseEmitter notifyBook()
+    {
+        SseEmitter emitter = new SseEmitter();
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+        cachedThreadPool.execute(() -> {
+           try {
+               for (int i = 0; i < 10; i++) {
+                   emitter.send(Integer.toString(i));
+                   TimeUnit.SECONDS.sleep(1);
+               }
+
+               emitter.complete();
+           } catch (Exception e) {
+               emitter.completeWithError(e);
+           }
+       });
+
+       return emitter;
+    }
+
+    public ResponseEntity<List<NotificationForm>> getLibraryNotyfications() {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<List<NotificationForm>>(objectMapper.readValue("[ {\n  \"data\" : { },\n  \"id\" : 0,\n  \"event\" : \"event\"\n}, {\n  \"data\" : { },\n  \"id\" : 0,\n  \"event\" : \"event\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<List<NotificationForm>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<List<NotificationForm>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Borrowed> getOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of borrow form that needs to be fetched",required=true, allowableValues="") @PathVariable("orderId") Long orderId

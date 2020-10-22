@@ -7,6 +7,9 @@ package io.swagger.api;
 
 import io.swagger.model.Borrowed;
 import io.swagger.model.LibraryStats;
+import io.swagger.model.NotificationForm;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import org.springframework.http.MediaType;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,7 +27,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-14T17:03:29.621Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
 @Api(value = "library", description = "the library API")
 public interface LibraryApi {
 
@@ -47,6 +50,22 @@ public interface LibraryApi {
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<LibraryStats> getLibraryInventory();
+
+    @ApiOperation(value = "Get notyfications", nickname = "notifyBook", notes = "")
+    @RequestMapping(value = "/library/nofiy",
+        method = RequestMethod.GET,
+        produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+        SseEmitter notifyBook(
+);
+
+    @ApiOperation(value = "Returns notyfications of library", nickname = "getLibraryNotyfications", notes = "Returns notyfications of library", response = NotificationForm.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")    }, tags={ "library", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = NotificationForm.class, responseContainer = "List") })
+    @RequestMapping(value = "/library/notyfication",
+        produces = { "text/event-stream" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<NotificationForm>> getLibraryNotyfications();
 
 
     @ApiOperation(value = "Find book order by ID", nickname = "getOrderById", notes = "", response = Borrowed.class, authorizations = {

@@ -14,7 +14,7 @@ externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
 servers:
-- url: "/"
+- url: "http://localhost:8080"
 security:
 - bearerAuth: []
 tags:
@@ -467,6 +467,23 @@ paths:
           description: "Invalid ID supplied"
         "404":
           description: "Order not found"
+  /library/notyfication:
+    get:
+      tags:
+      - "library"
+      summary: "Returns notyfications of library"
+      description: "Returns notyfications of library"
+      operationId: "getLibraryNotyfications"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            text/event-stream:
+              schema:
+                type: "array"
+                format: "chunked"
+                items:
+                  $ref: "#/components/schemas/NotificationForm"
 components:
   schemas:
     User:
@@ -658,6 +675,19 @@ components:
           type: "integer"
         numberOfDelayedBooks:
           type: "integer"
+      xml:
+        name: "UserStatus"
+    NotificationForm:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "my event id"
+        event:
+          type: "string"
+          description: "my event type"
+        data:
+          type: "object"
       xml:
         name: "UserStatus"
   securitySchemes:
