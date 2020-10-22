@@ -17,6 +17,7 @@ Result of PIT project is desktop application
  * Notes:
    - Communication should be bidirectional. [Differences between SSE and WebSocket](https://medium.com/better-programming/server-sent-events-on-react-and-spring-webflux-5f532b04633)
    - Tutorial of [React and Spring Websocket and SSE](https://developer.okta.com/blog/2018/09/25/spring-webflux-websockets-react)
+   - SSE explanation [YouTube lecture](https://www.youtube.com/watch?v=n9mRjkQg3VE&ab_channel=FestGroup)
 
 
 ## Branch convention
