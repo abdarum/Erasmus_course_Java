@@ -52,7 +52,7 @@ public interface LibraryApi {
     ResponseEntity<LibraryStats> getLibraryInventory();
 
     @ApiOperation(value = "Get notyfications", nickname = "notifyBook", notes = "")
-    @RequestMapping(value = "/library/nofiy",
+    @RequestMapping(value = "/library/notify",
         method = RequestMethod.GET,
         produces = MediaType.TEXT_EVENT_STREAM_VALUE)
         SseEmitter notifyBook(

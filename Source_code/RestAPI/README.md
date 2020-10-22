@@ -17,3 +17,11 @@ C:\Program Files\Java\jdk1.7.0_51
 ## Prefered VS Code plugins
 * [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=Pivotal.vscode-boot-dev-pack)
 * [Java Extension Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
+
+## Simple comand test of working RestAPI
+Run `cmd` and insert commands below
+```
+curl -v http://localhost:8080/book/5 -H "Accept: application/json"
+
+curl -v http://localhost:8080/library/notify 
+```
