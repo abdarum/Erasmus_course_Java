@@ -18,43 +18,45 @@ import io.swagger.model.Book;
 public class BookServiceImpl implements BookService {
 
     @Autowired
-    private BookRepository BookRepository;    
+    private BookRepository bookRepository;    
     
 	@Override
 	public Book createBook(Book Book) {
         System.out.println("createBook in BookServiceImpl");
         System.out.println(Book.toString());
-        return BookRepository.save(Book);
+        return bookRepository.save(Book);
     }	
 
 	@Override
     public List<Book> getAllBooks(){
-		return BookRepository.findAll();
+		return bookRepository.findAll();
     }
 
 	@Override
     public Book deleteBook(String email){
-        Optional<Book> od = BookRepository.getBookByEmail(email);
-		if(od.isPresent()) BookRepository.deleteBookByEmail(email);
-		return od.get();
+        // Optional<Book> od = bookRepository.getBookByEmail(email);
+		// if(od.isPresent()) bookRepository.deleteBookByEmail(email);
+		// return od.get();
+		return null;
     }
 
 
 	@Override
     public Book getBookByName(String email){
-        Optional<Book> od = BookRepository.getBookByEmail(email);
-        if(od.isPresent()) return od.get();
-        else return null;
+        // Optional<Book> od = bookRepository.getBookByEmail(email);
+        // if(od.isPresent()) return od.get();
+        // else return null;
+		return null;
     }
 
 	@Override
     public Book loginBook(String email, String password){
-        Book tmpBook = getBookByName(email);
-        if (tmpBook != null){
-            if (tmpBook.getPassword().equals(password)) {
-                return tmpBook;
-            }
-        }
+        // Book tmpBook = getBookByName(email);
+        // if (tmpBook != null){
+        //     if (tmpBook.getPassword().equals(password)) {
+        //         return tmpBook;
+        //     }
+        // }
         return null;
     }
 
@@ -65,8 +67,8 @@ public class BookServiceImpl implements BookService {
 
 	@Override
     public Book updateBook(String email, Book body){
-        Optional<Book> od = BookRepository.getBookByEmail(email);
-		if(od.isPresent()) return BookRepository.save(body);
+        // Optional<Book> od = bookRepository.getBookByEmail(email);
+		// if(od.isPresent()) return bookRepository.save(body);
         return null;
     }
 

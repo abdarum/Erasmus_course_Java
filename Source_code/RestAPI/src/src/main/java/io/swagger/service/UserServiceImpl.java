@@ -18,31 +18,31 @@ import io.swagger.model.User;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository UserRepository;    
+    private UserRepository userRepository;    
     
 	@Override
 	public User createUser(User User) {
         System.out.println("createUser in UserServiceImpl");
         System.out.println(User.toString());
-        return UserRepository.save(User);
+        return userRepository.save(User);
     }	
 
 	@Override
     public List<User> getAllUsers(){
-		return UserRepository.findAll();
+		return userRepository.findAll();
     }
 
 	@Override
     public User deleteUser(String email){
-        Optional<User> od = UserRepository.getUserByEmail(email);
-		if(od.isPresent()) UserRepository.deleteUserByEmail(email);
+        Optional<User> od = userRepository.getUserByEmail(email);
+		if(od.isPresent()) userRepository.deleteUserByEmail(email);
 		return od.get();
     }
 
 
 	@Override
     public User getUserByName(String email){
-        Optional<User> od = UserRepository.getUserByEmail(email);
+        Optional<User> od = userRepository.getUserByEmail(email);
         if(od.isPresent()) return od.get();
         else return null;
     }
@@ -65,8 +65,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
     public User updateUser(String email, User body){
-        Optional<User> od = UserRepository.getUserByEmail(email);
-		if(od.isPresent()) return UserRepository.save(body);
+        Optional<User> od = userRepository.getUserByEmail(email);
+		if(od.isPresent()) return userRepository.save(body);
         return null;
     }
 

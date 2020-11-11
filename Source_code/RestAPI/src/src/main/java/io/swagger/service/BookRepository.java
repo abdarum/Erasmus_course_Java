@@ -9,12 +9,12 @@ import java.util.Optional;
 import io.swagger.model.Book;
 
 public interface BookRepository extends JpaRepository<Book,Long> {
-	@Query("SELECT d FROM Book d WHERE d.email = ?1")
-    Optional<Book> getBookByEmail(String email);
+	// @Query("SELECT d FROM Book d WHERE d.email = ?1")
+    // Optional<Book> getBookByEmail(String email);
     
-    @Modifying
-    @Query("delete from Book d where d.email=?1")
-    void deleteBookByEmail(String email);
+    // @Modifying
+    // @Query("delete from Book d where d.email=?1")
+    // void deleteBookByEmail(String email);
 
     // // TO DO !!!
     // // sorted by( current date - appointment date)

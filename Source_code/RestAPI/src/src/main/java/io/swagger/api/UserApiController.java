@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,10 +24,14 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import io.swagger.service.UserService;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
 @Controller
 public class UserApiController implements UserApi {
-
+	@Autowired
+    private UserService userService;
+    
     private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
 
     private final ObjectMapper objectMapper;
@@ -42,13 +47,30 @@ public class UserApiController implements UserApi {
     public ResponseEntity<Void> createUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody User body
 ) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        if (accept != null && accept.contains("application/xml")) 
+        {
+            userService.createUser(body);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } 
+        else 
+        {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     public ResponseEntity<Void> deleteUser(@ApiParam(value = "The name that needs to be deleted",required=true) @PathVariable("username") String username
 ) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        if (accept != null && accept.contains("application/xml")) 
+        {
+            userService.deleteUser(username);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        } 
+        else 
+        {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<UserStatus> getStatsByUsername(@ApiParam(value = "",required=true) @PathVariable("username") String username
@@ -70,12 +92,7 @@ public class UserApiController implements UserApi {
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"userTypeId\" : 6,\n  \"lastName\" : \"lastName\",\n  \"birthdate\" : 1,\n  \"gender\" : \"gender\",\n  \"city\" : \"city\",\n  \"registrated\" : 5,\n  \"adress\" : \"adress\",\n  \"firstName\" : \"firstName\",\n  \"password\" : \"password\",\n  \"phone\" : \"phone\",\n  \"id\" : 0,\n  \"email\" : \"email\",\n  \"status\" : \"active\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+            return new ResponseEntity<User>(userService.getUserByName(username), HttpStatus.OK);
         }
 
         return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
@@ -106,6 +123,10 @@ public class UserApiController implements UserApi {
 ,@ApiParam(value = "Updated user object" ,required=true )  @Valid @RequestBody User body
 ) {
         String accept = request.getHeader("Accept");
+        if (accept != null && (accept.contains("application/xml") || accept.contains("application/json"))) {
+            userService.updateUser(username, body);
+            return new ResponseEntity<Void>(HttpStatus.OK);
+        }
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
