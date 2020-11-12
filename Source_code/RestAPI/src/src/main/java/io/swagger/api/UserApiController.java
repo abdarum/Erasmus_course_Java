@@ -47,13 +47,10 @@ public class UserApiController implements UserApi {
     public ResponseEntity<Void> createUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody User body
 ) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/xml")) 
-        {
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             userService.createUser(body);
             return new ResponseEntity<Void>(HttpStatus.OK);
-        } 
-        else 
-        {
+        } else {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
 
@@ -62,10 +59,14 @@ public class UserApiController implements UserApi {
     public ResponseEntity<Void> deleteUser(@ApiParam(value = "The name that needs to be deleted",required=true) @PathVariable("username") String username
 ) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/xml")) 
-        {
-            userService.deleteUser(username);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            User user = userService.getUserByName(username);
+            if (user != null) {
+                userService.deleteUser(username);
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else { 
+                return ResponseEntity.notFound().build();
+            }
         } 
         else 
         {
@@ -91,11 +92,15 @@ public class UserApiController implements UserApi {
     public ResponseEntity<User> getUserByName(@ApiParam(value = "The name that needs to be fetched. Use user1 for testing.",required=true) @PathVariable("username") String username
 ) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            return new ResponseEntity<User>(userService.getUserByName(username), HttpStatus.OK);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            User user = userService.getUserByName(username);
+            if (user != null) {
+                return ResponseEntity.ok(user);
+            } else { 
+                return ResponseEntity.notFound().build();
+            }
         }
-
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     public ResponseEntity<String> loginUser(@NotNull @ApiParam(value = "The user name for login", required = true) @Valid @RequestParam(value = "username", required = true) String username
@@ -123,9 +128,14 @@ public class UserApiController implements UserApi {
 ,@ApiParam(value = "Updated user object" ,required=true )  @Valid @RequestBody User body
 ) {
         String accept = request.getHeader("Accept");
-        if (accept != null && (accept.contains("application/xml") || accept.contains("application/json"))) {
-            userService.updateUser(username, body);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            User user = userService.getUserByName(username);
+            if (user != null) {
+                userService.updateUser(username, body);
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else { 
+                return ResponseEntity.notFound().build();
+            }
         }
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
