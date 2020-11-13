@@ -22,8 +22,6 @@ public class BookServiceImpl implements BookService {
     
 	@Override
 	public Book createBook(Book Book) {
-        System.out.println("createBook in BookServiceImpl");
-        System.out.println(Book.toString());
         return bookRepository.save(Book);
     }	
 
@@ -33,20 +31,18 @@ public class BookServiceImpl implements BookService {
     }
 
 	@Override
-    public Book deleteBook(String email){
-        // Optional<Book> od = bookRepository.getBookByEmail(email);
-		// if(od.isPresent()) bookRepository.deleteBookByEmail(email);
-		// return od.get();
-		return null;
+    public Book deleteBookById(Integer id){
+        Optional<Book> od = bookRepository.getBookById(id);
+        if(od.isPresent()) bookRepository.deleteBookById(id);
+        return od.get();
     }
 
 
 	@Override
-    public Book getBookByName(String email){
-        // Optional<Book> od = bookRepository.getBookByEmail(email);
-        // if(od.isPresent()) return od.get();
-        // else return null;
-		return null;
+    public Book getBookById(Integer id){
+        Optional<Book> od = bookRepository.getBookById(id);
+        if(od.isPresent()) return od.get();
+        else return null;
     }
 
 	@Override
@@ -66,9 +62,9 @@ public class BookServiceImpl implements BookService {
     }
 
 	@Override
-    public Book updateBook(String email, Book body){
-        // Optional<Book> od = bookRepository.getBookByEmail(email);
-		// if(od.isPresent()) return bookRepository.save(body);
+    public Book updateBookByI(Integer id, Book body){
+        Optional<Book> od = bookRepository.getBookById(id);
+        if(od.isPresent()) return bookRepository.save(body);
         return null;
     }
 
