@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * CoverType
+ * Body
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
@@ -18,51 +18,51 @@ import javax.validation.constraints.*;
 
 
 
-public class CoverType   {
-  @JsonProperty("id")
-  private Long id = null;
+public class Body   {
+  @JsonProperty("email")
+  private String email = null;
 
-  @JsonProperty("name")
-  private String name = null;
+  @JsonProperty("password")
+  private String password = null;
 
-  public CoverType id(Long id) {
-    this.id = id;
+  public Body email(String email) {
+    this.email = email;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * The email for login
+   * @return email
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(value = "The email for login")
 
 
-  public Long getId() {
-    return id;
+  public String getEmail() {
+    return email;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setEmail(String email) {
+    this.email = email;
   }
 
-  public CoverType name(String name) {
-    this.name = name;
+  public Body password(String password) {
+    this.password = password;
     return this;
   }
 
   /**
-   * Get name
-   * @return name
+   * The password for login in clear text
+   * @return password
   **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(value = "The password for login in clear text")
 
 
-  public String getName() {
-    return name;
+  public String getPassword() {
+    return password;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
 
@@ -74,23 +74,23 @@ public class CoverType   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CoverType coverType = (CoverType) o;
-    return Objects.equals(this.id, coverType.id) &&
-        Objects.equals(this.name, coverType.name);
+    Body body = (Body) o;
+    return Objects.equals(this.email, body.email) &&
+        Objects.equals(this.password, body.password);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name);
+    return Objects.hash(email, password);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CoverType {\n");
+    sb.append("class Body {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    password: ").append(toIndentedString(password)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -13,7 +13,9 @@ import javax.validation.constraints.*;
  * BorrowPlace
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
+
 
 
 public class BorrowPlace   {
@@ -33,8 +35,9 @@ public class BorrowPlace   {
    * @return id
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getId() {
+
+
+  public Long getId() {
     return id;
   }
 
@@ -52,8 +55,9 @@ public class BorrowPlace   {
    * @return name
   **/
   @ApiModelProperty(value = "")
-  
-    public String getName() {
+
+
+  public String getName() {
     return name;
   }
 
@@ -102,3 +106,4 @@ public class BorrowPlace   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

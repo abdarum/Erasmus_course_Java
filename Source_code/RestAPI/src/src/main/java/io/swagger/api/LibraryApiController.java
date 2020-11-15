@@ -27,8 +27,8 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
 @Controller
 public class LibraryApiController implements LibraryApi {
 
@@ -44,8 +44,7 @@ public class LibraryApiController implements LibraryApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> deleteOrder(@Min(1L)@ApiParam(value = "ID of the order that needs to be deleted",required=true, allowableValues="") @PathVariable("orderId") Long orderId
-) {
+    public ResponseEntity<Void> deleteOrder(@Min(1L)@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
@@ -54,7 +53,7 @@ public class LibraryApiController implements LibraryApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<LibraryStats>(objectMapper.readValue("{\n  \"numberOfAvailableBooks\" : 6,\n  \"numberOfBooks\" : 0\n}", LibraryStats.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<LibraryStats>(objectMapper.readValue("{  \"numberOfAvailableBooks\" : 6,  \"numberOfBooks\" : 0}", LibraryStats.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<LibraryStats>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -89,7 +88,7 @@ public class LibraryApiController implements LibraryApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<List<NotificationForm>>(objectMapper.readValue("[ {\n  \"data\" : { },\n  \"id\" : 0,\n  \"event\" : \"event\"\n}, {\n  \"data\" : { },\n  \"id\" : 0,\n  \"event\" : \"event\"\n} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<List<NotificationForm>>(objectMapper.readValue("[ {  \"data\" : \"{}\",  \"id\" : 0,  \"event\" : \"event\"}, {  \"data\" : \"{}\",  \"id\" : 0,  \"event\" : \"event\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<List<NotificationForm>>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -99,12 +98,11 @@ public class LibraryApiController implements LibraryApi {
         return new ResponseEntity<List<NotificationForm>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Borrowed> getOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of borrow form that needs to be fetched",required=true, allowableValues="") @PathVariable("orderId") Long orderId
-) {
+    public ResponseEntity<Borrowed> getOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of borrow form that needs to be fetched",required=true) @PathVariable("orderId") Long orderId) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Borrowed>(objectMapper.readValue("{\n  \"periodId\" : 7,\n  \"placeId\" : 2,\n  \"borrowedDate\" : 5,\n  \"id\" : 0,\n  \"damageNotes\" : \"damageNotes\",\n  \"userId\" : 6,\n  \"bookId\" : 1,\n  \"returnedDate\" : 5\n}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Borrowed>(objectMapper.readValue("{  \"periodId\" : 5,  \"placeId\" : 5,  \"borrowedDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"id\" : 0,  \"damageNotes\" : \"damageNotes\",  \"userId\" : 6,  \"bookId\" : 1,  \"returnedDate\" : \"2000-01-23T04:56:07.000+00:00\"}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Borrowed>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -114,12 +112,11 @@ public class LibraryApiController implements LibraryApi {
         return new ResponseEntity<Borrowed>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body
-) {
+    public ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Borrowed>(objectMapper.readValue("{\n  \"periodId\" : 7,\n  \"placeId\" : 2,\n  \"borrowedDate\" : 5,\n  \"id\" : 0,\n  \"damageNotes\" : \"damageNotes\",\n  \"userId\" : 6,\n  \"bookId\" : 1,\n  \"returnedDate\" : 5\n}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Borrowed>(objectMapper.readValue("{  \"periodId\" : 5,  \"placeId\" : 5,  \"borrowedDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"id\" : 0,  \"damageNotes\" : \"damageNotes\",  \"userId\" : 6,  \"bookId\" : 1,  \"returnedDate\" : \"2000-01-23T04:56:07.000+00:00\"}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Borrowed>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -129,13 +126,11 @@ public class LibraryApiController implements LibraryApi {
         return new ResponseEntity<Borrowed>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Borrowed> putOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of pet that needs to be fetched",required=true, allowableValues="") @PathVariable("orderId") Long orderId
-,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body
-) {
+    public ResponseEntity<Borrowed> putOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Borrowed>(objectMapper.readValue("{\n  \"periodId\" : 7,\n  \"placeId\" : 2,\n  \"borrowedDate\" : 5,\n  \"id\" : 0,\n  \"damageNotes\" : \"damageNotes\",\n  \"userId\" : 6,\n  \"bookId\" : 1,\n  \"returnedDate\" : 5\n}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<Borrowed>(objectMapper.readValue("{  \"periodId\" : 5,  \"placeId\" : 5,  \"borrowedDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"id\" : 0,  \"damageNotes\" : \"damageNotes\",  \"userId\" : 6,  \"bookId\" : 1,  \"returnedDate\" : \"2000-01-23T04:56:07.000+00:00\"}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<Borrowed>(HttpStatus.INTERNAL_SERVER_ERROR);

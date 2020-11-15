@@ -24,7 +24,7 @@ paths:
       summary: Create user
       description: This can only be done by the logged in user.
       operationId: createUser
-      produces:
+      consumes:
       - application/json
       parameters:
       - in: body
@@ -48,6 +48,8 @@ paths:
       - user
       summary: Logs user into the system
       operationId: loginUser
+      consumes:
+      - application/json
       produces:
       - application/json
       parameters:
@@ -89,8 +91,6 @@ paths:
       - user
       summary: Logs out current logged in user session
       operationId: logoutUser
-      produces:
-      - application/json
       parameters: []
       responses:
         default:
@@ -129,7 +129,7 @@ paths:
       summary: Updated user
       description: This can only be done by the logged in user.
       operationId: updateUserById
-      produces:
+      consumes:
       - application/json
       parameters:
       - name: id
@@ -157,8 +157,6 @@ paths:
       summary: Delete user
       description: This can only be done by the logged in user.
       operationId: deleteUserById
-      produces:
-      - application/json
       parameters:
       - name: id
         in: path
@@ -205,7 +203,7 @@ paths:
       - book
       summary: Add a new book to the library
       operationId: addBook
-      produces:
+      consumes:
       - application/json
       parameters:
       - in: body
@@ -254,7 +252,7 @@ paths:
       summary: Updated book
       description: This can only be done by the logged in user.
       operationId: updateBookById
-      produces:
+      consumes:
       - application/json
       parameters:
         - name: id
@@ -270,6 +268,8 @@ paths:
           schema:
             $ref: '#/definitions/Book'
       responses:
+        "200":
+          description: successful operation
         "400":
           description: Invalid id supplied
         "404":
@@ -282,8 +282,6 @@ paths:
       summary: Delete book
       description: This can only be done by the logged in user.
       operationId: deleteBookById
-      produces:
-      - application/json
       parameters:
         - name: id
           in: path
@@ -292,6 +290,8 @@ paths:
           type: integer
           format: int64
       responses:
+        "200":
+          description: successful operation
         "400":
           description: Invalid id supplied
         "401":
@@ -361,6 +361,8 @@ paths:
       - library
       summary: Place an order for a book rent
       operationId: placeOrder
+      consumes:
+      - application/json
       produces:
       - application/json
       parameters:
@@ -413,6 +415,8 @@ paths:
       - library
       summary: Find purchase order by ID
       operationId: putOrderById
+      consumes:
+      - application/json
       produces:
       - application/json
       parameters:
@@ -446,6 +450,8 @@ paths:
       - library
       summary: Delete purchase order by ID
       operationId: deleteOrder
+      consumes:
+      - application/json
       produces:
       - application/json
       parameters:
@@ -457,6 +463,8 @@ paths:
           format: int64
           minimum: 1
       responses:
+        "200":
+          description: successful operation
         "400":
           description: Invalid ID supplied
         "404":

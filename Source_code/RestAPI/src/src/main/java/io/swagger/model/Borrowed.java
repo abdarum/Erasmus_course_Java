@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -13,7 +14,9 @@ import javax.validation.constraints.*;
  * Borrowed
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
+
 
 
 public class Borrowed   {
@@ -27,10 +30,10 @@ public class Borrowed   {
   private Long bookId = null;
 
   @JsonProperty("borrowedDate")
-  private Integer borrowedDate = null;
+  private OffsetDateTime borrowedDate = null;
 
   @JsonProperty("returnedDate")
-  private Integer returnedDate = null;
+  private OffsetDateTime returnedDate = null;
 
   @JsonProperty("damageNotes")
   private String damageNotes = null;
@@ -51,8 +54,9 @@ public class Borrowed   {
    * @return id
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getId() {
+
+
+  public Long getId() {
     return id;
   }
 
@@ -70,8 +74,9 @@ public class Borrowed   {
    * @return userId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getUserId() {
+
+
+  public Long getUserId() {
     return userId;
   }
 
@@ -89,8 +94,9 @@ public class Borrowed   {
    * @return bookId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getBookId() {
+
+
+  public Long getBookId() {
     return bookId;
   }
 
@@ -98,41 +104,45 @@ public class Borrowed   {
     this.bookId = bookId;
   }
 
-  public Borrowed borrowedDate(Integer borrowedDate) {
+  public Borrowed borrowedDate(OffsetDateTime borrowedDate) {
     this.borrowedDate = borrowedDate;
     return this;
   }
 
   /**
-   * Timestamp in UTC
+   * Get borrowedDate
    * @return borrowedDate
   **/
-  @ApiModelProperty(value = "Timestamp in UTC")
-  
-    public Integer getBorrowedDate() {
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public OffsetDateTime getBorrowedDate() {
     return borrowedDate;
   }
 
-  public void setBorrowedDate(Integer borrowedDate) {
+  public void setBorrowedDate(OffsetDateTime borrowedDate) {
     this.borrowedDate = borrowedDate;
   }
 
-  public Borrowed returnedDate(Integer returnedDate) {
+  public Borrowed returnedDate(OffsetDateTime returnedDate) {
     this.returnedDate = returnedDate;
     return this;
   }
 
   /**
-   * Timestamp in UTC
+   * Get returnedDate
    * @return returnedDate
   **/
-  @ApiModelProperty(value = "Timestamp in UTC")
-  
-    public Integer getReturnedDate() {
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public OffsetDateTime getReturnedDate() {
     return returnedDate;
   }
 
-  public void setReturnedDate(Integer returnedDate) {
+  public void setReturnedDate(OffsetDateTime returnedDate) {
     this.returnedDate = returnedDate;
   }
 
@@ -146,8 +156,9 @@ public class Borrowed   {
    * @return damageNotes
   **/
   @ApiModelProperty(value = "")
-  
-    public String getDamageNotes() {
+
+
+  public String getDamageNotes() {
     return damageNotes;
   }
 
@@ -165,8 +176,9 @@ public class Borrowed   {
    * @return placeId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getPlaceId() {
+
+
+  public Long getPlaceId() {
     return placeId;
   }
 
@@ -184,8 +196,9 @@ public class Borrowed   {
    * @return periodId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getPeriodId() {
+
+
+  public Long getPeriodId() {
     return periodId;
   }
 
@@ -246,3 +259,4 @@ public class Borrowed   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

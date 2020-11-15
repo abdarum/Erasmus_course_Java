@@ -2,7 +2,8 @@ package io.swagger.api;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
 @javax.xml.bind.annotation.XmlRootElement
 public class ApiResponseMessage {
     public static final int ERROR = 1;

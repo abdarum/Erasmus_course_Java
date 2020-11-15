@@ -10,6 +10,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -24,7 +25,10 @@ import javax.persistence.Table;
  * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
+
+
 
 @Entity
 @Table(name = "user")
@@ -54,10 +58,10 @@ public class User   {
   private String phone = null;
 
   @JsonProperty("birthdate")
-  private Integer birthdate = null;
+  private OffsetDateTime birthdate = null;
 
   @JsonProperty("registrated")
-  private Integer registrated = null;
+  private OffsetDateTime registrated = null;
 
   @JsonProperty("gender")
   private String gender = null;
@@ -100,6 +104,7 @@ public class User   {
       return null;
     }
   }
+
   @JsonProperty("status")
   private StatusEnum status = null;
 
@@ -113,8 +118,9 @@ public class User   {
    * @return id
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getId() {
+
+
+  public Long getId() {
     return id;
   }
 
@@ -132,8 +138,9 @@ public class User   {
    * @return userTypeId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getUserTypeId() {
+
+
+  public Long getUserTypeId() {
     return userTypeId;
   }
 
@@ -151,8 +158,9 @@ public class User   {
    * @return firstName
   **/
   @ApiModelProperty(value = "")
-  
-    public String getFirstName() {
+
+
+  public String getFirstName() {
     return firstName;
   }
 
@@ -170,8 +178,9 @@ public class User   {
    * @return lastName
   **/
   @ApiModelProperty(value = "")
-  
-    public String getLastName() {
+
+
+  public String getLastName() {
     return lastName;
   }
 
@@ -189,8 +198,9 @@ public class User   {
    * @return email
   **/
   @ApiModelProperty(value = "")
-  
-    public String getEmail() {
+
+
+  public String getEmail() {
     return email;
   }
 
@@ -208,8 +218,9 @@ public class User   {
    * @return password
   **/
   @ApiModelProperty(value = "")
-  
-    public String getPassword() {
+
+
+  public String getPassword() {
     return password;
   }
 
@@ -227,8 +238,9 @@ public class User   {
    * @return phone
   **/
   @ApiModelProperty(value = "")
-  
-    public String getPhone() {
+
+
+  public String getPhone() {
     return phone;
   }
 
@@ -236,41 +248,45 @@ public class User   {
     this.phone = phone;
   }
 
-  public User birthdate(Integer birthdate) {
+  public User birthdate(OffsetDateTime birthdate) {
     this.birthdate = birthdate;
     return this;
   }
 
   /**
-   * Timestamp in UTC
+   * Get birthdate
    * @return birthdate
   **/
-  @ApiModelProperty(value = "Timestamp in UTC")
-  
-    public Integer getBirthdate() {
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public OffsetDateTime getBirthdate() {
     return birthdate;
   }
 
-  public void setBirthdate(Integer birthdate) {
+  public void setBirthdate(OffsetDateTime birthdate) {
     this.birthdate = birthdate;
   }
 
-  public User registrated(Integer registrated) {
+  public User registrated(OffsetDateTime registrated) {
     this.registrated = registrated;
     return this;
   }
 
   /**
-   * Timestamp in UTC
+   * Get registrated
    * @return registrated
   **/
-  @ApiModelProperty(value = "Timestamp in UTC")
-  
-    public Integer getRegistrated() {
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public OffsetDateTime getRegistrated() {
     return registrated;
   }
 
-  public void setRegistrated(Integer registrated) {
+  public void setRegistrated(OffsetDateTime registrated) {
     this.registrated = registrated;
   }
 
@@ -284,8 +300,9 @@ public class User   {
    * @return gender
   **/
   @ApiModelProperty(value = "")
-  
-    public String getGender() {
+
+
+  public String getGender() {
     return gender;
   }
 
@@ -303,8 +320,9 @@ public class User   {
    * @return adress
   **/
   @ApiModelProperty(value = "")
-  
-    public String getAdress() {
+
+
+  public String getAdress() {
     return adress;
   }
 
@@ -322,8 +340,9 @@ public class User   {
    * @return city
   **/
   @ApiModelProperty(value = "")
-  
-    public String getCity() {
+
+
+  public String getCity() {
     return city;
   }
 
@@ -341,8 +360,9 @@ public class User   {
    * @return status
   **/
   @ApiModelProperty(value = "Order Status")
-  
-    public StatusEnum getStatus() {
+
+
+  public StatusEnum getStatus() {
     return status;
   }
 
@@ -413,3 +433,4 @@ public class User   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

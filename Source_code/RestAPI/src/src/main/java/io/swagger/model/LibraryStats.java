@@ -13,7 +13,9 @@ import javax.validation.constraints.*;
  * LibraryStats
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
+
 
 
 public class LibraryStats   {
@@ -33,8 +35,9 @@ public class LibraryStats   {
    * @return numberOfBooks
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getNumberOfBooks() {
+
+
+  public Integer getNumberOfBooks() {
     return numberOfBooks;
   }
 
@@ -52,8 +55,9 @@ public class LibraryStats   {
    * @return numberOfAvailableBooks
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getNumberOfAvailableBooks() {
+
+
+  public Integer getNumberOfAvailableBooks() {
     return numberOfAvailableBooks;
   }
 
@@ -102,3 +106,4 @@ public class LibraryStats   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

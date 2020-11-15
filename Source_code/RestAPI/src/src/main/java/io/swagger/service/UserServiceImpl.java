@@ -22,8 +22,6 @@ public class UserServiceImpl implements UserService {
     
 	@Override
 	public User createUser(User User) {
-        System.out.println("createUser in UserServiceImpl");
-        System.out.println(User.toString());
         return userRepository.save(User);
     }	
 
@@ -33,7 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
-    public User deleteUser(String email){
+    public User deleteUserByName(String email){
         Optional<User> od = userRepository.getUserByEmail(email);
 		if(od.isPresent()) userRepository.deleteUserByEmail(email);
 		return od.get();
@@ -46,6 +44,29 @@ public class UserServiceImpl implements UserService {
         if(od.isPresent()) return od.get();
         else return null;
     }
+
+	@Override
+    public User deleteUserById(Long id){
+        Optional<User> od = userRepository.getUserById(id);
+		if(od.isPresent()) userRepository.deleteUserById(id);
+		return od.get();
+    }
+
+	@Override
+    public User getUserById(Long id){
+        Optional<User> od = userRepository.getUserById(id);
+        System.out.println(od.get().toString());
+        if(od.isPresent()) return od.get();
+        else return null;
+    }
+
+	@Override
+    public User updateUserById(Long id, User body){
+        Optional<User> od = userRepository.getUserById(id);
+        if(od.isPresent()) return userRepository.save(body);
+        else return null;
+    }
+
 
 	@Override
     public User loginUser(String email, String password){

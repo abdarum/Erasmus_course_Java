@@ -20,7 +20,10 @@ import javax.validation.constraints.*;
  * Book
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
+
+
 
 @Entity
 @Table(name = "book")
@@ -59,8 +62,9 @@ public class Book   {
    * @return id
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getId() {
+
+
+  public Long getId() {
     return id;
   }
 
@@ -78,8 +82,9 @@ public class Book   {
    * @return name
   **/
   @ApiModelProperty(value = "")
-  
-    public String getName() {
+
+
+  public String getName() {
     return name;
   }
 
@@ -97,8 +102,9 @@ public class Book   {
    * @return isbn
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getIsbn() {
+
+
+  public Integer getIsbn() {
     return isbn;
   }
 
@@ -116,8 +122,9 @@ public class Book   {
    * @return authorId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getAuthorId() {
+
+
+  public Long getAuthorId() {
     return authorId;
   }
 
@@ -135,8 +142,9 @@ public class Book   {
    * @return pageCount
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getPageCount() {
+
+
+  public Integer getPageCount() {
     return pageCount;
   }
 
@@ -154,8 +162,9 @@ public class Book   {
    * @return coverTypeId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getCoverTypeId() {
+
+
+  public Long getCoverTypeId() {
     return coverTypeId;
   }
 
@@ -173,8 +182,9 @@ public class Book   {
    * @return genreId
   **/
   @ApiModelProperty(value = "")
-  
-    public Long getGenreId() {
+
+
+  public Long getGenreId() {
     return genreId;
   }
 
@@ -233,3 +243,4 @@ public class Book   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

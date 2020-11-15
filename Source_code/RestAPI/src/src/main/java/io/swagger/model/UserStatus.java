@@ -13,7 +13,9 @@ import javax.validation.constraints.*;
  * UserStatus
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
+
 
 
 public class UserStatus   {
@@ -39,8 +41,9 @@ public class UserStatus   {
    * @return numberOfAllBorrowedBooks
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getNumberOfAllBorrowedBooks() {
+
+
+  public Integer getNumberOfAllBorrowedBooks() {
     return numberOfAllBorrowedBooks;
   }
 
@@ -58,8 +61,9 @@ public class UserStatus   {
    * @return numberOfAllDamagedBooks
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getNumberOfAllDamagedBooks() {
+
+
+  public Integer getNumberOfAllDamagedBooks() {
     return numberOfAllDamagedBooks;
   }
 
@@ -77,8 +81,9 @@ public class UserStatus   {
    * @return numberOfCurrentBorrowedBooks
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getNumberOfCurrentBorrowedBooks() {
+
+
+  public Integer getNumberOfCurrentBorrowedBooks() {
     return numberOfCurrentBorrowedBooks;
   }
 
@@ -96,8 +101,9 @@ public class UserStatus   {
    * @return numberOfDelayedBooks
   **/
   @ApiModelProperty(value = "")
-  
-    public Integer getNumberOfDelayedBooks() {
+
+
+  public Integer getNumberOfDelayedBooks() {
     return numberOfDelayedBooks;
   }
 
@@ -150,3 +156,4 @@ public class UserStatus   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

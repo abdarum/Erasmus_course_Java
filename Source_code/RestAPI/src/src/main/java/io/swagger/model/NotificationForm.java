@@ -13,7 +13,9 @@ import javax.validation.constraints.*;
  * NotificationForm
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-10-22T18:11:08.474Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+
+
 
 
 public class NotificationForm   {
@@ -36,8 +38,9 @@ public class NotificationForm   {
    * @return id
   **/
   @ApiModelProperty(value = "my event id")
-  
-    public Integer getId() {
+
+
+  public Integer getId() {
     return id;
   }
 
@@ -55,8 +58,9 @@ public class NotificationForm   {
    * @return event
   **/
   @ApiModelProperty(value = "my event type")
-  
-    public String getEvent() {
+
+
+  public String getEvent() {
     return event;
   }
 
@@ -74,8 +78,9 @@ public class NotificationForm   {
    * @return data
   **/
   @ApiModelProperty(value = "")
-  
-    public Object getData() {
+
+
+  public Object getData() {
     return data;
   }
 
@@ -126,3 +131,4 @@ public class NotificationForm   {
     return o.toString().replace("\n", "\n    ");
   }
 }
+
