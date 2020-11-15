@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: Library API
-  version: 1.0.1-oas3
+  version: 1.0.2-oas3
   title: Library Varna
   termsOfService: "http://swagger.io/terms/"
   contact:
@@ -25,10 +25,10 @@ paths:
       description: This can only be done by the logged in user.
       operationId: createUser
       responses:
-        "403":
-          description: >-
-            Forbidden, current user has no permission to create new user of
-            selected type
+        "200":
+          description: successful operation
+        "400":
+          description: "Bad request"
         default:
           description: successful operation
       requestBody:
@@ -39,24 +39,24 @@ paths:
         description: Created user object
         required: true
   /user/login:
-    get:
+    post:
       tags:
         - user
       summary: Logs user into the system
       operationId: loginUser
-      parameters:
-        - name: username
-          in: query
-          description: The user name for login
-          required: true
-          schema:
-            type: string
-        - name: password
-          in: query
-          description: The password for login in clear text
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: The email for login
+                  type: string
+                  format: email
+                password:
+                  description: The password for login in clear text
+                  type: string
       responses:
         "200":
           description: successful operation
@@ -74,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/User"
         "400":
           description: Invalid username/password supplied
   /user/logout:
@@ -86,19 +86,20 @@ paths:
       responses:
         default:
           description: successful operation
-  "/user/{username}":
+  "/user/{id}":
     get:
       tags:
         - user
-      summary: Get user by user name
-      operationId: getUserByName
+      summary: Get user by id
+      operationId: getUserById
       parameters:
-        - name: username
+        - name: id
           in: path
-          description: The name that needs to be fetched. Use user1 for testing.
+          description: The id that needs to be fetched.
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "200":
           description: successful operation
@@ -107,7 +108,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: Invalid username supplied
+          description: Invalid id supplied
         "404":
           description: User not found
     put:
@@ -115,17 +116,18 @@ paths:
         - user
       summary: Updated user
       description: This can only be done by the logged in user.
-      operationId: updateUser
+      operationId: updateUserById
       parameters:
-        - name: username
+        - name: id
           in: path
-          description: name that need to be updated
+          description: Id that need to be updated
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "400":
-          description: Invalid user supplied
+          description: Invalid Id supplied
         "404":
           description: User not found
       requestBody:
@@ -140,32 +142,34 @@ paths:
         - user
       summary: Delete user
       description: This can only be done by the logged in user.
-      operationId: deleteUser
+      operationId: deleteUserById
       parameters:
-        - name: username
+        - name: id
           in: path
-          description: The name that needs to be deleted
+          description: The Id that needs to be deleted
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "400":
-          description: Invalid username supplied
+          description: Invalid Id supplied
         "404":
           description: User not found
 
-  "/user/{username}/stats":
+  "/user/{id}/stats":
     get:
       tags:
         - user
       summary: Get user statistics by user name
-      operationId: getStatsByUsername
+      operationId: getStatsById
       parameters:
-        - name: username
+        - name: id
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "200":
           description: successful operation
@@ -174,7 +178,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserStatus"
         "400":
-          description: Invalid username supplied
+          description: Invalid Id supplied
         "404":
           description: User not found
 
@@ -185,27 +189,10 @@ paths:
       summary: Add a new book to the library
       operationId: addBook
       responses:
-        "405":
-          description: Invalid input
-      security:
-        - bearerAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Book"
-    put:
-      tags:
-        - book
-      summary: Update an existing book
-      operationId: updateBook
-      responses:
+        "200":
+          description: successful operation
         "400":
-          description: Invalid ID supplied
-        "404":
-          description: Book not found
-        "405":
-          description: Validation exception
+          description: "Bad request"
       security:
         - bearerAuth: []
       requestBody:
@@ -213,7 +200,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Book"
-
   "/book/{id}":
     get:
       tags:
@@ -226,7 +212,8 @@ paths:
           description: The id that needs to be fetched.
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "200":
           description: successful operation
@@ -250,7 +237,8 @@ paths:
           description: id of book that need to be updated
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "400":
           description: Invalid id supplied
@@ -260,13 +248,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
+              $ref: "#/components/schemas/Book"
         description: Updated user object
         required: true
     delete:
       tags:
         - book
-      summary: Delete user
+      summary: Delete book
       description: This can only be done by the logged in user.
       operationId: deleteBookById
       parameters:
@@ -275,10 +263,13 @@ paths:
           description: The id of the book that needs to be deleted
           required: true
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         "400":
           description: Invalid id supplied
+        "401":
+          description: Unauthorized, no access
         "404":
           description: Book not found
 
@@ -333,6 +324,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LibraryStats"
+        "401":
+          description: Unauthorized, no access                
       security:
         - bearerAuth: []
 
@@ -486,11 +479,11 @@ components:
         phone:
           type: string
         birthdate:
-          type: integer
-          description: Timestamp in UTC
+          type: string
+          format: date-time
         registrated:
-          type: integer
-          description: Timestamp in UTC
+          type: string
+          format: date-time
         gender:
           type: string
         adress:
@@ -532,8 +525,8 @@ components:
         lastName:
           type: string
         birthdate:
-          type: integer
-          description: Timestamp in UTC
+          type: string
+          format: date-time
         gender:
           type: string
         adress:
@@ -565,11 +558,11 @@ components:
           type: integer
           format: int64
         borrowedDate:
-          type: integer
-          description: Timestamp in UTC
+          type: string
+          format: date-time
         returnedDate:
-          type: integer
-          description: Timestamp in UTC
+          type: string
+          format: date-time
         damageNotes:
           type: string
         placeId:
