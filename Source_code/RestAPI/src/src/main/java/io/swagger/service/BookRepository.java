@@ -10,11 +10,11 @@ import io.swagger.model.Book;
 
 public interface BookRepository extends JpaRepository<Book,Long> {
     @Query("SELECT d FROM Book d WHERE d.id = ?1")
-    Optional<Book> getBookById(Integer id);
+    Optional<Book> getBookById(Long id);
     
     @Modifying
     @Query("delete from Book d where d.id=?1")
-    void deleteBookById(Integer id);
+    void deleteBookById(Long id);
 
     // // TO DO !!!
     // // sorted by( current date - appointment date)

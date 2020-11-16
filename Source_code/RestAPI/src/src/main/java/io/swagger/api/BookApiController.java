@@ -55,20 +55,18 @@ public class BookApiController implements BookApi {
 
     public ResponseEntity<Void> deleteBookById(@ApiParam(value = "The id of the book that needs to be deleted",required=true) @PathVariable("id") Long id) {
         String accept = request.getHeader("Accept");
-        // if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-        //     Book book = bookService.getBookById(id);
-        //     if (book != null) {
-        //         bookService.deleteBookById(id);
-        //         return new ResponseEntity<Void>(HttpStatus.OK);
-        //     } else { 
-        //         return ResponseEntity.notFound().build();
-        //     }
-        // } 
-        // else 
-        // {
-        //     return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        // }
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            Book book = bookService.deleteBookById(id);
+            if (book != null) {
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else { 
+                return ResponseEntity.notFound().build();
+            }
+        } 
+        else 
+        {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<List<Book>> findBookByStatus(@NotNull @ApiParam(value = "Status values that need to be considered for filter", required = true, allowableValues = "available, user, name, author") @Valid @RequestParam(value = "status", required = true) List<String> status) {
@@ -86,26 +84,30 @@ public class BookApiController implements BookApi {
     }
 
     public ResponseEntity<Book> getBookById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id) {
-        System.out.println("\n\n\n tmp get debug");
-        System.out.println(LocalDateTime.now());
-        System.out.println("\n\n\n");
-
+        
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Book>(objectMapper.readValue("{  \"genreId\" : 2,  \"pageCount\" : 5,  \"isbn\" : 6,  \"name\" : \"name\",  \"coverTypeId\" : 5,  \"id\" : 0,  \"authorId\" : 1}", Book.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Book>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            Book book = bookService.getBookById(id);
+            if (book != null) {
+                return ResponseEntity.ok(book);
+            } else { 
+                return ResponseEntity.notFound().build();
             }
         }
-
-        return new ResponseEntity<Book>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Book>(HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<Void> updateBookById(@ApiParam(value = "id of book that need to be updated",required=true) @PathVariable("id") Long id,@ApiParam(value = "Updated user object" ,required=true )  @Valid @RequestBody Book body) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            Book book = bookService.updateBookById(id, body);
+            if (book != null) {
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else { 
+                return ResponseEntity.notFound().build();
+            }
+        }
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
 }

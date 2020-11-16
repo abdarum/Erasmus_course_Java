@@ -1,5 +1,7 @@
 package io.swagger.service;
 
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +12,9 @@ import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.ZoneId;
 
 import io.swagger.model.User;
 
@@ -21,8 +26,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;    
     
 	@Override
-	public User createUser(User User) {
-        return userRepository.save(User);
+	public User createUser(User user) {
+        OffsetDateTime registrated = OffsetDateTime.now(ZoneId.of("UTC"));
+        user.setRegistrated(registrated);
+        
+        Optional<User> od = userRepository.getUserByEmail(user.getEmail());
+        if(!od.isPresent()) return userRepository.save(user);
+        return null;
     }	
 
 	@Override
@@ -48,14 +58,16 @@ public class UserServiceImpl implements UserService {
 	@Override
     public User deleteUserById(Long id){
         Optional<User> od = userRepository.getUserById(id);
-		if(od.isPresent()) userRepository.deleteUserById(id);
-		return od.get();
+		if(od.isPresent()){
+            userRepository.deleteUserById(id);
+            return od.get();
+        } 
+        return null;
     }
 
 	@Override
     public User getUserById(Long id){
         Optional<User> od = userRepository.getUserById(id);
-        System.out.println(od.get().toString());
         if(od.isPresent()) return od.get();
         else return null;
     }

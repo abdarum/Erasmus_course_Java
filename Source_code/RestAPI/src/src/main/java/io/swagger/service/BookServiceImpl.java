@@ -21,8 +21,8 @@ public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;    
     
 	@Override
-	public Book createBook(Book Book) {
-        return bookRepository.save(Book);
+	public Book createBook(Book book) {
+        return bookRepository.save(book);
     }	
 
 	@Override
@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
     }
 
 	@Override
-    public Book deleteBookById(Integer id){
+    public Book deleteBookById(Long id){
         Optional<Book> od = bookRepository.getBookById(id);
         if(od.isPresent()) bookRepository.deleteBookById(id);
         return od.get();
@@ -39,7 +39,7 @@ public class BookServiceImpl implements BookService {
 
 
 	@Override
-    public Book getBookById(Integer id){
+    public Book getBookById(Long id){
         Optional<Book> od = bookRepository.getBookById(id);
         if(od.isPresent()) return od.get();
         else return null;
@@ -62,7 +62,7 @@ public class BookServiceImpl implements BookService {
     }
 
 	@Override
-    public Book updateBookByI(Integer id, Book body){
+    public Book updateBookById(Long id, Book body){
         Optional<Book> od = bookRepository.getBookById(id);
         if(od.isPresent()) return bookRepository.save(body);
         return null;

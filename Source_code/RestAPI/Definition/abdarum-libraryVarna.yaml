@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: Library API
-  version: 1.0.2
+  version: 1.0.3
   title: Library Varna
   termsOfService: http://swagger.io/terms/
   contact:
@@ -38,8 +38,8 @@ paths:
           description: successful operation
         "400":
           description: "Bad request"
-        default:
-          description: successful operation
+        "403":
+          description: "Forbidden"
       security:
       - bearerAuth: []
   /user/login:
@@ -145,6 +145,8 @@ paths:
         schema:
           $ref: '#/definitions/User'
       responses:
+        200:
+          description: successful operation        
         400:
           description: Invalid Id supplied
         404:
@@ -165,6 +167,8 @@ paths:
         type: integer
         format: int64
       responses:
+        200:
+          description: successful operation        
         400:
           description: Invalid Id supplied
         404:

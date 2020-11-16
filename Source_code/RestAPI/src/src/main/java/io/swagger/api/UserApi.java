@@ -33,8 +33,7 @@ public interface UserApi {
     @ApiOperation(value = "Create user", nickname = "createUser", notes = "This can only be done by the logged in user.", tags={ "user", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation"),
-        @ApiResponse(code = 400, message = "Bad request"),
-        @ApiResponse(code = 200, message = "successful operation") })
+        @ApiResponse(code = 400, message = "Bad request") })
     @RequestMapping(value = "/user",
         consumes = { "application/json" },
         method = RequestMethod.POST)
@@ -93,6 +92,7 @@ public interface UserApi {
 
     @ApiOperation(value = "Updated user", nickname = "updateUserById", notes = "This can only be done by the logged in user.", tags={ "user", })
     @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation"),
         @ApiResponse(code = 400, message = "Invalid Id supplied"),
         @ApiResponse(code = 404, message = "User not found") })
     @RequestMapping(value = "/user/{id}",

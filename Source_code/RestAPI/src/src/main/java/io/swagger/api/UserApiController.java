@@ -49,8 +49,11 @@ public class UserApiController implements UserApi {
     public ResponseEntity<Void> createUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody User body) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            userService.createUser(body);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            if(userService.createUser(body) != null){
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+            }
         } else {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
@@ -60,9 +63,8 @@ public class UserApiController implements UserApi {
     public ResponseEntity<Void> deleteUserById(@ApiParam(value = "The Id that needs to be deleted",required=true) @PathVariable("id") Long id) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            User user = userService.getUserById(id);
+            User user = userService.deleteUserById(id);
             if (user != null) {
-                userService.deleteUserById(id);
                 return new ResponseEntity<Void>(HttpStatus.OK);
             } else { 
                 return ResponseEntity.notFound().build();
@@ -98,7 +100,7 @@ public class UserApiController implements UserApi {
                 return ResponseEntity.notFound().build();
             }
         }
-        return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<User> loginUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody Body body) {
@@ -123,15 +125,14 @@ public class UserApiController implements UserApi {
     public ResponseEntity<Void> updateUserById(@ApiParam(value = "Id that need to be updated",required=true) @PathVariable("id") Long id,@ApiParam(value = "Updated user object" ,required=true )  @Valid @RequestBody User body) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            User user = userService.getUserById(id);
+            User user = userService.updateUserById(id, body);
             if (user != null) {
-                userService.updateUserById(id, body);
                 return new ResponseEntity<Void>(HttpStatus.OK);
             } else { 
                 return ResponseEntity.notFound().build();
             }
         }
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
 }
