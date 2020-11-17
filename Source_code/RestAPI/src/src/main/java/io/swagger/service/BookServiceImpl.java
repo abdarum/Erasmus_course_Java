@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import io.swagger.model.Book;
+import io.swagger.repository.BookRepository;
 
 @Service
 @Transactional
