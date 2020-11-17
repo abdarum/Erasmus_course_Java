@@ -7,6 +7,8 @@ import io.swagger.model.UserType;
 
 
 public interface UserService {
+    public Void initUserValues();
+    public int countUsers();
     public User createUser(User User);
     public List<User> getAllUsers();
     public User deleteUserByName(String email);

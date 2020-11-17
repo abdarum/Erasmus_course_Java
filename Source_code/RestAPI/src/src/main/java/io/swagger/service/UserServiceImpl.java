@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.threeten.bp.DateTimeUtils;
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import io.swagger.model.User;
 import io.swagger.model.UserType;
@@ -32,6 +33,31 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserTypeRepository userTypeRepository;    
     
+
+	@Override
+    public Void initUserValues(){
+        User admin = new User();
+        admin.setUserTypeId(Long.valueOf(1));
+        admin.setFirstName("Admin");
+        admin.setLastName("Admin");
+        admin.setLastName("admin@admin.com");
+        admin.setPassword("admin");
+        admin.setPhone("888444666");
+        OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
+        admin.setBirthdate(birthdate);
+        admin.setGender("man");
+        admin.setAdress("Studentska 1");
+        admin.setCity("Varna");
+        createUser(admin);
+        return null;
+    }
+    
+    @Override
+    public int countUsers(){
+        List<User> users = getAllUsers();
+        return users.size();
+    }
+
 	@Override
 	public User createUser(User user) {
         OffsetDateTime registrated = OffsetDateTime.now(ZoneId.of("UTC"));

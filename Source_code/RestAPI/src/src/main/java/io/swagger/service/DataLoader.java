@@ -16,5 +16,10 @@ public class DataLoader implements ApplicationRunner {
         if(userService.countUserTypes() == 0){
             userService.initUserTypeValues();
         }
+        
+        if(userService.countUsers() == 0){
+            userService.initUserValues();
+        }
+
     }
 }
