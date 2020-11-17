@@ -19,6 +19,8 @@ import org.threeten.bp.ZoneId;
 
 import io.swagger.model.User;
 import io.swagger.model.UserType;
+import io.swagger.repository.UserRepository;
+import io.swagger.repository.UserTypeRepository;
 
 @Service
 @Transactional
