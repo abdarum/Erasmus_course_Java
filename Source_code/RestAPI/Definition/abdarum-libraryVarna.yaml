@@ -497,9 +497,13 @@ paths:
               $ref: "#/definitions/NotificationForm"
       security:
       - bearerAuth: []
-security:
-  - bearerAuth: []
+      
 
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: api_key
+    in: header
 definitions:
   User:
     type: object
@@ -559,21 +563,9 @@ definitions:
       id:
         type: integer
         format: int64
-      userTypeId:
-        type: integer
-        format: int64
       firstName:
         type: string
       lastName:
-        type: string
-      birthdate:
-        type: string
-        format: date-time
-      gender:
-        type: string
-      adress:
-        type: string
-      city:
         type: string
     xml:
       name: Author

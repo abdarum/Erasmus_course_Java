@@ -1,0 +1,8 @@
+INSERT INTO `borrow_place` (`id`, `name`) VALUES ('1', 'Archive'), ('2', 'Reading room'), ('3', 'Home loan');
+INSERT INTO `borrow_period` (`id`, `name`, `period`) VALUES ('1', '1 week', '7'), ('2', '2 weeks', '14'), ('3', '1 month', '30'), ('4', '3 months', '92'), ('5', '6 months', '183');
+INSERT INTO `user_type` (`id`, `name`, `permissions`) VALUES ('2', 'Librarian', NULL), ('3', 'Reader', NULL), ('1', 'Administrator', NULL);
+INSERT INTO `cover_type` (`id`, `name`) VALUES ('1', 'Paperback'), ('2', 'Hardcover Case Wrap'), ('3', 'Hardcover Dust Jacket');
+INSERT INTO `book_genre` (`id`, `name`) VALUES ('1', 'Fantasy'), ('2', 'Sci-Fi'), ('3', 'Mystery'), ('4', 'Thriller'), ('5', 'Romance'), ('6', 'Westerns'), ('7', 'Dystopian'), ('8', 'Contemporary');
+
+https://www.kaggle.com/jealousleopard/goodreadsbooks
+https://www.kaggle.com/brosen255/goodreads-books

@@ -1,11 +1,21 @@
 package io.swagger.model;
 
 import java.util.Objects;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -17,8 +27,12 @@ import javax.validation.constraints.*;
 
 
 
-
+@Entity
+@Table(name = "bookGenre")
+@JsonRootName("BookGenre")
 public class BookGenre   {
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
   @JsonProperty("id")
   private Long id = null;
 

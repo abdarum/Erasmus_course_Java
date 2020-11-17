@@ -2,11 +2,18 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -19,30 +26,20 @@ import javax.validation.constraints.*;
 
 
 
+@Entity
+@Table(name = "author")
+@JsonRootName("Author")
 public class Author   {
+  @Id
+  @GeneratedValue(strategy=GenerationType.AUTO)
   @JsonProperty("id")
   private Long id = null;
-
-  @JsonProperty("userTypeId")
-  private Long userTypeId = null;
 
   @JsonProperty("firstName")
   private String firstName = null;
 
   @JsonProperty("lastName")
   private String lastName = null;
-
-  @JsonProperty("birthdate")
-  private OffsetDateTime birthdate = null;
-
-  @JsonProperty("gender")
-  private String gender = null;
-
-  @JsonProperty("adress")
-  private String adress = null;
-
-  @JsonProperty("city")
-  private String city = null;
 
   public Author id(Long id) {
     this.id = id;
@@ -62,26 +59,6 @@ public class Author   {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public Author userTypeId(Long userTypeId) {
-    this.userTypeId = userTypeId;
-    return this;
-  }
-
-  /**
-   * Get userTypeId
-   * @return userTypeId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Long getUserTypeId() {
-    return userTypeId;
-  }
-
-  public void setUserTypeId(Long userTypeId) {
-    this.userTypeId = userTypeId;
   }
 
   public Author firstName(String firstName) {
@@ -124,87 +101,6 @@ public class Author   {
     this.lastName = lastName;
   }
 
-  public Author birthdate(OffsetDateTime birthdate) {
-    this.birthdate = birthdate;
-    return this;
-  }
-
-  /**
-   * Get birthdate
-   * @return birthdate
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public OffsetDateTime getBirthdate() {
-    return birthdate;
-  }
-
-  public void setBirthdate(OffsetDateTime birthdate) {
-    this.birthdate = birthdate;
-  }
-
-  public Author gender(String gender) {
-    this.gender = gender;
-    return this;
-  }
-
-  /**
-   * Get gender
-   * @return gender
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getGender() {
-    return gender;
-  }
-
-  public void setGender(String gender) {
-    this.gender = gender;
-  }
-
-  public Author adress(String adress) {
-    this.adress = adress;
-    return this;
-  }
-
-  /**
-   * Get adress
-   * @return adress
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getAdress() {
-    return adress;
-  }
-
-  public void setAdress(String adress) {
-    this.adress = adress;
-  }
-
-  public Author city(String city) {
-    this.city = city;
-    return this;
-  }
-
-  /**
-   * Get city
-   * @return city
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getCity() {
-    return city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -216,18 +112,13 @@ public class Author   {
     }
     Author author = (Author) o;
     return Objects.equals(this.id, author.id) &&
-        Objects.equals(this.userTypeId, author.userTypeId) &&
         Objects.equals(this.firstName, author.firstName) &&
-        Objects.equals(this.lastName, author.lastName) &&
-        Objects.equals(this.birthdate, author.birthdate) &&
-        Objects.equals(this.gender, author.gender) &&
-        Objects.equals(this.adress, author.adress) &&
-        Objects.equals(this.city, author.city);
+        Objects.equals(this.lastName, author.lastName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userTypeId, firstName, lastName, birthdate, gender, adress, city);
+    return Objects.hash(id, firstName, lastName);
   }
 
   @Override
@@ -236,13 +127,8 @@ public class Author   {
     sb.append("class Author {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    userTypeId: ").append(toIndentedString(userTypeId)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
     sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-    sb.append("    birthdate: ").append(toIndentedString(birthdate)).append("\n");
-    sb.append("    gender: ").append(toIndentedString(gender)).append("\n");
-    sb.append("    adress: ").append(toIndentedString(adress)).append("\n");
-    sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("}");
     return sb.toString();
   }
