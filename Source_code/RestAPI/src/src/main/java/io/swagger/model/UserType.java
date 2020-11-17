@@ -38,6 +38,9 @@ public class UserType   {
     return this;
   }
 
+  public UserType(String name){
+    setName(name);
+  }
   /**
    * Get id
    * @return id

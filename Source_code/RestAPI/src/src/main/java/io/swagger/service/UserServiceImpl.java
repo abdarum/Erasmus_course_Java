@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.threeten.bp.DateTimeUtils;
@@ -17,6 +18,7 @@ import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.ZoneId;
 
 import io.swagger.model.User;
+import io.swagger.model.UserType;
 
 @Service
 @Transactional
@@ -106,4 +108,29 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserType getUserTypeById(Long id){
+        Optional<UserType> od = userTypeRepository.findById(id);
+        if(od.isPresent()) return od.get();
+        else return null;
+    }
+
+    @Override
+    public List<UserType> getAllUserTypes(){
+		return userTypeRepository.findAll();
+    }
+
+    @Override
+    public Void initUserTypeValues(){
+        userTypeRepository.save(new UserType("Administrator"));
+        userTypeRepository.save(new UserType("Librarian"));
+        userTypeRepository.save(new UserType("Reader"));
+        return null;
+    }
+
+    @Override
+    public int countUserTypes(){
+        List<UserType> userTypes = getAllUserTypes();
+        return userTypes.size();
+    }
 }
