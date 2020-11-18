@@ -40,11 +40,11 @@ public class UserServiceImpl implements UserService {
         admin.setUserTypeId(Long.valueOf(1));
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
-        admin.setLastName("admin@admin.com");
+        admin.setEmail("admin@admin.com");
         admin.setPassword("admin");
         admin.setPhone("888444666");
-        OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
-        admin.setBirthdate(birthdate);
+        // OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
+        // admin.setBirthdate(birthdate);
         admin.setGender("man");
         admin.setAdress("Studentska 1");
         admin.setCity("Varna");
