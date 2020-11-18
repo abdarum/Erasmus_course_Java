@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         admin.setUserTypeId(Long.valueOf(1));
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
-        admin.setEmail("admin@admin.com");
+        admin.setEmail("admin@lib.com");
         admin.setPassword("admin");
         admin.setPhone("888444666");
         // OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
@@ -49,6 +49,32 @@ public class UserServiceImpl implements UserService {
         admin.setAdress("Studentska 1");
         admin.setCity("Varna");
         createUser(admin);
+        User librarian = new User();
+        librarian.setUserTypeId(Long.valueOf(2));
+        librarian.setFirstName("Librarian");
+        librarian.setLastName("Librarian");
+        librarian.setEmail("librarian@lib.com");
+        librarian.setPassword("librarian");
+        librarian.setPhone("111222333");
+        // OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
+        // librarian.setBirthdate(birthdate);
+        librarian.setGender("woman");
+        librarian.setAdress("Studentska 1");
+        librarian.setCity("Varna");
+        createUser(librarian);
+        User reader = new User();
+        reader.setUserTypeId(Long.valueOf(3));
+        reader.setFirstName("User");
+        reader.setLastName("User");
+        reader.setEmail("reader@lib.com");
+        reader.setPassword("reader");
+        reader.setPhone("333222555");
+        // OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
+        // reader.setBirthdate(birthdate);
+        reader.setGender("man");
+        reader.setAdress("Studentska 1");
+        reader.setCity("Varna");
+        createUser(reader);
         return null;
     }
     
