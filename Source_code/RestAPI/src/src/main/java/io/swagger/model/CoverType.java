@@ -36,6 +36,10 @@ public class CoverType   {
   @JsonProperty("name")
   private String name = null;
 
+  public CoverType(String name) {
+    this.setName(name);
+  }
+  
   public CoverType id(Long id) {
     this.id = id;
     return this;

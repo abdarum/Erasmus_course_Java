@@ -51,6 +51,157 @@ public class BookServiceImpl implements BookService {
     
     @Override
     public Void initBookValues() {
+        Optional<Long> authorId;
+        Optional<Long> bookGenreId;
+        Optional<Long> coverTypeId;
+        Book book;
+        // **************************
+        book = new Book();
+        authorId = authorRepository.getAuthorIdByName("Victoria", "Thompson");
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Mystery");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Paperback");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("Murder on St. Mark's Place");
+        book.setPageCount(277);
+        createBook(book);
+        // **************************
+        book = new Book();
+        authorId = authorRepository.getAuthorIdByName("Stieg", "Larsson");
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Fiction");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Paperback");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("The Girl with the Dragon Tattoo");
+        book.setPageCount(465);
+        createBook(book);
+        // **************************
+        book = new Book();
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Romance");
+        authorId = authorRepository.getAuthorIdByName("Mimi", "Jean Pamfiloff");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Dust Jacket");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("Tailored for Trouble");
+        book.setPageCount(354);
+        createBook(book);
+        // **************************
+        book = new Book();
+        authorId = authorRepository.getAuthorIdByName("José", "Donoso");
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Fiction");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Case Wrap");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("The Obscene Bird of Night");
+        book.setPageCount(438);
+        createBook(book);
+        // **************************
+        book = new Book();
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Fantasy");
+        authorId = authorRepository.getAuthorIdByName("Patricia", "C. Wrede");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Paperback");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("Sorcery & Cecelia: or The Enchanted Chocolate Pot");
+        book.setPageCount(326);
+        createBook(book);
+        // **************************
+        book = new Book();
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Sequential Art");
+        authorId = authorRepository.getAuthorIdByName("Steve", "Niles");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Dust Jacket");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("30 Days of Night, Vol. 1");
+        book.setPageCount(104);
+        createBook(book);
+        // **************************
+        book = new Book();
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Young Adult");
+        authorId = authorRepository.getAuthorIdByName("Jillian", "Dodd");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Case Wrap");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("Stalk Me");
+        book.setPageCount(327);
+        createBook(book);
+        // **************************
+        book = new Book();
+        authorId = authorRepository.getAuthorIdByName("Mary", "Roach");
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Nonfiction");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Dust Jacket");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("Bonk: The Curious Coupling of Science and Sex");
+        book.setPageCount(319);
+        createBook(book);
+        // **************************
+        book = new Book();
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Paranormal");
+        authorId = authorRepository.getAuthorIdByName("Nancy", "Baker");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Case Wrap");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("Kiss of the Vampire");
+        book.setPageCount(278);
+        createBook(book);
+        // **************************
+        book = new Book();
+        bookGenreId = bookGenreRepository.getBookGenreIdByName("Young Adult");
+        authorId = authorRepository.getAuthorIdByName("Simone", "Elkeles");
+        coverTypeId = coverTypeRepository.getCoverTypeIdByName("Paperback");
+        if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        book.setName("Leaving Paradise");
+        book.setPageCount(303);
+        createBook(book);
+        // **************************
+        // book = new Book();
+        // if(authorId.isPresent()) book.setAuthorId(authorId.get());
+        // if(bookGenreId.isPresent()) book.setGenreId(bookGenreId.get());
+        // if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
+        // book.setName("name");
+        // book.setPageCount(100);
+        // createBook(book);
+        // // **************************
+        
+        // authorId = authorRepository.getAuthorIdByName("Victoria", "Thompson");
+        // authorId = authorRepository.getAuthorIdByName("Stieg", "Larsson");
+        // authorId = authorRepository.getAuthorIdByName("Mimi", "Jean Pamfiloff");
+        // authorId = authorRepository.getAuthorIdByName("José", "Donoso");
+        // authorId = authorRepository.getAuthorIdByName("Patricia", "C. Wrede");
+        // authorId = authorRepository.getAuthorIdByName("Steve", "Niles");
+        // authorId = authorRepository.getAuthorIdByName("Jillian", "Dodd");
+        // authorId = authorRepository.getAuthorIdByName("Mary", "Roach");
+        // authorId = authorRepository.getAuthorIdByName("Nancy", "Baker");
+        // authorId = authorRepository.getAuthorIdByName("Simone", "Elkeles");
+
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Fantasy");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Young Adult");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Fiction");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Sci-Fi");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Mystery");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Thriller");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Romance");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Westerns");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Dystopian");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Contemporary");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Nonfiction");
+        // bookGenreId = bookGenreRepository.getBookGenreIdByName("Paranormal");
+
+        // coverTypeId = coverTypeRepository.getCoverTypeIdByName("Paperback");
+        // coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Case Wrap");
+        // coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Dust Jacket");
         return null;
     }
 
@@ -85,21 +236,6 @@ public class BookServiceImpl implements BookService {
         else return null;
     }
 
-	@Override
-    public Book loginBook(String email, String password){
-        // Book tmpBook = getBookByName(email);
-        // if (tmpBook != null){
-        //     if (tmpBook.getPassword().equals(password)) {
-        //         return tmpBook;
-        //     }
-        // }
-        return null;
-    }
-
-	@Override
-    public Void logoutBook(){
-        return null;
-    }
 
 	@Override
     public Book updateBookById(Long id, Book body){
@@ -110,6 +246,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Void initAuthorValues() {
+        authorRepository.save(new Author("Victoria", "Thompson"));
+        authorRepository.save(new Author("Stieg", "Larsson"));
+        authorRepository.save(new Author("Mimi", "Jean Pamfiloff"));
+        authorRepository.save(new Author("José", "Donoso"));
+        authorRepository.save(new Author("Patricia", "C. Wrede"));
+        authorRepository.save(new Author("Steve", "Niles"));
+        authorRepository.save(new Author("Jillian", "Dodd"));
+        authorRepository.save(new Author("Mary", "Roach"));
+        authorRepository.save(new Author("Nancy", "Baker"));
+        authorRepository.save(new Author("Simone", "Elkeles"));
+
         return null;
     }
 
@@ -120,7 +267,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<Author> getAllAuthors(){
+		return authorRepository.findAll();
+    }
+
+    @Override
     public Void initBookGenreValues() {
+        bookGenreRepository.save(new BookGenre("Fantasy"));
+        bookGenreRepository.save(new BookGenre("Fiction"));
+        bookGenreRepository.save(new BookGenre("Sci-Fi"));
+        bookGenreRepository.save(new BookGenre("Mystery"));
+        bookGenreRepository.save(new BookGenre("Thriller"));
+        bookGenreRepository.save(new BookGenre("Romance"));
+        bookGenreRepository.save(new BookGenre("Westerns"));
+        bookGenreRepository.save(new BookGenre("Dystopian"));
+        bookGenreRepository.save(new BookGenre("Contemporary"));
+        bookGenreRepository.save(new BookGenre("Sequential Art"));
+        bookGenreRepository.save(new BookGenre("Young Adult"));
+        bookGenreRepository.save(new BookGenre("Nonfiction"));
+        bookGenreRepository.save(new BookGenre("Paranormal"));
         return null;
     }
 
@@ -131,7 +296,16 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public List<BookGenre> getAllBookGenres(){
+		return bookGenreRepository.findAll();
+    }
+
+    
+    @Override
     public Void initCoverTypeValues() {
+        coverTypeRepository.save(new CoverType("Paperback"));
+        coverTypeRepository.save(new CoverType("Hardcover Case Wrap"));
+        coverTypeRepository.save(new CoverType("Hardcover Dust Jacket"));
         return null;
     }
 
@@ -139,5 +313,9 @@ public class BookServiceImpl implements BookService {
     public int countCoverTypes(){
         List<CoverType> coverTypes = coverTypeRepository.findAll();
         return coverTypes.size();
+    }
+    @Override
+    public List<CoverType> getAllCoverTypes(){
+		return coverTypeRepository.findAll();
     }
 }

@@ -39,6 +39,10 @@ public class BookGenre   {
   @JsonProperty("name")
   private String name = null;
 
+  public BookGenre(String name) {
+    this.setName(name);
+  }
+
   public BookGenre id(Long id) {
     this.id = id;
     return this;
