@@ -39,6 +39,11 @@ public class BorrowPeriod   {
   @JsonProperty("period")
   private Integer period = null;
 
+  public BorrowPeriod(String name, Integer period) {
+    this.setName(name);
+    this.setPeriod(period);
+  }
+
   public BorrowPeriod id(Long id) {
     this.id = id;
     return this;

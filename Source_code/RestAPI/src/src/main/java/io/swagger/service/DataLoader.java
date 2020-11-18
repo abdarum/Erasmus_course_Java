@@ -14,14 +14,19 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private LibraryService libraryService;
+
     public void run(ApplicationArguments args) {
+        // User
         if(userService.countUserTypes() == 0){
             userService.initUserTypeValues();
         }
         if(userService.countUsers() == 0){
             userService.initUserValues();
         }
-
+        
+        // Book
         if(bookService.countAuthors() == 0){
             bookService.initAuthorValues();
         }
@@ -33,6 +38,14 @@ public class DataLoader implements ApplicationRunner {
         }
         if(bookService.countBooks() == 0){
             bookService.initBookValues();
+        }
+        
+        // Library
+        if(libraryService.countBorrowPlaces() == 0){
+            libraryService.initBorrowPlaceValues();
+        }
+        if(libraryService.countBorrowPeriods() == 0){
+            libraryService.initBorrowPeriodValues();
         }
     }
 }

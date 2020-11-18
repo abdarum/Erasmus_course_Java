@@ -20,10 +20,6 @@ import io.swagger.repository.BookGenreRepository;
 import io.swagger.repository.BookRepository;
 import io.swagger.repository.CoverTypeRepository;
 
-// import io.swagger.repository.BorrowPeriodRepository;
-// import io.swagger.repository.BorrowPlaceRepository;
-// import io.swagger.repository.BorrowedRepository;
-
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
@@ -36,15 +32,6 @@ public class BookServiceImpl implements BookService {
     
     @Autowired
     private BookRepository bookRepository;    
-
-    // @Autowired
-    // private BorrowedRepository borrowedRepository;
-    
-    // @Autowired
-    // private BorrowPeriodRepository borrowPeriodRepository;
-
-    // @Autowired
-    // private BorrowPlaceRepository borrowPlaceRepository;
     
     @Autowired
     private CoverTypeRepository coverTypeRepository;

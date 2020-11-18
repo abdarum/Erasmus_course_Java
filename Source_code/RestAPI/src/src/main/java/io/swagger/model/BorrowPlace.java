@@ -36,6 +36,10 @@ public class BorrowPlace   {
   @JsonProperty("name")
   private String name = null;
 
+  public BorrowPlace(String name) {
+    this.setName(name);
+  }
+  
   public BorrowPlace id(Long id) {
     this.id = id;
     return this;
