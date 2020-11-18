@@ -3,10 +3,13 @@ package io.swagger.api;
 import io.swagger.model.Borrowed;
 import io.swagger.model.LibraryStats;
 import io.swagger.model.NotificationForm;
+import io.swagger.service.LibraryService;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -38,6 +41,9 @@ public class LibraryApiController implements LibraryApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private LibraryService libraryService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public LibraryApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -45,8 +51,20 @@ public class LibraryApiController implements LibraryApi {
     }
 
     public ResponseEntity<Void> deleteOrder(@Min(1L)@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId) {
-        String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        // String accept = request.getHeader("Accept");
+        // if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+        //     Borrowed borrowed = libraryService.deleteOrderById(orderId);
+        //     if (borrowed != null) {
+        //         return new ResponseEntity<Void>(HttpStatus.OK);
+        //     } else { 
+        //         return ResponseEntity.notFound().build();
+        //     }
+        // } 
+        // else 
+        // {
+        //     return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        // }
     }
 
     public ResponseEntity<LibraryStats> getLibraryInventory() {
@@ -100,44 +118,44 @@ public class LibraryApiController implements LibraryApi {
 
     public ResponseEntity<Borrowed> getOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of borrow form that needs to be fetched",required=true) @PathVariable("orderId") Long orderId) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Borrowed>(objectMapper.readValue("{  \"periodId\" : 5,  \"placeId\" : 5,  \"borrowedDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"id\" : 0,  \"damageNotes\" : \"damageNotes\",  \"userId\" : 6,  \"bookId\" : 1,  \"returnedDate\" : \"2000-01-23T04:56:07.000+00:00\"}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Borrowed>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            Borrowed borrowed = libraryService.getOrderById(orderId);
+            if (borrowed != null) {
+                return ResponseEntity.ok(borrowed);
+            } else { 
+                return ResponseEntity.notFound().build();
             }
         }
-
-        return new ResponseEntity<Borrowed>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
+    
     }
 
     public ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Borrowed>(objectMapper.readValue("{  \"periodId\" : 5,  \"placeId\" : 5,  \"borrowedDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"id\" : 0,  \"damageNotes\" : \"damageNotes\",  \"userId\" : 6,  \"bookId\" : 1,  \"returnedDate\" : \"2000-01-23T04:56:07.000+00:00\"}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Borrowed>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            Borrowed borrowed = libraryService.createOrder(body);
+            if(borrowed != null){
+                return ResponseEntity.ok(borrowed);
+            } else {
+                return new ResponseEntity<Borrowed>(HttpStatus.FORBIDDEN);
             }
+        } else {
+            return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Borrowed>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<Borrowed> putOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Borrowed>(objectMapper.readValue("{  \"periodId\" : 5,  \"placeId\" : 5,  \"borrowedDate\" : \"2000-01-23T04:56:07.000+00:00\",  \"id\" : 0,  \"damageNotes\" : \"damageNotes\",  \"userId\" : 6,  \"bookId\" : 1,  \"returnedDate\" : \"2000-01-23T04:56:07.000+00:00\"}", Borrowed.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Borrowed>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            Borrowed borrowed = libraryService.updateUserById(orderId, body);
+            if (borrowed != null) {
+                return new ResponseEntity<Borrowed>(HttpStatus.OK);
+            } else { 
+                return ResponseEntity.notFound().build();
             }
         }
-
-        return new ResponseEntity<Borrowed>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
     }
 
 }

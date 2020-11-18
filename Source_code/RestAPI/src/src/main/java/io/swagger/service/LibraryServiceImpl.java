@@ -16,6 +16,7 @@ import io.swagger.model.Book;
 import io.swagger.model.BookGenre;
 import io.swagger.model.BorrowPeriod;
 import io.swagger.model.BorrowPlace;
+import io.swagger.model.Borrowed;
 import io.swagger.model.CoverType;
 import io.swagger.repository.AuthorRepository;
 import io.swagger.repository.BookGenreRepository;
@@ -79,4 +80,36 @@ public class LibraryServiceImpl implements LibraryService {
     public List<BorrowPeriod> getAllBorrowPeriods() {
 		return borrowPeriodRepository.findAll();
     }
+
+    @Override
+    public Borrowed deleteOrderById(Long orderId){
+        Optional<Borrowed> od = borrowedRepository.getOrderById(orderId);
+		if(od.isPresent()){
+            borrowedRepository.deleteOrderById(orderId);
+            return od.get();
+        } 
+        return null;
+    }
+
+    @Override
+	public Borrowed createOrder(Borrowed borrowed){
+        Optional<Borrowed> od = borrowedRepository.getOrderById(borrowed.getId());
+        if(!od.isPresent()) return borrowedRepository.save(borrowed);
+        return null;
+    }
+	@Override
+    public Borrowed getOrderById(Long orderId){
+        Optional<Borrowed> od = borrowedRepository.getOrderById(orderId);
+        if(od.isPresent()) return od.get();
+        else return null;
+    }
+
+	@Override
+    public Borrowed updateUserById(Long orderId, Borrowed body){
+        Optional<Borrowed> od = borrowedRepository.getOrderById(orderId);
+        if(od.isPresent()) return borrowedRepository.save(body);
+        else return null;
+    }
+    
+
 }
