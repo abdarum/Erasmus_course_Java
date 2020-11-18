@@ -2,9 +2,9 @@ package io.swagger.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import io.swagger.model.UserType;
+import io.swagger.model.BorrowPeriod;
 
-public interface BorrowPeriodRepository extends JpaRepository<UserType,Long> {
+public interface BorrowPeriodRepository extends JpaRepository<BorrowPeriod,Long> {
 
 
 }
