@@ -134,8 +134,12 @@ public class UserServiceImpl implements UserService {
 	@Override
     public User updateUserById(Long id, User body){
         Optional<User> od = userRepository.getUserById(id);
-        if(od.isPresent()) return userRepository.save(body);
-        else return null;
+        if(od.isPresent()) {
+            if(body.getId() == null) body.setId(id);
+            return userRepository.save(body);
+        } else {
+            return null;
+        } 
     }
 
 

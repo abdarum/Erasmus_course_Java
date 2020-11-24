@@ -133,11 +133,15 @@ public class LibraryApiController implements LibraryApi {
     public ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            Borrowed borrowed = libraryService.createOrder(body);
-            if(borrowed != null){
-                return ResponseEntity.ok(borrowed);
+            if(libraryService.validateOrder(body)){
+                Borrowed borrowed = libraryService.createOrder(body);
+                if(borrowed != null){
+                    return ResponseEntity.ok(borrowed);
+                } else {
+                    return new ResponseEntity<Borrowed>(HttpStatus.FORBIDDEN);
+                }
             } else {
-                return new ResponseEntity<Borrowed>(HttpStatus.FORBIDDEN);
+                return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
             }
         } else {
             return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
@@ -148,11 +152,15 @@ public class LibraryApiController implements LibraryApi {
     public ResponseEntity<Borrowed> putOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            Borrowed borrowed = libraryService.updateUserById(orderId, body);
-            if (borrowed != null) {
-                return new ResponseEntity<Borrowed>(HttpStatus.OK);
-            } else { 
-                return ResponseEntity.notFound().build();
+            if(libraryService.validateOrder(body)){
+                Borrowed borrowed = libraryService.updateOrderById(orderId, body);
+                if (borrowed != null) {
+                    return new ResponseEntity<Borrowed>(HttpStatus.OK);
+                } else { 
+                    return ResponseEntity.notFound().build();
+                }
+            } else {
+                return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
             }
         }
         return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);

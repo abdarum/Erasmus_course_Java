@@ -16,7 +16,9 @@ public interface LibraryService {
     public List<BorrowPeriod> getAllBorrowPeriods();
 
 	public Borrowed createOrder(Borrowed borrowed);
+    public Boolean validateOrder(Borrowed borrowed);
     public Borrowed deleteOrderById(Long orderId);
     public Borrowed getOrderById(Long orderId);
-    public Borrowed updateUserById(Long orderId, Borrowed body);
+    public Borrowed updateOrderById(Long orderId, Borrowed body);
+
     }

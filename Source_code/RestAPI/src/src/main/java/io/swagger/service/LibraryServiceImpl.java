@@ -39,6 +39,12 @@ public class LibraryServiceImpl implements LibraryService {
     @Autowired
     private BorrowPlaceRepository borrowPlaceRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private BookService bookService;
+
     @Override
     public Void initBorrowPlaceValues() {
         borrowPlaceRepository.save(new BorrowPlace("Archive"));
@@ -94,9 +100,36 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
 	public Borrowed createOrder(Borrowed borrowed){
         Optional<Borrowed> od = borrowedRepository.getOrderById(borrowed.getId());
-        if(!od.isPresent()) return borrowedRepository.save(borrowed);
+        if(!od.isPresent() && validateOrder(borrowed)) return borrowedRepository.save(borrowed);
         return null;
     }
+
+    public Boolean validateOrder(Borrowed borrowed){
+        Boolean orderValid = true;
+        try{
+            if(borrowed.getBorrowedDate() != null){
+                if(borrowed.getReturnedDate() != null){
+                    if (!borrowed.getReturnedDate().isAfter(borrowed.getBorrowedDate())){
+                        orderValid = false; 
+                    }
+                }
+            } else {
+                orderValid = false; 
+            }
+
+            if(userService.getUserById(borrowed.getUserId()) == null){
+                orderValid = false; 
+            }
+            if(bookService.getBookById(borrowed.getBookId()) == null){
+                orderValid = false; 
+            }
+
+            return orderValid;
+        } catch(Exception e) {
+            return null;
+        }
+    }
+
 	@Override
     public Borrowed getOrderById(Long orderId){
         Optional<Borrowed> od = borrowedRepository.getOrderById(orderId);
@@ -105,10 +138,14 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
 	@Override
-    public Borrowed updateUserById(Long orderId, Borrowed body){
+    public Borrowed updateOrderById(Long orderId, Borrowed body){
         Optional<Borrowed> od = borrowedRepository.getOrderById(orderId);
-        if(od.isPresent()) return borrowedRepository.save(body);
-        else return null;
+        if(od.isPresent() && validateOrder(body)) {
+            if(body.getId() == null) body.setId(orderId);
+            return borrowedRepository.save(body);
+        } else {
+            return null;
+        } 
     }
     
 

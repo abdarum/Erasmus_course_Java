@@ -227,7 +227,10 @@ public class BookServiceImpl implements BookService {
 	@Override
     public Book updateBookById(Long id, Book body){
         Optional<Book> od = bookRepository.getBookById(id);
-        if(od.isPresent()) return bookRepository.save(body);
+        if(od.isPresent()) {
+            if(body.getId() == null) body.setId(id);
+            return bookRepository.save(body);
+        }
         return null;
     }
 
