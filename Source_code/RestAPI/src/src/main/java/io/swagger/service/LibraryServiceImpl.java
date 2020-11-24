@@ -3,13 +3,16 @@ package io.swagger.service;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
 
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.threeten.bp.OffsetDateTime;
 
 import io.swagger.model.Author;
 import io.swagger.model.Book;
@@ -69,7 +72,7 @@ public class LibraryServiceImpl implements LibraryService {
     public Void initBorrowPeriodValues() {
         borrowPeriodRepository.save(new BorrowPeriod("1 week", 7));
         borrowPeriodRepository.save(new BorrowPeriod("2 weeks", 14));
-        borrowPeriodRepository.save(new BorrowPeriod("1 month", 30));
+        borrowPeriodRepository.save(new BorrowPeriod("1 month", 31));
         borrowPeriodRepository.save(new BorrowPeriod("3 months", 92));
         borrowPeriodRepository.save(new BorrowPeriod("6 months", 183));
         return null;
@@ -79,12 +82,87 @@ public class LibraryServiceImpl implements LibraryService {
     public int countBorrowPeriods() {
         List<BorrowPeriod> borrowPeriods = getAllBorrowPeriods();
         return borrowPeriods.size();
+    }
 
+    @Override
+    public Integer getValueBorrowPeriodsById(Long id) {
+        Optional<Integer> od = borrowPeriodRepository.getBorrowPeriodValueById(id);
+		if(od.isPresent()){
+            return od.get();
+        } 
+        return null;
     }
 
     @Override
     public List<BorrowPeriod> getAllBorrowPeriods() {
 		return borrowPeriodRepository.findAll();
+    }
+
+    @Override
+    public Void initBorrowedValues() {
+        Borrowed borrowed;
+        // **************************
+        //  ID 51
+        borrowed = new Borrowed();
+        borrowed.setUserId(Long.valueOf(6));
+        borrowed.setBookId(Long.valueOf(34));
+        borrowed.setBorrowedDate(OffsetDateTime.now());
+        borrowed.setPlaceId(Long.valueOf(45));
+        borrowed.setPeriodId(Long.valueOf(47));
+        borrowed.setDamageNotes("");
+        createOrder(borrowed);
+        // **************************
+        //  ID 52
+        borrowed = new Borrowed();
+        borrowed.setUserId(Long.valueOf(6));
+        borrowed.setBookId(Long.valueOf(36));
+        borrowed.setBorrowedDate(OffsetDateTime.now().minusDays(25));
+        borrowed.setReturnedDate(OffsetDateTime.now());
+        borrowed.setPlaceId(Long.valueOf(45));
+        borrowed.setPeriodId(Long.valueOf(47));
+        borrowed.setDamageNotes("Book was burned");
+        createOrder(borrowed);
+        // **************************
+        //  ID 53
+        borrowed = new Borrowed();
+        borrowed.setUserId(Long.valueOf(6));
+        borrowed.setBookId(Long.valueOf(38));
+        borrowed.setBorrowedDate(OffsetDateTime.now().minusDays(45));
+        borrowed.setPlaceId(Long.valueOf(45));
+        borrowed.setPeriodId(Long.valueOf(47));
+        createOrder(borrowed);
+        // **************************
+        //  ID 54
+        borrowed = new Borrowed();
+        borrowed.setUserId(Long.valueOf(6));
+        borrowed.setBookId(Long.valueOf(40));
+        borrowed.setBorrowedDate(OffsetDateTime.now().minusDays(30));
+        borrowed.setPlaceId(Long.valueOf(45));
+        borrowed.setPeriodId(Long.valueOf(48));
+        createOrder(borrowed);
+        // **************************
+        //  ID 55
+        borrowed = new Borrowed();
+        borrowed.setUserId(Long.valueOf(5));
+        borrowed.setBookId(Long.valueOf(33));
+        borrowed.setBorrowedDate(OffsetDateTime.now());
+        borrowed.setPlaceId(Long.valueOf(45));
+        borrowed.setPeriodId(Long.valueOf(47));
+        createOrder(borrowed);
+        // **************************
+        return null;
+
+    }
+
+    @Override
+    public int countBorrowed() {
+        List<Borrowed> borrowedList = getAllBorrowed();
+        return borrowedList.size();
+    }
+
+    @Override
+    public List<Borrowed> getAllBorrowed() {
+		return borrowedRepository.findAll();
     }
 
     @Override
@@ -104,12 +182,13 @@ public class LibraryServiceImpl implements LibraryService {
         return null;
     }
 
+    @Override
     public Boolean validateOrder(Borrowed borrowed){
         Boolean orderValid = true;
         try{
             if(borrowed.getBorrowedDate() != null){
                 if(borrowed.getReturnedDate() != null){
-                    if (!borrowed.getReturnedDate().isAfter(borrowed.getBorrowedDate())){
+                    if (!borrowed.isReturnedDateValid()){
                         orderValid = false; 
                     }
                 }
@@ -148,5 +227,45 @@ public class LibraryServiceImpl implements LibraryService {
         } 
     }
     
+	@Override
+    public List<Borrowed> getAllBorrowedByUser(Long userId){
+        List<Borrowed> borrowedList = new ArrayList<Borrowed>();
+        Borrowed borrowedSearch = new Borrowed();
+        borrowedSearch.setUserId(userId);
+        borrowedList = borrowedRepository.findAll(Example.of(borrowedSearch));
+        return borrowedList;
+    }
+
+    public List<Borrowed> getAllDamagedBorrowedBooksByList(List<Borrowed> receivedBorrowedList){
+        List<Borrowed> borrowedList = new ArrayList<Borrowed>();
+        for(Borrowed borrowed : receivedBorrowedList) {
+            if(borrowed.getDamageNotes() != null && !borrowed.getDamageNotes().equals("")){
+                borrowedList.add(borrowed);
+            }
+        }
+        return borrowedList;
+    }
+
+    @Override
+    public List<Borrowed> getAllCurrentBorrowedBooksByList(List<Borrowed> receivedBorrowedList){
+        List<Borrowed> borrowedList = new ArrayList<Borrowed>();
+        for(Borrowed borrowed : receivedBorrowedList) {
+            if(borrowed.getReturnedDate() == null){
+                borrowedList.add(borrowed);
+            }
+        }
+        return borrowedList;
+    }
+
+    @Override
+    public List<Borrowed> getAllDelayedBorrowedBooksByList(List<Borrowed> receivedBorrowedList){
+        List<Borrowed> borrowedList = new ArrayList<Borrowed>();
+        for(Borrowed borrowed : receivedBorrowedList) {
+            if(borrowed.isReturnDelayed(getValueBorrowPeriodsById(borrowed.getPeriodId()))){
+                borrowedList.add(borrowed);
+            }
+        }
+        return borrowedList;
+    }
 
 }

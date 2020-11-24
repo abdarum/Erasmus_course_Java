@@ -269,5 +269,25 @@ public class Borrowed   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  public Boolean isReturnDelayed(Integer periodDays){
+    if(this.getReturnedDate() != null){
+      if(this.getReturnedDate().isAfter(this.getBorrowedDate().plusDays(periodDays))){
+        return true;
+      }
+    } else {
+      if(OffsetDateTime.now().isAfter(this.getBorrowedDate().plusDays(periodDays))){
+        return true;
+      }   
+    }
+    return false;
+  }
+
+  public Boolean isReturnedDateValid(){
+    if(this.getReturnedDate().isAfter(this.getBorrowedDate())){
+      return true;
+    }
+    return false;
+  }
 }
 

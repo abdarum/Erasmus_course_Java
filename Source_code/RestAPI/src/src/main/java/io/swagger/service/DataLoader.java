@@ -47,5 +47,9 @@ public class DataLoader implements ApplicationRunner {
         if(libraryService.countBorrowPeriods() == 0){
             libraryService.initBorrowPeriodValues();
         }
+
+        if(libraryService.countBorrowed() == 0){
+            libraryService.initBorrowedValues();
+        }
     }
 }

@@ -3,6 +3,7 @@ package io.swagger.api;
 import io.swagger.model.Body;
 import io.swagger.model.User;
 import io.swagger.model.UserStatus;
+import io.swagger.service.LibraryService;
 import io.swagger.service.UserService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,9 @@ public class UserApiController implements UserApi {
 	@Autowired
     private UserService userService;
     
-
+    @Autowired
+    private LibraryService libraryService;
+    
     private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
 
     private final ObjectMapper objectMapper;
@@ -77,6 +80,7 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<UserStatus> getStatsById(@ApiParam(value = "",required=true) @PathVariable("id") Long id) {
+        libraryService.getAllDelayedBorrowedBooksByList( libraryService.getAllBorrowedByUser(Long.valueOf(id)) );
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
