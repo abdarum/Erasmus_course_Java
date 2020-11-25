@@ -1,6 +1,5 @@
 package io.swagger.service;
 
-import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.threeten.bp.DateTimeUtils;
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import io.swagger.model.User;
@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
     public Void initUserValues(){
+        OffsetDateTime birthdate;
         User admin = new User();
         admin.setUserTypeId(Long.valueOf(1));
         admin.setFirstName("Admin");
@@ -43,8 +44,8 @@ public class UserServiceImpl implements UserService {
         admin.setEmail("admin@lib.com");
         admin.setPassword("admin");
         admin.setPhone("888444666");
-        // OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
-        // admin.setBirthdate(birthdate);
+        birthdate = OffsetDateTime.of(1990, 12, 6, 12, 25, 0, 0, ZoneOffset.ofHours(0));
+        admin.setBirthdate(birthdate);
         admin.setGender("man");
         admin.setAdress("Studentska 1");
         admin.setCity("Varna");
@@ -56,8 +57,8 @@ public class UserServiceImpl implements UserService {
         librarian.setEmail("librarian@lib.com");
         librarian.setPassword("librarian");
         librarian.setPhone("111222333");
-        // OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
-        // librarian.setBirthdate(birthdate);
+        birthdate = OffsetDateTime.of(1985, 1, 10, 0, 10, 0, 0, ZoneOffset.ofHours(0));
+        librarian.setBirthdate(birthdate);
         librarian.setGender("woman");
         librarian.setAdress("Studentska 1");
         librarian.setCity("Varna");
@@ -69,8 +70,8 @@ public class UserServiceImpl implements UserService {
         reader.setEmail("reader@lib.com");
         reader.setPassword("reader");
         reader.setPhone("333222555");
-        // OffsetDateTime birthdate = OffsetDateTime.parse("16041990",DateTimeFormatter.ofPattern("ddMMyy"));
-        // reader.setBirthdate(birthdate);
+        birthdate = OffsetDateTime.of(2000, 3, 15, 15, 30, 0, 0, ZoneOffset.ofHours(0));
+        reader.setBirthdate(birthdate);
         reader.setGender("man");
         reader.setAdress("Studentska 1");
         reader.setCity("Varna");
