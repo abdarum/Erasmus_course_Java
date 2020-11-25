@@ -1,6 +1,7 @@
 package io.swagger.api;
 
 import io.swagger.model.Body;
+import io.swagger.model.Borrowed;
 import io.swagger.model.User;
 import io.swagger.model.UserStatus;
 import io.swagger.service.LibraryService;
@@ -80,18 +81,26 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<UserStatus> getStatsById(@ApiParam(value = "",required=true) @PathVariable("id") Long id) {
-        libraryService.getAllDelayedBorrowedBooksByList( libraryService.getAllBorrowedByUser(Long.valueOf(id)) );
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<UserStatus>(objectMapper.readValue("{  \"numberOfCurrentBorrowedBooks\" : 1,  \"numberOfAllBorrowedBooks\" : 0,  \"numberOfAllDamagedBooks\" : 6,  \"numberOfDelayedBooks\" : 5}", UserStatus.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<UserStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            User user = userService.getUserById(id);
+            if (user != null) {
+                List<Borrowed> allBorrowed = libraryService.getAllBorrowedByUser(Long.valueOf(id));
+                List<Borrowed> damagedBorrowed = libraryService.getAllDamagedBorrowedBooksByList( allBorrowed );
+                List<Borrowed> currentBorrowed = libraryService.getAllCurrentBorrowedBooksByList( allBorrowed );
+                List<Borrowed> delayedBorrowed = libraryService.getAllDelayedBorrowedBooksByList( allBorrowed );
+                
+                UserStatus status = new UserStatus();
+                status.setNumberOfAllBorrowedBooks(allBorrowed.size());
+                status.setNumberOfAllDamagedBooks(damagedBorrowed.size());
+                status.setNumberOfCurrentBorrowedBooks(currentBorrowed.size());
+                status.setNumberOfDelayedBooks(delayedBorrowed.size());
+                return ResponseEntity.ok(status);
+            } else { 
+                return ResponseEntity.notFound().build();
             }
         }
-
-        return new ResponseEntity<UserStatus>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<UserStatus>(HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<User> getUserById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id) {
