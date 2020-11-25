@@ -69,6 +69,13 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    public BorrowPlace getBorrowPlaceById(Long id){
+        Optional<BorrowPlace> od = borrowPlaceRepository.getBorrowPlaceById(id);
+        if(od.isPresent()) return od.get();
+        else return null;
+    }
+
+    @Override
     public Void initBorrowPeriodValues() {
         borrowPeriodRepository.save(new BorrowPeriod("1 week", 7));
         borrowPeriodRepository.save(new BorrowPeriod("2 weeks", 14));
@@ -96,6 +103,13 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public List<BorrowPeriod> getAllBorrowPeriods() {
 		return borrowPeriodRepository.findAll();
+    }
+
+    @Override
+    public BorrowPeriod getBorrowPeriodById(Long id){
+        Optional<BorrowPeriod> od = borrowPeriodRepository.getBorrowPeriodById(id);
+        if(od.isPresent()) return od.get();
+        else return null;
     }
 
     @Override
@@ -200,6 +214,12 @@ public class LibraryServiceImpl implements LibraryService {
                 orderValid = false; 
             }
             if(bookService.getBookById(borrowed.getBookId()) == null){
+                orderValid = false; 
+            }
+            if(getBorrowPlaceById(borrowed.getPlaceId()) == null){
+                orderValid = false; 
+            }
+            if(getBorrowPeriodById(borrowed.getPeriodId()) == null){
                 orderValid = false; 
             }
 

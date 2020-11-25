@@ -11,10 +11,12 @@ public interface LibraryService {
     public Void initBorrowPlaceValues();
     public int countBorrowPlaces();
     public List<BorrowPlace> getAllBorrowPlaces();
+    public BorrowPlace getBorrowPlaceById(Long id);
     public Void initBorrowPeriodValues();
     public int countBorrowPeriods();
     public List<BorrowPeriod> getAllBorrowPeriods();
     public Integer getValueBorrowPeriodsById(Long id);
+    public BorrowPeriod getBorrowPeriodById(Long id);
 
     public Void initBorrowedValues();
     public int countBorrowed();
