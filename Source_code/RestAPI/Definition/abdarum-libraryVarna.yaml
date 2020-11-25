@@ -16,6 +16,10 @@ tags:
     description: Everything about your Books
   - name: library
     description: Everything about Library
+host: localhost:8080
+basePath: /
+schemes:
+- https
 paths:
   /user:
     post:
