@@ -11,7 +11,6 @@ import io.swagger.model.NotificationForm;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.http.MediaType;
 import io.swagger.annotations.*;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,32 +27,37 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
 
 @Api(value = "library", description = "the library API")
 @RequestMapping(value = "")
 public interface LibraryApi {
 
-    @ApiOperation(value = "Delete purchase order by ID", nickname = "deleteOrder", notes = "", tags={ "library", })
+    @ApiOperation(value = "Delete purchase order by ID", nickname = "deleteOrder", notes = "", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation"),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access"),
         @ApiResponse(code = 404, message = "Order not found") })
     @RequestMapping(value = "/library/order/{orderId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.DELETE)
-    ResponseEntity<Void> deleteOrder(@Min(1L)@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId);
+    ResponseEntity<Void> deleteOrder(@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 
-    @ApiOperation(value = "Returns library inventories by status", nickname = "getLibraryInventory", notes = "Returns a stats of the library inventory", response = LibraryStats.class, tags={ "library", })
+    @ApiOperation(value = "Returns library inventories by status", nickname = "getLibraryInventory", notes = "Returns a stats of the library inventory", response = LibraryStats.class, authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = LibraryStats.class),
         @ApiResponse(code = 401, message = "Unauthorized, no access") })
     @RequestMapping(value = "/library/inventory",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<LibraryStats> getLibraryInventory();
+    ResponseEntity<LibraryStats> getLibraryInventory(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
     @ApiOperation(value = "Get notyfications", nickname = "notifyBook", notes = "")
     @RequestMapping(value = "/library/notify",
@@ -62,46 +66,58 @@ public interface LibraryApi {
         SseEmitter notifyBook(
 );
 
-    @ApiOperation(value = "Returns notyfications of library", nickname = "getLibraryNotyfications", notes = "Returns notyfications of library", response = NotificationForm.class, responseContainer = "List", tags={ "library", })
+    @ApiOperation(value = "Returns notyfications of library", nickname = "getLibraryNotyfications", notes = "Returns notyfications of library", response = NotificationForm.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = NotificationForm.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "successful operation", response = NotificationForm.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access") })
     @RequestMapping(value = "/library/notyfication",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<List<NotificationForm>> getLibraryNotyfications();
+    ResponseEntity<List<NotificationForm>> getLibraryNotyfications(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 
-    @ApiOperation(value = "Find book order by ID", nickname = "getOrderById", notes = "", response = Borrowed.class, tags={ "library", })
+    @ApiOperation(value = "Find book order by ID", nickname = "getOrderById", notes = "", response = Borrowed.class, authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Borrowed.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access"),
         @ApiResponse(code = 404, message = "Order not found") })
     @RequestMapping(value = "/library/order/{orderId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Borrowed> getOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of borrow form that needs to be fetched",required=true) @PathVariable("orderId") Long orderId);
+    ResponseEntity<Borrowed> getOrderById(@ApiParam(value = "ID of borrow form that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 
-    @ApiOperation(value = "Place an order for a book rent", nickname = "placeOrder", notes = "", response = Borrowed.class, tags={ "library", })
+    @ApiOperation(value = "Place an order for a book rent", nickname = "placeOrder", notes = "", response = Borrowed.class, authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Borrowed.class),
-        @ApiResponse(code = 400, message = "Invalid Order") })
+        @ApiResponse(code = 400, message = "Invalid Order"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access") })
     @RequestMapping(value = "/library/order",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body);
+    ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 
-    @ApiOperation(value = "Find purchase order by ID", nickname = "putOrderById", notes = "", response = Borrowed.class, tags={ "library", })
+    @ApiOperation(value = "Find purchase order by ID", nickname = "putOrderById", notes = "", response = Borrowed.class, authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "successful operation", response = Borrowed.class),
         @ApiResponse(code = 400, message = "Invalid ID supplied"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access"),
         @ApiResponse(code = 404, message = "Order not found") })
     @RequestMapping(value = "/library/order/{orderId}",
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.PUT)
-    ResponseEntity<Borrowed> putOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body);
+    ResponseEntity<Borrowed> putOrderById(@ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 }

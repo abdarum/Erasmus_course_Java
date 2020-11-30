@@ -20,6 +20,7 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import io.swagger.model.User;
 import io.swagger.model.UserType;
+import io.swagger.model.User.StatusEnum;
 import io.swagger.repository.UserRepository;
 import io.swagger.repository.UserTypeRepository;
 
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
         admin.setGender("man");
         admin.setAdress("Studentska 1");
         admin.setCity("Varna");
+        admin.setStatus(StatusEnum.ACTIVE);
         createUser(admin);
         User librarian = new User();
         librarian.setUserTypeId(Long.valueOf(2));
@@ -62,6 +64,7 @@ public class UserServiceImpl implements UserService {
         librarian.setGender("woman");
         librarian.setAdress("Studentska 1");
         librarian.setCity("Varna");
+        librarian.setStatus(StatusEnum.ACTIVE);
         createUser(librarian);
         User reader = new User();
         reader.setUserTypeId(Long.valueOf(3));
@@ -75,6 +78,7 @@ public class UserServiceImpl implements UserService {
         reader.setGender("man");
         reader.setAdress("Studentska 1");
         reader.setCity("Varna");
+        reader.setStatus(StatusEnum.TO_VERYFICATION);
         createUser(reader);
         return null;
     }

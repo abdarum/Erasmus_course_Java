@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.Lob;
+
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import io.swagger.model.Author;
 import io.swagger.model.Book;
 import io.swagger.model.BookGenre;
 import io.swagger.model.CoverType;
+import io.swagger.model.Book.StatusEnum;
 import io.swagger.repository.AuthorRepository;
 import io.swagger.repository.BookGenreRepository;
 import io.swagger.repository.BookRepository;
@@ -52,6 +55,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("Murder on St. Mark's Place");
         book.setPageCount(277);
+        book.setIsbn("9781494514945");
+        book.setSugeredPeriodId(Long.valueOf(46));
+        book.setSugeredPlaceId(Long.valueOf(43));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -63,6 +70,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("The Girl with the Dragon Tattoo");
         book.setPageCount(465);
+        book.setIsbn("9780147523396");
+        book.setSugeredPeriodId(Long.valueOf(47));
+        book.setSugeredPlaceId(Long.valueOf(45));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -74,6 +85,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("Tailored for Trouble");
         book.setPageCount(354);
+        book.setIsbn("9781101967225");
+        book.setSugeredPeriodId(Long.valueOf(47));
+        book.setSugeredPlaceId(Long.valueOf(44));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -85,6 +100,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("The Obscene Bird of Night");
         book.setPageCount(438);
+        book.setIsbn("9780394469164");
+        book.setSugeredPeriodId(Long.valueOf(47));
+        book.setSugeredPlaceId(Long.valueOf(45));
+        book.setStatus(StatusEnum.ARCHIVED);
         createBook(book);
         // **************************
         book = new Book();
@@ -96,6 +115,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("Sorcery & Cecelia: or The Enchanted Chocolate Pot");
         book.setPageCount(326);
+        book.setIsbn("9780152046156");
+        book.setSugeredPeriodId(Long.valueOf(49));
+        book.setSugeredPlaceId(Long.valueOf(45));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -107,6 +130,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("30 Days of Night, Vol. 1");
         book.setPageCount(104);
+        book.setIsbn("9780971977556");
+        book.setSugeredPeriodId(Long.valueOf(47));
+        book.setSugeredPlaceId(Long.valueOf(45));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -118,6 +145,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("Stalk Me");
         book.setPageCount(327);
+        book.setIsbn("9781497412897");
+        book.setSugeredPeriodId(Long.valueOf(46));
+        book.setSugeredPlaceId(Long.valueOf(45));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -129,6 +160,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("Bonk: The Curious Coupling of Science and Sex");
         book.setPageCount(319);
+        book.setIsbn("9781480532939");
+        book.setSugeredPeriodId(Long.valueOf(48));
+        book.setSugeredPlaceId(Long.valueOf(45));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -140,6 +175,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("Kiss of the Vampire");
         book.setPageCount(278);
+        book.setIsbn("9780449149577");
+        book.setSugeredPeriodId(Long.valueOf(47));
+        book.setSugeredPlaceId(Long.valueOf(43));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         book = new Book();
@@ -151,6 +190,10 @@ public class BookServiceImpl implements BookService {
         if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         book.setName("Leaving Paradise");
         book.setPageCount(303);
+        book.setIsbn("9780738710181");
+        book.setSugeredPeriodId(Long.valueOf(47));
+        book.setSugeredPlaceId(Long.valueOf(45));
+        book.setStatus(StatusEnum.IN_USE);
         createBook(book);
         // **************************
         // book = new Book();
@@ -159,6 +202,7 @@ public class BookServiceImpl implements BookService {
         // if(coverTypeId.isPresent()) book.setCoverTypeId(coverTypeId.get());
         // book.setName("name");
         // book.setPageCount(100);
+        // book.setIsbn("0000000");
         // createBook(book);
         // // **************************
         

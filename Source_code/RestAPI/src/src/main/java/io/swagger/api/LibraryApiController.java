@@ -30,7 +30,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
 
 @Controller
 public class LibraryApiController implements LibraryApi {
@@ -50,7 +50,8 @@ public class LibraryApiController implements LibraryApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> deleteOrder(@Min(1L)@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId) {
+    public ResponseEntity<Void> deleteOrder(@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+        String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
         // String accept = request.getHeader("Accept");
         // if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
@@ -67,7 +68,7 @@ public class LibraryApiController implements LibraryApi {
         // }
     }
 
-    public ResponseEntity<LibraryStats> getLibraryInventory() {
+    public ResponseEntity<LibraryStats> getLibraryInventory(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -102,7 +103,8 @@ public class LibraryApiController implements LibraryApi {
        return emitter;
     }
 
-    public ResponseEntity<List<NotificationForm>> getLibraryNotyfications() {
+
+    public ResponseEntity<List<NotificationForm>> getLibraryNotyfications(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
@@ -116,7 +118,7 @@ public class LibraryApiController implements LibraryApi {
         return new ResponseEntity<List<NotificationForm>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Borrowed> getOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of borrow form that needs to be fetched",required=true) @PathVariable("orderId") Long orderId) {
+    public ResponseEntity<Borrowed> getOrderById(@ApiParam(value = "ID of borrow form that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             Borrowed borrowed = libraryService.getOrderById(orderId);
@@ -127,10 +129,10 @@ public class LibraryApiController implements LibraryApi {
             }
         }
         return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
-    
+
     }
 
-    public ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body) {
+    public ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             if(libraryService.validateOrder(body)){
@@ -149,7 +151,7 @@ public class LibraryApiController implements LibraryApi {
 
     }
 
-    public ResponseEntity<Borrowed> putOrderById(@Min(1L) @Max(10L) @ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body) {
+    public ResponseEntity<Borrowed> putOrderById(@ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             if(libraryService.validateOrder(body)){

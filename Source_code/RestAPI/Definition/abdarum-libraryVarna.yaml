@@ -257,7 +257,7 @@ paths:
       parameters:
       - in: body
         name: body
-        description: order placed for purchasing the pet
+        description: order placed for purchasing the book
         required: true
         schema:
           $ref: '#/definitions/Book'
@@ -726,7 +726,7 @@ definitions:
       name:
         type: string
       isbn:
-        type: integer
+        type: string
       authorId:
         type: integer
         format: int64
@@ -746,7 +746,7 @@ definitions:
         format: int64
       status:
         type: string
-        description: Order Status
+        description: Book Status
         enum:
           - in use
           - archived

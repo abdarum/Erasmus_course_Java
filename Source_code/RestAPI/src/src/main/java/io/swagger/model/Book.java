@@ -4,6 +4,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +21,7 @@ import javax.validation.constraints.*;
  * Book
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T16:20:30.954Z")
 
 
 
@@ -38,7 +39,7 @@ public class Book   {
   private String name = null;
 
   @JsonProperty("isbn")
-  private Integer isbn = null;
+  private String isbn = null;
 
   @JsonProperty("authorId")
   private Long authorId = null;
@@ -51,6 +52,46 @@ public class Book   {
 
   @JsonProperty("genreId")
   private Long genreId = null;
+
+  @JsonProperty("sugeredPeriodId")
+  private Long sugeredPeriodId = null;
+
+  @JsonProperty("sugeredPlaceId")
+  private Long sugeredPlaceId = null;
+
+  /**
+   * Book Status
+   */
+  public enum StatusEnum {
+    IN_USE("in use"),
+    
+    ARCHIVED("archived");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static StatusEnum fromValue(String text) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
+  @JsonProperty("status")
+  private StatusEnum status = null;
 
   public Book id(Long id) {
     this.id = id;
@@ -92,7 +133,7 @@ public class Book   {
     this.name = name;
   }
 
-  public Book isbn(Integer isbn) {
+  public Book isbn(String isbn) {
     this.isbn = isbn;
     return this;
   }
@@ -104,11 +145,11 @@ public class Book   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getIsbn() {
+  public String getIsbn() {
     return isbn;
   }
 
-  public void setIsbn(Integer isbn) {
+  public void setIsbn(String isbn) {
     this.isbn = isbn;
   }
 
@@ -192,6 +233,66 @@ public class Book   {
     this.genreId = genreId;
   }
 
+  public Book sugeredPeriodId(Long sugeredPeriodId) {
+    this.sugeredPeriodId = sugeredPeriodId;
+    return this;
+  }
+
+  /**
+   * Get sugeredPeriodId
+   * @return sugeredPeriodId
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getSugeredPeriodId() {
+    return sugeredPeriodId;
+  }
+
+  public void setSugeredPeriodId(Long sugeredPeriodId) {
+    this.sugeredPeriodId = sugeredPeriodId;
+  }
+
+  public Book sugeredPlaceId(Long sugeredPlaceId) {
+    this.sugeredPlaceId = sugeredPlaceId;
+    return this;
+  }
+
+  /**
+   * Get sugeredPlaceId
+   * @return sugeredPlaceId
+  **/
+  @ApiModelProperty(value = "")
+
+
+  public Long getSugeredPlaceId() {
+    return sugeredPlaceId;
+  }
+
+  public void setSugeredPlaceId(Long sugeredPlaceId) {
+    this.sugeredPlaceId = sugeredPlaceId;
+  }
+
+  public Book status(StatusEnum status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Book Status
+   * @return status
+  **/
+  @ApiModelProperty(value = "Book Status")
+
+
+  public StatusEnum getStatus() {
+    return status;
+  }
+
+  public void setStatus(StatusEnum status) {
+    this.status = status;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -208,12 +309,15 @@ public class Book   {
         Objects.equals(this.authorId, book.authorId) &&
         Objects.equals(this.pageCount, book.pageCount) &&
         Objects.equals(this.coverTypeId, book.coverTypeId) &&
-        Objects.equals(this.genreId, book.genreId);
+        Objects.equals(this.genreId, book.genreId) &&
+        Objects.equals(this.sugeredPeriodId, book.sugeredPeriodId) &&
+        Objects.equals(this.sugeredPlaceId, book.sugeredPlaceId) &&
+        Objects.equals(this.status, book.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, isbn, authorId, pageCount, coverTypeId, genreId);
+    return Objects.hash(id, name, isbn, authorId, pageCount, coverTypeId, genreId, sugeredPeriodId, sugeredPlaceId, status);
   }
 
   @Override
@@ -228,6 +332,9 @@ public class Book   {
     sb.append("    pageCount: ").append(toIndentedString(pageCount)).append("\n");
     sb.append("    coverTypeId: ").append(toIndentedString(coverTypeId)).append("\n");
     sb.append("    genreId: ").append(toIndentedString(genreId)).append("\n");
+    sb.append("    sugeredPeriodId: ").append(toIndentedString(sugeredPeriodId)).append("\n");
+    sb.append("    sugeredPlaceId: ").append(toIndentedString(sugeredPlaceId)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

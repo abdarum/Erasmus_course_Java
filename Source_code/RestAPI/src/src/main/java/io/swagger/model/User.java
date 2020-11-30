@@ -25,7 +25,7 @@ import javax.persistence.Table;
  * User
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
 
 
 
@@ -73,14 +73,16 @@ public class User   {
   private String city = null;
 
   /**
-   * Order Status
+   * User Status
    */
   public enum StatusEnum {
     ACTIVE("active"),
     
     SUSPENDED("suspended"),
     
-    INACTIVE("inactive");
+    INACTIVE("inactive"),
+    
+    TO_VERYFICATION("to veryfication");
 
     private String value;
 
@@ -356,10 +358,10 @@ public class User   {
   }
 
   /**
-   * Order Status
+   * User Status
    * @return status
   **/
-  @ApiModelProperty(value = "Order Status")
+  @ApiModelProperty(value = "User Status")
 
 
   public StatusEnum getStatus() {
