@@ -819,6 +819,24 @@ definitions:
         type: object # object in case we have a complex structure, otherwise string, integer, ..., as usual
     xml:
       name: UserStatus
+  Token:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      addDatatime:
+        type: string
+        format: date-time
+      tokenName:
+        type: string
+      userId:
+        type: integer
+        format: int64
+      expireDatatime:
+        type: string
+        format: date-time
+
 externalDocs:
   description: Find out more about Swagger
   url: "http://swagger.io"
