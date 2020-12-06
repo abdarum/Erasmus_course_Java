@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.Entity;
@@ -46,6 +47,13 @@ public class Token   {
 
   @JsonProperty("expireDatatime")
   private OffsetDateTime expireDatatime = null;
+
+  public Token(Long userId){
+    this.addDatatime = OffsetDateTime.now();
+    this.expireDatatime = OffsetDateTime.now().plusMinutes(15);
+    this.userId = userId;
+    this.tokenName = generateTokenName();
+  }
 
   public Token id(Long id) {
     this.id = id;
@@ -194,6 +202,13 @@ public class Token   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public String generateTokenName(){
+    String tokenName = "";
+    tokenName += this.addDatatime.format(DateTimeFormatter.ofPattern("ddMMyyyykkmmssSSS"));
+    tokenName += this.userId;
+    return tokenName;
   }
 }
 

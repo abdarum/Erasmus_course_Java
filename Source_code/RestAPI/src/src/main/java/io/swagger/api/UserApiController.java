@@ -118,13 +118,9 @@ public class UserApiController implements UserApi {
 
     public ResponseEntity<User> loginUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody Body body) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<User>(objectMapper.readValue("{  \"userTypeId\" : 6,  \"lastName\" : \"lastName\",  \"birthdate\" : \"2000-01-23T04:56:07.000+00:00\",  \"gender\" : \"gender\",  \"city\" : \"city\",  \"registrated\" : \"2000-01-23T04:56:07.000+00:00\",  \"adress\" : \"adress\",  \"firstName\" : \"firstName\",  \"password\" : \"password\",  \"phone\" : \"phone\",  \"id\" : 0,  \"email\" : \"email\",  \"status\" : \"active\"}", User.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            // user service find by email and password
+            // if yes create token
         }
 
         return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
