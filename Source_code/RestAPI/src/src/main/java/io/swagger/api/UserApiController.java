@@ -4,8 +4,10 @@ import io.swagger.model.Body;
 import io.swagger.model.Borrowed;
 import io.swagger.model.User;
 import io.swagger.model.UserStatus;
+import io.swagger.model.UserToken;
 import io.swagger.service.LibraryService;
 import io.swagger.service.UserService;
+import io.swagger.service.UserTokenService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +40,9 @@ public class UserApiController implements UserApi {
     
     @Autowired
     private LibraryService libraryService;
-    
+
+    @Autowired
+    private UserTokenService userTokenService;
     private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
 
     private final ObjectMapper objectMapper;
@@ -119,8 +124,14 @@ public class UserApiController implements UserApi {
     public ResponseEntity<User> loginUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody Body body) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            // user service find by email and password
-            // if yes create token
+            User user = userService.loginUser(body.getEmail(), body.getPassword());
+            if (user != null) {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("token", userTokenService.getTokenNameFormUserId(user.getId()));
+                return ResponseEntity.ok().headers(headers).body(user);
+            } else { 
+                return ResponseEntity.notFound().build();
+            }
         }
 
         return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
@@ -128,6 +139,15 @@ public class UserApiController implements UserApi {
 
     public ResponseEntity<Void> logoutUser(@ApiParam(value = "") @Valid @RequestParam(value = "token", required = false) String token) {
         String accept = request.getHeader("Accept");
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            Long userId = userTokenService.getUserIdFormToken(token);
+            if(userId != null){
+                userService.logoutUser(userId);
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            } else { 
+                return ResponseEntity.notFound().build();
+            }
+        }
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 

@@ -18,11 +18,6 @@ public interface UserService {
     public User getUserById(Long id);
     public User updateUserById(Long id, User body);
     public User loginUser(String email, String password);
-    public Void logoutUser();
-
-    public UserType getUserTypeById(Long id);
-    public Void initUserTypeValues();
-    public List<UserType> getAllUserTypes();
-    public int countUserTypes();
+    public Void logoutUser(Long id);
 
 }

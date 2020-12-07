@@ -12,6 +12,9 @@ public class DataLoader implements ApplicationRunner {
     private UserService userService;
 
     @Autowired
+    private UserTypeService userTypeService;
+
+    @Autowired
     private BookService bookService;
 
     @Autowired
@@ -19,8 +22,8 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         // User
-        if(userService.countUserTypes() == 0){
-            userService.initUserTypeValues();
+        if(userTypeService.countUserTypes() == 0){
+            userTypeService.initUserTypeValues();
         }
         if(userService.countUsers() == 0){
             userService.initUserValues();

@@ -1,0 +1,20 @@
+package io.swagger.service;
+import java.util.List;
+
+import io.swagger.model.UserType;
+
+public interface UserTypeService {
+    public UserType getUserTypeById(Long id);
+    public Void initUserTypeValues();
+    public List<UserType> getAllUserTypes();
+    public int countUserTypes();
+
+    public Boolean isModifyAdminPermited(Long typeId);
+    public Boolean isModifyLibrarianPermited(Long typeId);
+    public Boolean isModifyReaderPermited(Long typeId);
+    public Boolean isViewAdminPermited(Long typeId);
+    public Boolean isViewLibrarianPermited(Long typeId);
+    public Boolean isViewReaderPermited(Long typeId);
+    public Boolean isModifyBookPermited(Long typeId);
+    public Boolean isModifyBorrowPermited(Long typeId);
+}

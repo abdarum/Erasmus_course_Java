@@ -28,9 +28,9 @@ import javax.validation.constraints.*;
 
 
 @Entity
-@Table(name = "token")
-@JsonRootName("Token")
-public class Token   {
+@Table(name = "userToken")
+@JsonRootName("UserToken")
+public class UserToken   {
   @Id
   @GeneratedValue(strategy=GenerationType.AUTO)
   @JsonProperty("id")
@@ -48,14 +48,18 @@ public class Token   {
   @JsonProperty("expireDatatime")
   private OffsetDateTime expireDatatime = null;
 
-  public Token(Long userId){
+  public UserToken(){
     this.addDatatime = OffsetDateTime.now();
-    this.expireDatatime = OffsetDateTime.now().plusMinutes(15);
+  }
+
+  public UserToken(Long userId){
+    this.addDatatime = OffsetDateTime.now();
+    extendExpireDatetime();
     this.userId = userId;
     this.tokenName = generateTokenName();
   }
 
-  public Token id(Long id) {
+  public UserToken id(Long id) {
     this.id = id;
     return this;
   }
@@ -75,7 +79,7 @@ public class Token   {
     this.id = id;
   }
 
-  public Token addDatatime(OffsetDateTime addDatatime) {
+  public UserToken addDatatime(OffsetDateTime addDatatime) {
     this.addDatatime = addDatatime;
     return this;
   }
@@ -96,7 +100,7 @@ public class Token   {
     this.addDatatime = addDatatime;
   }
 
-  public Token tokenName(String tokenName) {
+  public UserToken tokenName(String tokenName) {
     this.tokenName = tokenName;
     return this;
   }
@@ -116,7 +120,7 @@ public class Token   {
     this.tokenName = tokenName;
   }
 
-  public Token userId(Long userId) {
+  public UserToken userId(Long userId) {
     this.userId = userId;
     return this;
   }
@@ -136,7 +140,7 @@ public class Token   {
     this.userId = userId;
   }
 
-  public Token expireDatatime(OffsetDateTime expireDatatime) {
+  public UserToken expireDatatime(OffsetDateTime expireDatatime) {
     this.expireDatatime = expireDatatime;
     return this;
   }
@@ -166,7 +170,7 @@ public class Token   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Token token = (Token) o;
+    UserToken token = (UserToken) o;
     return Objects.equals(this.id, token.id) &&
         Objects.equals(this.addDatatime, token.addDatatime) &&
         Objects.equals(this.tokenName, token.tokenName) &&
@@ -209,6 +213,10 @@ public class Token   {
     tokenName += this.addDatatime.format(DateTimeFormatter.ofPattern("ddMMyyyykkmmssSSS"));
     tokenName += this.userId;
     return tokenName;
+  }
+  
+  public void extendExpireDatetime(){
+    this.expireDatatime = OffsetDateTime.now().plusMinutes(15);
   }
 }
 

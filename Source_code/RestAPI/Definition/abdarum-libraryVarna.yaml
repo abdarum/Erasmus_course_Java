@@ -17,9 +17,9 @@ tags:
   - name: library
     description: Everything about Library
 host: localhost:8080
-basePath: /
+# basePath: /
 schemes:
-- https
+- http
 paths:
   /user:
     post:

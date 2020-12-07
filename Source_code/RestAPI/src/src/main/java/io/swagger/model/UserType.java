@@ -38,7 +38,7 @@ public class UserType   {
     return this;
   }
 
-  public UserType(String name){
+  public UserType(String name, String permissions){
     setName(name);
   }
   /**

@@ -19,6 +19,7 @@ import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import io.swagger.model.User;
+import io.swagger.model.UserToken;
 import io.swagger.model.UserType;
 import io.swagger.model.User.StatusEnum;
 import io.swagger.repository.UserRepository;
@@ -30,9 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;    
-
+    
     @Autowired
-    private UserTypeRepository userTypeRepository;    
+    private UserTokenService userTokenService;
     
 
 	@Override
@@ -153,6 +154,7 @@ public class UserServiceImpl implements UserService {
         User tmpUser = getUserByName(email);
         if (tmpUser != null){
             if (tmpUser.getPassword().equals(password)) {
+                userTokenService.createToken(tmpUser.getId());
                 return tmpUser;
             }
         }
@@ -160,7 +162,8 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
-    public Void logoutUser(){
+    public Void logoutUser(Long id){
+        userTokenService.deleteUserTokenByUserId(id);
         return null;
     }
 
@@ -171,29 +174,5 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
-    public UserType getUserTypeById(Long id){
-        Optional<UserType> od = userTypeRepository.findById(id);
-        if(od.isPresent()) return od.get();
-        else return null;
-    }
 
-    @Override
-    public List<UserType> getAllUserTypes(){
-		return userTypeRepository.findAll();
-    }
-
-    @Override
-    public Void initUserTypeValues(){
-        userTypeRepository.save(new UserType("Administrator"));
-        userTypeRepository.save(new UserType("Librarian"));
-        userTypeRepository.save(new UserType("Reader"));
-        return null;
-    }
-
-    @Override
-    public int countUserTypes(){
-        List<UserType> userTypes = getAllUserTypes();
-        return userTypes.size();
-    }
 }
