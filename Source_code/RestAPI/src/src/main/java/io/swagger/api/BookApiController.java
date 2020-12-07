@@ -47,8 +47,11 @@ public class BookApiController implements BookApi {
     public ResponseEntity<Void> addBook(@ApiParam(value = "order placed for purchasing the book" ,required=true )  @Valid @RequestBody Book body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            bookService.createBook(body);
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            if(bookService.isModifyBookPermittedForToken(body, token)){
+                bookService.createBook(body);
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            }
+            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
         } else {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
@@ -72,13 +75,9 @@ public class BookApiController implements BookApi {
 
     public ResponseEntity<List<Book>> findBookByStatus(@ApiParam(value = "Status values that need to be considered for filter", allowableValues = "available, all") @Valid @RequestParam(value = "status", required = false) List<String> status,@ApiParam(value = "Author of the book") @Valid @RequestParam(value = "author", required = false) String author,@ApiParam(value = "Title of the book") @Valid @RequestParam(value = "title", required = false) String title,@ApiParam(value = "Genere of the book") @Valid @RequestParam(value = "genere", required = false) String genere) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<Book>>(objectMapper.readValue("[ {  \"genreId\" : 5,  \"pageCount\" : 1,  \"sugeredPeriodId\" : 2,  \"sugeredPlaceId\" : 7,  \"isbn\" : \"isbn\",  \"name\" : \"name\",  \"coverTypeId\" : 5,  \"id\" : 0,  \"authorId\" : 6,  \"status\" : \"in use\"}, {  \"genreId\" : 5,  \"pageCount\" : 1,  \"sugeredPeriodId\" : 2,  \"sugeredPlaceId\" : 7,  \"isbn\" : \"isbn\",  \"name\" : \"name\",  \"coverTypeId\" : 5,  \"id\" : 0,  \"authorId\" : 6,  \"status\" : \"in use\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<Book>>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            List<Book> books = bookService.findBookByStatus("status", author, title, genere);
+            return ResponseEntity.ok(books);
         }
 
         return new ResponseEntity<List<Book>>(HttpStatus.NOT_IMPLEMENTED);

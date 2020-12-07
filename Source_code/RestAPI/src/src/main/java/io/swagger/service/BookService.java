@@ -27,4 +27,8 @@ public interface BookService {
     public int countCoverTypes();
     public List<CoverType> getAllCoverTypes();
 
+    public List<Book> findBookByStatus(String status, String author, String title, String genere);
+    public Boolean isModifyBookPermittedForToken(Book book, String token);
+
+
 }

@@ -1,5 +1,6 @@
 package io.swagger.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,7 @@ import io.swagger.repository.AuthorRepository;
 import io.swagger.repository.BookGenreRepository;
 import io.swagger.repository.BookRepository;
 import io.swagger.repository.CoverTypeRepository;
+import io.swagger.repository.UserRepository;
 
 @Service
 @Transactional
@@ -39,6 +41,12 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private CoverTypeRepository coverTypeRepository;
     
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserTypeService userTypeService;
+
     @Override
     public Void initBookValues() {
         Optional<Long> authorId;
@@ -352,4 +360,24 @@ public class BookServiceImpl implements BookService {
     public List<CoverType> getAllCoverTypes(){
 		return coverTypeRepository.findAll();
     }
+
+    @Override
+    public List<Book> findBookByStatus(String status, String author, String title, String genere){
+        List<Book> books = new ArrayList<>();
+        Optional<List<Book>> opBooks = bookRepository.findByNameLike(title);
+        if(opBooks.isPresent()) books = opBooks.get();
+        return books;
+    }
+
+    public Boolean isModifyBookPermittedForToken(Book book, String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        if(token != null){
+            return userTypeService.isModifyBookPermited(requestUserTypeId);
+        }
+
+        return false;
+    }
+
 }
