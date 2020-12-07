@@ -8,7 +8,8 @@ public interface UserTypeService {
     public Void initUserTypeValues();
     public List<UserType> getAllUserTypes();
     public int countUserTypes();
-
+    public Long getUserTypeIdByName(String name);
+    
     public Boolean isModifyAdminPermited(Long typeId);
     public Boolean isModifyLibrarianPermited(Long typeId);
     public Boolean isModifyReaderPermited(Long typeId);

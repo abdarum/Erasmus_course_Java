@@ -35,12 +35,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserTokenService userTokenService;
     
+    
+    @Autowired
+    private UserTypeService userTypeService;
 
 	@Override
     public Void initUserValues(){
         OffsetDateTime birthdate;
         User admin = new User();
-        admin.setUserTypeId(Long.valueOf(1));
+        admin.setUserTypeId(userTypeService.getUserTypeIdByName("Administrator"));
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
         admin.setEmail("admin@lib.com");
@@ -54,7 +57,7 @@ public class UserServiceImpl implements UserService {
         admin.setStatus(StatusEnum.ACTIVE);
         createUser(admin);
         User librarian = new User();
-        librarian.setUserTypeId(Long.valueOf(2));
+        librarian.setUserTypeId(userTypeService.getUserTypeIdByName("Librarian"));
         librarian.setFirstName("Librarian");
         librarian.setLastName("Librarian");
         librarian.setEmail("librarian@lib.com");
@@ -68,7 +71,7 @@ public class UserServiceImpl implements UserService {
         librarian.setStatus(StatusEnum.ACTIVE);
         createUser(librarian);
         User reader = new User();
-        reader.setUserTypeId(Long.valueOf(3));
+        reader.setUserTypeId(userTypeService.getUserTypeIdByName("Reader"));
         reader.setFirstName("User");
         reader.setLastName("User");
         reader.setEmail("reader@lib.com");
@@ -173,6 +176,118 @@ public class UserServiceImpl implements UserService {
 		if(od.isPresent()) return userRepository.save(body);
         return null;
     }
+    
+    @Override
+    public Long getUserIdFormToken(String tokenName){
+        return userTokenService.getUserIdFormToken(tokenName);
+    }
 
+    @Override
+    public String getTokenNameFormUser(User user){
+        return userTokenService.getTokenNameFormUserId(user.getId());
+    }
+
+    @Override
+    public User initNewUserAccordingToPermissions(User user, String token){
+        Long requestUserId = getUserIdFormToken(token);
+        Long requestUserTypeId = getUserTypeIdByUserId(requestUserId);
+        if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Reader") &&
+            (token == null || !userTypeService.isModifyReaderPermited(requestUserTypeId))
+        ){
+            user.setStatus(StatusEnum.TO_VERYFICATION);
+        }
+        return user;
+    }
+
+
+
+	@Override
+    public Boolean isModifyPermittedForToken(User user, String token){
+        Long requestUserId = getUserIdFormToken(token);
+        Long requestUserTypeId = getUserTypeIdByUserId(requestUserId);
+
+        if(user.getId() == requestUserId){
+            return true;
+        }
+        
+        if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Reader")){
+            if(token != null){
+                return userTypeService.isModifyReaderPermited(requestUserTypeId);
+            } else {
+                return true;
+            }
+        }
+        if(token != null){
+            if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Administrator")){
+                return userTypeService.isModifyAdminPermited(requestUserTypeId);
+            }
+    
+            if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Librarian")){
+                return userTypeService.isModifyLibrarianPermited(requestUserTypeId);
+            }
+        }
+
+        return false;
+    }
+
+
+	@Override
+    public Boolean isModifyPermittedForToken(Long id, String token){
+        try{
+            User user  = getUserById(id);
+            return isModifyPermittedForToken(user,token);
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Long getUserTypeIdByUserId(Long id){
+        User user = getUserById(id);
+        if(user != null){
+            return user.getUserTypeId();
+        }
+        else return null;
+    }
+
+
+	@Override
+    public Boolean isViewPermittedForToken(User user, String token){
+        Long requestUserId = getUserIdFormToken(token);
+        Long requestUserTypeId = getUserTypeIdByUserId(requestUserId);
+
+        if(user.getId() == requestUserId){
+            return true;
+        }
+
+        if(token != null){
+            if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Reader")){
+                return userTypeService.isViewReaderPermited(requestUserTypeId);
+            }
+            
+            if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Administrator")){
+                return userTypeService.isViewAdminPermited(requestUserTypeId);
+            }
+    
+            if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Librarian")){
+                return userTypeService.isViewLibrarianPermited(requestUserTypeId);
+            }
+        }
+
+        return false;
+    }
+
+
+	@Override
+    public Boolean isViewPermittedForToken(Long id, String token){
+        try{
+            User user  = getUserById(id);
+            return isModifyPermittedForToken(user,token);
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

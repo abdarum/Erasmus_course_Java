@@ -44,6 +44,14 @@ public class UserTypeServiceImpl implements UserTypeService {
     }
 
     @Override
+    public Long getUserTypeIdByName(String name){
+        Optional<Long> od = userTypeRepository.getUserTypeIdByName(name);
+        if(od.isPresent()) return od.get();
+        else return null;
+    }
+
+
+    @Override
     public Boolean isModifyAdminPermited(Long typeId){
         UserType userType = getUserTypeById(typeId);
         if(userType != null){

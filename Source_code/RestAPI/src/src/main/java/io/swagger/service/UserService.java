@@ -20,4 +20,14 @@ public interface UserService {
     public User loginUser(String email, String password);
     public Void logoutUser(Long id);
 
+    public Long getUserIdFormToken(String tokenName);
+    public String getTokenNameFormUser(User user);
+    
+    public User initNewUserAccordingToPermissions(User user, String token);
+    public Long getUserTypeIdByUserId(Long id);
+    public Boolean isModifyPermittedForToken(User user, String token);
+    public Boolean isModifyPermittedForToken(Long id, String token);
+    public Boolean isViewPermittedForToken(User user, String token);
+    public Boolean isViewPermittedForToken(Long id, String token);
+
 }

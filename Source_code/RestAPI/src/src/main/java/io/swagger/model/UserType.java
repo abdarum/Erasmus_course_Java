@@ -38,8 +38,12 @@ public class UserType   {
     return this;
   }
 
+  public UserType(){
+  }
+
   public UserType(String name, String permissions){
     setName(name);
+    setPermissions(permissions);
   }
   /**
    * Get id
