@@ -391,4 +391,21 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    public Boolean isViewBookPermittedForToken(Book book, String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        return true;
+    }
+
+    @Override
+    public Boolean isViewBookPermittedForToken(Long id, String token){
+        try{
+            Book book  = getBookById(id);
+            return isViewBookPermittedForToken(book,token);
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

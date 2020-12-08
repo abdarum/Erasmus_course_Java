@@ -77,7 +77,7 @@ public interface BookApi {
     @RequestMapping(value = "/book/{id}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Book> getBookById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
+    ResponseEntity<Book> getBookById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = false) String token);
 
 
     @ApiOperation(value = "Updated book", nickname = "updateBookById", notes = "This can only be done by the logged in user.", authorizations = {

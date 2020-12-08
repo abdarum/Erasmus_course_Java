@@ -30,6 +30,8 @@ public interface BookService {
     public List<Book> findBookByStatus(String status, String author, String title, String genere);
     public Boolean isModifyBookPermittedForToken(Book book, String token);
     public Boolean isModifyBookPermittedForToken(Long i, String token);
+    public Boolean isViewBookPermittedForToken(Book book, String token);
+    public Boolean isViewBookPermittedForToken(Long i, String token);
 
 
 }

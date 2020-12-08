@@ -52,20 +52,22 @@ public class LibraryApiController implements LibraryApi {
 
     public ResponseEntity<Void> deleteOrder(@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
-        // String accept = request.getHeader("Accept");
-        // if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-        //     Borrowed borrowed = libraryService.deleteOrderById(orderId);
-        //     if (borrowed != null) {
-        //         return new ResponseEntity<Void>(HttpStatus.OK);
-        //     } else { 
-        //         return ResponseEntity.notFound().build();
-        //     }
-        // } 
-        // else 
-        // {
-        //     return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        // }
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            if(libraryService.isModifyBorrowedPermittedForToken(orderId, token)){
+                Borrowed borrowed = libraryService.deleteOrderById(orderId);
+                if (borrowed != null) {
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                } else { 
+                    return ResponseEntity.notFound().build();
+                }
+            } else {
+                return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
+            }
+        } 
+        else 
+        {
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public ResponseEntity<LibraryStats> getLibraryInventory(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
@@ -121,11 +123,15 @@ public class LibraryApiController implements LibraryApi {
     public ResponseEntity<Borrowed> getOrderById(@ApiParam(value = "ID of borrow form that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            Borrowed borrowed = libraryService.getOrderById(orderId);
-            if (borrowed != null) {
-                return ResponseEntity.ok(borrowed);
-            } else { 
-                return ResponseEntity.notFound().build();
+            if(libraryService.isViewBorrowedPermittedForToken(orderId, token)){
+                Borrowed borrowed = libraryService.getOrderById(orderId);
+                if (borrowed != null) {
+                    return ResponseEntity.ok(borrowed);
+                } else { 
+                    return ResponseEntity.notFound().build();
+                }
+            } else {
+                return new ResponseEntity<Borrowed>(HttpStatus.UNAUTHORIZED);
             }
         }
         return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
@@ -135,15 +141,19 @@ public class LibraryApiController implements LibraryApi {
     public ResponseEntity<Borrowed> placeOrder(@ApiParam(value = "order placed for borrow the book" ,required=true )  @Valid @RequestBody Borrowed body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            if(libraryService.validateOrder(body)){
-                Borrowed borrowed = libraryService.createOrder(body);
-                if(borrowed != null){
-                    return ResponseEntity.ok(borrowed);
+            if(libraryService.isNewBorrowedPermittedForToken(body, token)){
+                if(libraryService.validateOrder(body)){
+                    Borrowed borrowed = libraryService.createOrder(body);
+                    if(borrowed != null){
+                        return ResponseEntity.ok(borrowed);
+                    } else {
+                        return new ResponseEntity<Borrowed>(HttpStatus.FORBIDDEN);
+                    }
                 } else {
-                    return new ResponseEntity<Borrowed>(HttpStatus.FORBIDDEN);
+                    return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
                 }
             } else {
-                return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<Borrowed>(HttpStatus.UNAUTHORIZED);
             }
         } else {
             return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
@@ -154,15 +164,19 @@ public class LibraryApiController implements LibraryApi {
     public ResponseEntity<Borrowed> putOrderById(@ApiParam(value = "ID of pet that needs to be fetched",required=true) @PathVariable("orderId") Long orderId,@ApiParam(value = "form ot the borrowed book that needs to update" ,required=true )  @Valid @RequestBody Borrowed body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            if(libraryService.validateOrder(body)){
-                Borrowed borrowed = libraryService.updateOrderById(orderId, body);
-                if (borrowed != null) {
-                    return new ResponseEntity<Borrowed>(HttpStatus.OK);
-                } else { 
-                    return ResponseEntity.notFound().build();
+            if(libraryService.isModifyBorrowedPermittedForToken(body, token)){
+                if(libraryService.validateOrder(body)){
+                    Borrowed borrowed = libraryService.updateOrderById(orderId, body);
+                    if (borrowed != null) {
+                        return new ResponseEntity<Borrowed>(HttpStatus.OK);
+                    } else { 
+                        return ResponseEntity.notFound().build();
+                    }
+                } else {
+                    return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
                 }
             } else {
-                return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<Borrowed>(HttpStatus.UNAUTHORIZED);
             }
         }
         return new ResponseEntity<Borrowed>(HttpStatus.BAD_REQUEST);

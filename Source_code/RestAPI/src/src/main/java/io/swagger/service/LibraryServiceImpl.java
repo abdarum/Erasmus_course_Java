@@ -25,7 +25,7 @@ import io.swagger.repository.AuthorRepository;
 import io.swagger.repository.BookGenreRepository;
 import io.swagger.repository.BookRepository;
 import io.swagger.repository.CoverTypeRepository;
-
+import io.swagger.repository.UserTypeRepository;
 import io.swagger.repository.BorrowPeriodRepository;
 import io.swagger.repository.BorrowPlaceRepository;
 import io.swagger.repository.BorrowedRepository;
@@ -48,6 +48,9 @@ public class LibraryServiceImpl implements LibraryService {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private UserTypeService userTypeService; 
+    
     @Override
     public Void initBorrowPlaceValues() {
         borrowPlaceRepository.save(new BorrowPlace("Archive"));
@@ -286,6 +289,78 @@ public class LibraryServiceImpl implements LibraryService {
             }
         }
         return borrowedList;
+    }
+
+    @Override
+    public Boolean isModifyBorrowedPermittedForToken(Borrowed borrowed, String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        if(token != null && requestUserTypeId != null){
+            return userTypeService.isModifyBorrowPermited(requestUserTypeId);
+        }
+
+        return false;
+    }
+
+
+	@Override
+    public Boolean isModifyBorrowedPermittedForToken(Long id, String token){
+        try{
+            Borrowed borrowed  = getOrderById(id);
+            return isModifyBorrowedPermittedForToken(borrowed,token);
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @Override
+    public Boolean isViewBorrowedPermittedForToken(Borrowed borrowed, String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        // if(token != null && requestUserTypeId != null){
+        //     return userTypeService.isModifyBorrowPermited(requestUserTypeId);
+        // }
+        return true;
+    }
+
+
+	@Override
+    public Boolean isViewBorrowedPermittedForToken(Long id, String token){
+        try{
+            Borrowed borrowed  = getOrderById(id);
+            return isViewBorrowedPermittedForToken(borrowed,token);
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean isNewBorrowedPermittedForToken(Borrowed borrowed, String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        if(token != null && requestUserTypeId != null){
+            return userTypeService.isNewBorrowPermited(requestUserTypeId);
+        }
+
+        return false;
+    }
+
+
+	@Override
+    public Boolean isNewBorrowedPermittedForToken(Long id, String token){
+        try{
+            Borrowed borrowed  = getOrderById(id);
+            return isNewBorrowedPermittedForToken(borrowed,token);
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }

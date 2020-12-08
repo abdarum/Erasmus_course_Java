@@ -44,7 +44,7 @@ public class BookApiController implements BookApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addBook(@ApiParam(value = "order placed for purchasing the book" ,required=true )  @Valid @RequestBody Book body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+    public ResponseEntity<Void> addBook(@ApiParam(value = "order placed for purchasing the book" ,required=true )  @Valid @RequestBody Book body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = false) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             if(bookService.isModifyBookPermittedForToken(body, token)){
@@ -89,12 +89,15 @@ public class BookApiController implements BookApi {
     public ResponseEntity<Book> getBookById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            Book book = bookService.getBookById(id);
-            if (book != null) {
-                return ResponseEntity.ok(book);
-            } else { 
-                return ResponseEntity.notFound().build();
-            }
+            if(bookService.isViewBookPermittedForToken(id, token)){
+                Book book = bookService.getBookById(id);
+                if (book != null) {
+                    return ResponseEntity.ok(book);
+                } else { 
+                    return ResponseEntity.notFound().build();
+                }
+            } 
+            return new ResponseEntity<Book>(HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<Book>(HttpStatus.BAD_REQUEST);
     }
