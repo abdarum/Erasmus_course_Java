@@ -157,6 +157,26 @@ public class Borrowed   {
   public void setReturnedDate(OffsetDateTime returnedDate) {
     this.returnedDate = returnedDate;
   }
+  
+  public Boolean checkReturnDelayed(Integer periodDays){
+    if(this.getReturnedDate() != null){
+      if(this.getReturnedDate().isAfter(this.getBorrowedDate().plusDays(periodDays))){
+        return true;
+      }
+    } else {
+      if(OffsetDateTime.now().isAfter(this.getBorrowedDate().plusDays(periodDays))){
+        return true;
+      }   
+    }
+    return false;
+  }
+
+  public Boolean checkReturnedDateValid(){
+    if(this.getReturnedDate().isAfter(this.getBorrowedDate())){
+      return true;
+    }
+    return false;
+  }
 
   public Borrowed damageNotes(String damageNotes) {
     this.damageNotes = damageNotes;
@@ -271,24 +291,6 @@ public class Borrowed   {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public Boolean isReturnDelayed(Integer periodDays){
-    if(this.getReturnedDate() != null){
-      if(this.getReturnedDate().isAfter(this.getBorrowedDate().plusDays(periodDays))){
-        return true;
-      }
-    } else {
-      if(OffsetDateTime.now().isAfter(this.getBorrowedDate().plusDays(periodDays))){
-        return true;
-      }   
-    }
-    return false;
-  }
 
-  public Boolean isReturnedDateValid(){
-    if(this.getReturnedDate().isAfter(this.getBorrowedDate())){
-      return true;
-    }
-    return false;
-  }
 }
 

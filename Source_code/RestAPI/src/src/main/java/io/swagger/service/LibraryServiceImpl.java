@@ -205,7 +205,7 @@ public class LibraryServiceImpl implements LibraryService {
         try{
             if(borrowed.getBorrowedDate() != null){
                 if(borrowed.getReturnedDate() != null){
-                    if (!borrowed.isReturnedDateValid()){
+                    if (!borrowed.checkReturnedDateValid()){
                         orderValid = false; 
                     }
                 }
@@ -284,7 +284,7 @@ public class LibraryServiceImpl implements LibraryService {
     public List<Borrowed> getAllDelayedBorrowedBooksByList(List<Borrowed> receivedBorrowedList){
         List<Borrowed> borrowedList = new ArrayList<Borrowed>();
         for(Borrowed borrowed : receivedBorrowedList) {
-            if(borrowed.isReturnDelayed(getValueBorrowPeriodsById(borrowed.getPeriodId()))){
+            if(borrowed.checkReturnDelayed(getValueBorrowPeriodsById(borrowed.getPeriodId()))){
                 borrowedList.add(borrowed);
             }
         }
