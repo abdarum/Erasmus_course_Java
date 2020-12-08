@@ -1,0 +1,12 @@
+addBook
+{
+    "name": "klmlkmk",
+    "isbn": "15321351312",
+    "authorId": "10",
+    "pageCount": "100",
+    "coverTypeId": "30",
+    "genreId": "20",
+    "sugeredPeriodId": "46",
+    "sugeredPlaceId": "45",
+    "status": "in use"
+}

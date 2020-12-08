@@ -283,7 +283,7 @@ public class UserServiceImpl implements UserService {
     public Boolean isViewPermittedForToken(Long id, String token){
         try{
             User user  = getUserById(id);
-            return isModifyPermittedForToken(user,token);
+            return isViewPermittedForToken(user,token);
         } catch(Exception e){
             e.printStackTrace();
             return false;

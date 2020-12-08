@@ -60,12 +60,15 @@ public class BookApiController implements BookApi {
     public ResponseEntity<Void> deleteBookById(@ApiParam(value = "The id of the book that needs to be deleted",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            Book book = bookService.deleteBookById(id);
-            if (book != null) {
-                return new ResponseEntity<Void>(HttpStatus.OK);
-            } else { 
-                return ResponseEntity.notFound().build();
+            if(bookService.isModifyBookPermittedForToken(id, token)){
+                Book book = bookService.deleteBookById(id);
+                if (book != null) {
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                } else { 
+                    return ResponseEntity.notFound().build();
+                }
             }
+            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
         } 
         else 
         {
@@ -99,12 +102,15 @@ public class BookApiController implements BookApi {
     public ResponseEntity<Void> updateBookById(@ApiParam(value = "id of book that need to be updated",required=true) @PathVariable("id") Long id,@ApiParam(value = "Updated user object" ,required=true )  @Valid @RequestBody Book body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            Book book = bookService.updateBookById(id, body);
-            if (book != null) {
-                return new ResponseEntity<Void>(HttpStatus.OK);
-            } else { 
-                return ResponseEntity.notFound().build();
+            if(bookService.isModifyBookPermittedForToken(id, token)){
+                Book book = bookService.updateBookById(id, body);
+                if (book != null) {
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                } else { 
+                    return ResponseEntity.notFound().build();
+                }
             }
+            return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
