@@ -68,15 +68,7 @@ paths:
         description: Created user object
         required: true
         schema:
-          type: object
-          properties:
-            email:
-              description: The email for login
-              type: string
-              format: email
-            password:
-              description: The password for login in clear text
-              type: string
+          $ref: "#/definitions/UserLoginBody"
       security:
       - bearerAuth: []
       responses:
@@ -420,13 +412,13 @@ paths:
       security:
         - bearerAuth: []
 
-  /library/inventory:
+  /library/inventory/books:
     get:
       tags:
       - library
-      summary: Returns library inventories by status
+      summary: Returns library books
       description: Returns a stats of the library inventory
-      operationId: getLibraryInventory
+      operationId: getLibraryInventoryBooks
       parameters:
       - name: token
         in: query
@@ -438,12 +430,86 @@ paths:
         200:
           description: successful operation
           schema:
-            $ref: "#/definitions/LibraryStats"
+            $ref: "#/definitions/LibraryBooksReport"
         401:
           description: Unauthorized, no access                
       security:
         - bearerAuth: []
-
+  /library/inventory/users:
+    get:
+      tags:
+      - library
+      summary: Returns library users
+      description: Returns a stats of the library users
+      operationId: getLibraryInventoryUsers
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UserStatusReport"
+        401:
+          description: Unauthorized, no access                
+      security:
+        - bearerAuth: []
+  /library/inventory/submitted:
+    get:
+      tags:
+      - library
+      summary: Returns library submitted users
+      description: Returns a stats of the library submitted users
+      operationId: getLibraryInventorySubmittedUsers
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SubmitUserReport"
+        401:
+          description: Unauthorized, no access                
+      security:
+        - bearerAuth: []
+  /library/inventory/userrating:
+    get:
+      tags:
+      - library
+      summary: Returns library users rating
+      description: Returns a stats of the library users rating
+      operationId: getLibraryInventoryUsersRating
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UsersRatingReport"
+        401:
+          description: Unauthorized, no access                
+      security:
+        - bearerAuth: []
   /library/order:
     post:
       tags:
@@ -614,6 +680,16 @@ securityDefinitions:
     name: api_key
     in: header
 definitions:
+  UserLoginBody:
+    type: object
+    properties:
+      email:
+        description: The email for login
+        type: string
+        format: email
+      password:
+        description: The password for login in clear text
+        type: string
   User:
     type: object
     properties:
@@ -667,6 +743,57 @@ definitions:
         type: string
     xml:
       name: UserType
+  SubmitUserReport:
+    allOf:
+      - $ref: '#/definitions/User'
+      - type: object
+        properties:
+          userTypeName:
+            type: string
+  UserStatusReport:
+    allOf:
+      - $ref: '#/definitions/User'
+      - $ref: '#/definitions/UserStatus'
+      - type: object
+        properties:
+          userTypeName:
+            type: string
+          currentBorrowed:
+            type: array
+            items:
+              type: object
+              properties:
+                bookId:
+                  type: integer
+                  format: int64
+                bookName:
+                  type: string
+          
+  UsersRatingReport:
+    allOf:
+      - type: object
+        properties:
+          loyal:
+            type: array
+            items:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int64
+                userName:
+                  type: string
+          disloyal:
+            type: array
+            items:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int64
+                userName:
+                  type: string
+
   Author:
     type: object
     properties:
@@ -748,10 +875,29 @@ definitions:
         type: string
         description: Book Status
         enum:
+          - available
           - in use
           - archived
     xml:
       name: Book
+  BookReport:
+    allOf:
+      - $ref: '#/definitions/Book'
+      - type: object
+        properties:
+          authorTypeName:
+            type: string
+          coverTypeName:
+            type: string
+          genreName:
+            type: string
+          sugeredPeriodName:
+            type: string
+          sugeredPlaceName:
+            type: string
+          statusName:
+            type: string
+
   BookGenre:
     type: object
     properties:
@@ -784,15 +930,19 @@ definitions:
         type: string
     xml:
       name: BorrowPlace
-  LibraryStats:
+  LibraryBooksReport:
     type: object
     properties:
       numberOfBooks:
         type: integer
       numberOfAvailableBooks:
         type: integer
+      books:
+        type: array
+        items:
+          $ref: '#/definitions/BookReport'
     xml:
-      name: LibraryStats
+      name: LibraryBooksReport
   UserStatus:
     type: object
     properties:
@@ -819,7 +969,7 @@ definitions:
         type: object # object in case we have a complex structure, otherwise string, integer, ..., as usual
     xml:
       name: UserStatus
-  Token:
+  UserToken:
     type: object
     properties:
       id:

@@ -25,7 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.time.LocalDateTime;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
+
+
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
 @Controller
 public class BookApiController implements BookApi {
@@ -44,7 +46,7 @@ public class BookApiController implements BookApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addBook(@ApiParam(value = "order placed for purchasing the book" ,required=true )  @Valid @RequestBody Book body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = false) String token) {
+    public ResponseEntity<Void> addBook(@ApiParam(value = "order placed for purchasing the book" ,required=true )  @Valid @RequestBody Book body,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             if(bookService.isModifyBookPermittedForToken(body, token)){
@@ -86,7 +88,7 @@ public class BookApiController implements BookApi {
         return new ResponseEntity<List<Book>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Book> getBookById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+    public ResponseEntity<Book> getBookById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id,@ApiParam(value = "") @Valid @RequestParam(value = "token", required = false) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             if(bookService.isViewBookPermittedForToken(id, token)){

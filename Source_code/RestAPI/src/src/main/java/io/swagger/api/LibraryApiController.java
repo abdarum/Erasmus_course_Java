@@ -1,8 +1,12 @@
 package io.swagger.api;
 
 import io.swagger.model.Borrowed;
-import io.swagger.model.LibraryStats;
+import io.swagger.model.LibraryBooksReport;
 import io.swagger.model.NotificationForm;
+import io.swagger.model.SubmitUserReport;
+import io.swagger.model.UserStatusReport;
+import io.swagger.model.UsersRatingReport;
+
 import io.swagger.service.LibraryService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +34,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
 @Controller
 public class LibraryApiController implements LibraryApi {
@@ -70,18 +74,60 @@ public class LibraryApiController implements LibraryApi {
         }
     }
 
-    public ResponseEntity<LibraryStats> getLibraryInventory(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+    public ResponseEntity<LibraryBooksReport> getLibraryInventoryBooks(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<LibraryStats>(objectMapper.readValue("{  \"numberOfAvailableBooks\" : 6,  \"numberOfBooks\" : 0}", LibraryStats.class), HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<LibraryBooksReport>(objectMapper.readValue("{  \"numberOfAvailableBooks\" : 6,  \"books\" : [ \"\", \"\" ],  \"numberOfBooks\" : 0}", LibraryBooksReport.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<LibraryStats>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<LibraryBooksReport>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<LibraryStats>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<LibraryBooksReport>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<List<SubmitUserReport>> getLibraryInventorySubmittedUsers(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<List<SubmitUserReport>>(objectMapper.readValue("[ \"\", \"\" ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<List<SubmitUserReport>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<List<SubmitUserReport>>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<List<UserStatusReport>> getLibraryInventoryUsers(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<List<UserStatusReport>>(objectMapper.readValue("[ \"\", \"\" ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<List<UserStatusReport>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<List<UserStatusReport>>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    public ResponseEntity<List<UsersRatingReport>> getLibraryInventoryUsersRating(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<List<UsersRatingReport>>(objectMapper.readValue("[ \"\", \"\" ]", List.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<List<UsersRatingReport>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<List<UsersRatingReport>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public SseEmitter notifyBook()

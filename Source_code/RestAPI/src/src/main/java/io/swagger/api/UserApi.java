@@ -5,8 +5,8 @@
  */
 package io.swagger.api;
 
-import io.swagger.model.Body;
 import io.swagger.model.User;
+import io.swagger.model.UserLoginBody;
 import io.swagger.model.UserStatus;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
 @Api(value = "user", description = "the user API")
 @RequestMapping(value = "")
@@ -95,7 +95,7 @@ public interface UserApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<User> loginUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody Body body);
+    ResponseEntity<User> loginUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody UserLoginBody body);
 
 
     @ApiOperation(value = "Logs out current logged in user session", nickname = "logoutUser", notes = "", authorizations = {

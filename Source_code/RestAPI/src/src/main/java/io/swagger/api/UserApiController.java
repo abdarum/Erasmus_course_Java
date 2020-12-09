@@ -1,8 +1,9 @@
 package io.swagger.api;
 
-import io.swagger.model.Body;
+
 import io.swagger.model.Borrowed;
 import io.swagger.model.User;
+import io.swagger.model.UserLoginBody;
 import io.swagger.model.UserStatus;
 import io.swagger.model.UserToken;
 import io.swagger.model.UserType;
@@ -32,7 +33,7 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
 @Controller
 public class UserApiController implements UserApi {
@@ -133,7 +134,7 @@ public class UserApiController implements UserApi {
         return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<User> loginUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody Body body) {
+    public ResponseEntity<User> loginUser(@ApiParam(value = "Created user object" ,required=true )  @Valid @RequestBody UserLoginBody body) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
             User user = userService.loginUser(body.getEmail(), body.getPassword());

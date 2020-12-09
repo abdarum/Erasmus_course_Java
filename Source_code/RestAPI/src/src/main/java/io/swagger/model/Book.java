@@ -21,7 +21,7 @@ import javax.validation.constraints.*;
  * Book
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T16:20:30.954Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
 
 
@@ -63,6 +63,8 @@ public class Book   {
    * Book Status
    */
   public enum StatusEnum {
+    AVAILABLE("available"),
+    
     IN_USE("in use"),
     
     ARCHIVED("archived");

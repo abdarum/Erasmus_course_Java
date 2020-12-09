@@ -6,10 +6,13 @@
 package io.swagger.api;
 
 import io.swagger.model.Borrowed;
-import io.swagger.model.LibraryStats;
+import io.swagger.model.LibraryBooksReport;
 import io.swagger.model.NotificationForm;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.springframework.http.MediaType;
+import io.swagger.model.SubmitUserReport;
+import io.swagger.model.UserStatusReport;
+import io.swagger.model.UsersRatingReport;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +30,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-30T15:30:33.697Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
 @Api(value = "library", description = "the library API")
 @RequestMapping(value = "")
@@ -48,16 +51,52 @@ public interface LibraryApi {
     ResponseEntity<Void> deleteOrder(@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 
-    @ApiOperation(value = "Returns library inventories by status", nickname = "getLibraryInventory", notes = "Returns a stats of the library inventory", response = LibraryStats.class, authorizations = {
+    @ApiOperation(value = "Returns library books", nickname = "getLibraryInventoryBooks", notes = "Returns a stats of the library inventory", response = LibraryBooksReport.class, authorizations = {
         @Authorization(value = "bearerAuth")
     }, tags={ "library", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "successful operation", response = LibraryStats.class),
+        @ApiResponse(code = 200, message = "successful operation", response = LibraryBooksReport.class),
         @ApiResponse(code = 401, message = "Unauthorized, no access") })
-    @RequestMapping(value = "/library/inventory",
+    @RequestMapping(value = "/library/inventory/books",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<LibraryStats> getLibraryInventory(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
+    ResponseEntity<LibraryBooksReport> getLibraryInventoryBooks(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
+
+
+    @ApiOperation(value = "Returns library submitted users", nickname = "getLibraryInventorySubmittedUsers", notes = "Returns a stats of the library submitted users", response = SubmitUserReport.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = SubmitUserReport.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access") })
+    @RequestMapping(value = "/library/inventory/submitted",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<SubmitUserReport>> getLibraryInventorySubmittedUsers(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
+
+
+    @ApiOperation(value = "Returns library users", nickname = "getLibraryInventoryUsers", notes = "Returns a stats of the library users", response = UserStatusReport.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = UserStatusReport.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access") })
+    @RequestMapping(value = "/library/inventory/users",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<UserStatusReport>> getLibraryInventoryUsers(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
+
+
+    @ApiOperation(value = "Returns library users rating", nickname = "getLibraryInventoryUsersRating", notes = "Returns a stats of the library users rating", response = UsersRatingReport.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = UsersRatingReport.class, responseContainer = "List"),
+        @ApiResponse(code = 401, message = "Unauthorized, no access") })
+    @RequestMapping(value = "/library/inventory/userrating",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<UsersRatingReport>> getLibraryInventoryUsersRating(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
     @ApiOperation(value = "Get notyfications", nickname = "notifyBook", notes = "")
     @RequestMapping(value = "/library/notify",

@@ -5,27 +5,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BookReport;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * LibraryStats
+ * LibraryBooksReport
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-11-15T16:11:11.651Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
 
 
 
-public class LibraryStats   {
+public class LibraryBooksReport   {
   @JsonProperty("numberOfBooks")
   private Integer numberOfBooks = null;
 
   @JsonProperty("numberOfAvailableBooks")
   private Integer numberOfAvailableBooks = null;
 
-  public LibraryStats numberOfBooks(Integer numberOfBooks) {
+  @JsonProperty("books")
+  @Valid
+  private List<BookReport> books = null;
+
+  public LibraryBooksReport numberOfBooks(Integer numberOfBooks) {
     this.numberOfBooks = numberOfBooks;
     return this;
   }
@@ -45,7 +52,7 @@ public class LibraryStats   {
     this.numberOfBooks = numberOfBooks;
   }
 
-  public LibraryStats numberOfAvailableBooks(Integer numberOfAvailableBooks) {
+  public LibraryBooksReport numberOfAvailableBooks(Integer numberOfAvailableBooks) {
     this.numberOfAvailableBooks = numberOfAvailableBooks;
     return this;
   }
@@ -65,6 +72,35 @@ public class LibraryStats   {
     this.numberOfAvailableBooks = numberOfAvailableBooks;
   }
 
+  public LibraryBooksReport books(List<BookReport> books) {
+    this.books = books;
+    return this;
+  }
+
+  public LibraryBooksReport addBooksItem(BookReport booksItem) {
+    if (this.books == null) {
+      this.books = new ArrayList<BookReport>();
+    }
+    this.books.add(booksItem);
+    return this;
+  }
+
+  /**
+   * Get books
+   * @return books
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public List<BookReport> getBooks() {
+    return books;
+  }
+
+  public void setBooks(List<BookReport> books) {
+    this.books = books;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -74,23 +110,25 @@ public class LibraryStats   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    LibraryStats libraryStats = (LibraryStats) o;
-    return Objects.equals(this.numberOfBooks, libraryStats.numberOfBooks) &&
-        Objects.equals(this.numberOfAvailableBooks, libraryStats.numberOfAvailableBooks);
+    LibraryBooksReport libraryBooksReport = (LibraryBooksReport) o;
+    return Objects.equals(this.numberOfBooks, libraryBooksReport.numberOfBooks) &&
+        Objects.equals(this.numberOfAvailableBooks, libraryBooksReport.numberOfAvailableBooks) &&
+        Objects.equals(this.books, libraryBooksReport.books);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(numberOfBooks, numberOfAvailableBooks);
+    return Objects.hash(numberOfBooks, numberOfAvailableBooks, books);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class LibraryStats {\n");
+    sb.append("class LibraryBooksReport {\n");
     
     sb.append("    numberOfBooks: ").append(toIndentedString(numberOfBooks)).append("\n");
     sb.append("    numberOfAvailableBooks: ").append(toIndentedString(numberOfAvailableBooks)).append("\n");
+    sb.append("    books: ").append(toIndentedString(books)).append("\n");
     sb.append("}");
     return sb.toString();
   }
