@@ -6,6 +6,7 @@ import io.swagger.model.UserToken;
 public interface UserTokenService {
     public UserToken createToken(UserToken token);
     public UserToken createToken(Long userId);
+    public UserToken createToken(Long userId, String tokenName);
     public UserToken deleteUserTokenByUserId(Long userId);
 
     public Long getUserIdFormToken(String tokenName);

@@ -8,6 +8,10 @@ import org.springframework.data.jpa.repository.Query;
 import io.swagger.model.Author;
 
 public interface AuthorRepository extends JpaRepository<Author,Long> {
+
+    @Query("SELECT d FROM Author d WHERE d.id = ?1")
+    Optional<Author> getAuthorById(Long id);
+
 	@Query("SELECT d.id FROM Author d WHERE d.firstName=?1 AND d.lastName=?2")
     Optional<Long> getAuthorIdByName(String firstName, String lastName);
 

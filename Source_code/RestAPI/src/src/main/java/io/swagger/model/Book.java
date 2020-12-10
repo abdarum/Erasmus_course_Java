@@ -351,5 +351,22 @@ public class Book   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  public Book(){
+    
+  }
+
+  public Book(Book book){
+    id = book.getId();
+    name = book.getName();
+    isbn = book.getIsbn();
+    authorId = book.getAuthorId();
+    pageCount = getPageCount();
+    coverTypeId = getCoverTypeId();
+    genreId = getGenreId();
+    sugeredPeriodId = book.getSugeredPeriodId();
+    sugeredPlaceId = book.getSugeredPlaceId();
+    status = book.getStatus();
+  }
 }
 

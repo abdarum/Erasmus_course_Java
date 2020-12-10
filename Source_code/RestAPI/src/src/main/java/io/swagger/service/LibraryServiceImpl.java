@@ -17,10 +17,13 @@ import org.threeten.bp.OffsetDateTime;
 import io.swagger.model.Author;
 import io.swagger.model.Book;
 import io.swagger.model.BookGenre;
+import io.swagger.model.BookReport;
 import io.swagger.model.BorrowPeriod;
 import io.swagger.model.BorrowPlace;
 import io.swagger.model.Borrowed;
 import io.swagger.model.CoverType;
+import io.swagger.model.LibraryBooksReport;
+import io.swagger.model.Book.StatusEnum;
 import io.swagger.repository.AuthorRepository;
 import io.swagger.repository.BookGenreRepository;
 import io.swagger.repository.BookRepository;
@@ -79,6 +82,17 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    public String getBorrowPlaceNameById(Long id){
+        Optional<BorrowPlace> od = borrowPlaceRepository.getBorrowPlaceById(id);
+        String returnString = null;
+        if(od.isPresent()){
+            returnString = od.get().getName();
+        }
+        if(returnString != null) return returnString;
+        else return null;
+    }
+
+    @Override
     public Void initBorrowPeriodValues() {
         borrowPeriodRepository.save(new BorrowPeriod("1 week", 7));
         borrowPeriodRepository.save(new BorrowPeriod("2 weeks", 14));
@@ -112,6 +126,17 @@ public class LibraryServiceImpl implements LibraryService {
     public BorrowPeriod getBorrowPeriodById(Long id){
         Optional<BorrowPeriod> od = borrowPeriodRepository.getBorrowPeriodById(id);
         if(od.isPresent()) return od.get();
+        else return null;
+    }
+
+    @Override
+    public String getBorrowPeriodNameById(Long id){
+        Optional<BorrowPeriod> od = borrowPeriodRepository.getBorrowPeriodById(id);
+        String returnString = null;
+        if(od.isPresent()){
+            returnString = od.get().getName();
+        }
+        if(returnString != null) return returnString;
         else return null;
     }
 
@@ -195,7 +220,13 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
 	public Borrowed createOrder(Borrowed borrowed){
         Optional<Borrowed> od = borrowedRepository.getOrderById(borrowed.getId());
-        if(!od.isPresent() && validateOrder(borrowed)) return borrowedRepository.save(borrowed);
+        if(!od.isPresent() && validateOrder(borrowed)){
+            Borrowed borrowedInRepository = borrowedRepository.save(borrowed);
+            if(borrowed.getReturnedDate() == null){
+                bookService.updateBookStatus(borrowedInRepository.getBookId(), StatusEnum.IN_USE);
+            }
+            return borrowedInRepository;
+        } 
         return null;
     }
 
@@ -243,7 +274,10 @@ public class LibraryServiceImpl implements LibraryService {
     public Borrowed updateOrderById(Long orderId, Borrowed body){
         Optional<Borrowed> od = borrowedRepository.getOrderById(orderId);
         if(od.isPresent() && validateOrder(body)) {
-            if(body.getId() == null) body.setId(orderId);
+            if(body.getId() == null) 
+                body.setId(orderId);
+            if(od.get().getReturnedDate() == null && body.getReturnedDate() != null) 
+                bookService.updateBookStatus(body.getBookId(), StatusEnum.AVAILABLE);
             return borrowedRepository.save(body);
         } else {
             return null;
@@ -361,6 +395,39 @@ public class LibraryServiceImpl implements LibraryService {
             e.printStackTrace();
             return false;
         }
+    }
+
+	@Override
+    public Boolean isViewLibraryReportPermittedForToken(String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        if(token != null && requestUserTypeId != null){
+            return userTypeService.isViewLibraryReportPermited(requestUserTypeId);
+        }
+
+        return false;
+    }
+
+
+	@Override
+    public LibraryBooksReport getLibraryInventoryBooks(){
+        LibraryBooksReport booksReport = new LibraryBooksReport();
+        List<Book> availableBooks = bookService.getAllAvailableBooks();
+        booksReport.setNumberOfAvailableBooks(availableBooks.size());
+        booksReport.setNumberOfBooks(bookService.countBooks());
+        for(Book book: availableBooks){
+            BookReport bookReport = new BookReport(book);
+            System.out.println(book.toString());
+            bookReport.setAuthorTypeName(bookService.getAuthorNameById(book.getAuthorId()));
+            bookReport.setCoverTypeName(bookService.getCoverTypeNameById(book.getCoverTypeId()));
+            bookReport.setGenreName(bookService.getBookGenreNameById(book.getGenreId()));
+            bookReport.setSugeredPeriodName(this.getBorrowPeriodNameById(book.getSugeredPeriodId()));
+            bookReport.setSugeredPlaceName(this.getBorrowPlaceNameById(book.getSugeredPlaceId()));
+            bookReport.setStatusName(book.getStatus().name());
+            booksReport.addBooksItem(bookReport);
+        }
+        return booksReport;       
     }
 
 }

@@ -11,6 +11,7 @@ import javax.persistence.Lob;
 
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +67,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9781494514945");
         book.setSugeredPeriodId(Long.valueOf(46));
         book.setSugeredPlaceId(Long.valueOf(43));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -81,7 +82,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9780147523396");
         book.setSugeredPeriodId(Long.valueOf(47));
         book.setSugeredPlaceId(Long.valueOf(45));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -96,7 +97,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9781101967225");
         book.setSugeredPeriodId(Long.valueOf(47));
         book.setSugeredPlaceId(Long.valueOf(44));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -126,7 +127,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9780152046156");
         book.setSugeredPeriodId(Long.valueOf(49));
         book.setSugeredPlaceId(Long.valueOf(45));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -141,7 +142,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9780971977556");
         book.setSugeredPeriodId(Long.valueOf(47));
         book.setSugeredPlaceId(Long.valueOf(45));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -156,7 +157,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9781497412897");
         book.setSugeredPeriodId(Long.valueOf(46));
         book.setSugeredPlaceId(Long.valueOf(45));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -171,7 +172,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9781480532939");
         book.setSugeredPeriodId(Long.valueOf(48));
         book.setSugeredPlaceId(Long.valueOf(45));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -186,7 +187,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9780449149577");
         book.setSugeredPeriodId(Long.valueOf(47));
         book.setSugeredPlaceId(Long.valueOf(43));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         book = new Book();
@@ -201,7 +202,7 @@ public class BookServiceImpl implements BookService {
         book.setIsbn("9780738710181");
         book.setSugeredPeriodId(Long.valueOf(47));
         book.setSugeredPlaceId(Long.valueOf(45));
-        book.setStatus(StatusEnum.IN_USE);
+        book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
         // **************************
         // book = new Book();
@@ -250,6 +251,12 @@ public class BookServiceImpl implements BookService {
         return books.size();
     }
 
+    @Override
+    public int countAvailableBooks(){
+        List<Book> books = getAllAvailableBooks();
+        return books.size();
+    }
+
 	@Override
 	public Book createBook(Book book) {
         return bookRepository.save(book);
@@ -287,6 +294,31 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Boolean updateBookStatus(Long id, StatusEnum status){
+        try{
+            Book book = getBookById(id);
+            book.setStatus(status);
+            if(updateBookById(id, book) != null)
+            {
+                return true;
+            }
+
+        } catch(Exception e){
+            return false;
+        }
+        return false;
+    }
+
+    @Override
+    public List<Book> getAllAvailableBooks(){
+        Book availableBook = new Book();
+        availableBook.setStatus(StatusEnum.AVAILABLE);
+        List<Book> books = new ArrayList<Book>();
+        books = bookRepository.findAll(Example.of(availableBook));
+		return books;
+    }
+
+    @Override
     public Void initAuthorValues() {
         authorRepository.save(new Author("Victoria", "Thompson"));
         authorRepository.save(new Author("Stieg", "Larsson"));
@@ -311,6 +343,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Author> getAllAuthors(){
 		return authorRepository.findAll();
+    }
+
+    @Override
+    public String getAuthorNameById(Long id){
+        Optional<Author> od = authorRepository.getAuthorById(id);
+        String returnString = null;
+        if(od.isPresent()){
+            returnString = od.get().getFirstName() + " " + od.get().getLastName();
+        }
+        if(returnString != null) return returnString;
+        else return null;
     }
 
     @Override
@@ -342,7 +385,17 @@ public class BookServiceImpl implements BookService {
 		return bookGenreRepository.findAll();
     }
 
-    
+    @Override
+    public String getBookGenreNameById(Long id){
+        Optional<BookGenre> od = bookGenreRepository.getBookGenreById(id);
+        String returnString = null;
+        if(od.isPresent()){
+            returnString = od.get().getName();
+        }
+        if(returnString != null) return returnString;
+        else return null;
+    }
+
     @Override
     public Void initCoverTypeValues() {
         coverTypeRepository.save(new CoverType("Paperback"));
@@ -359,6 +412,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<CoverType> getAllCoverTypes(){
 		return coverTypeRepository.findAll();
+    }
+
+    @Override
+    public String getCoverTypeNameById(Long id){
+        Optional<CoverType> od = coverTypeRepository.getCoverTypeById(id);
+        String returnString = null;
+        if(od.isPresent()){
+            returnString = od.get().getName();
+        }
+        if(returnString != null) return returnString;
+        else return null;
     }
 
     @Override

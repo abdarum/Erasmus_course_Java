@@ -41,6 +41,10 @@ public class Author   {
   @JsonProperty("lastName")
   private String lastName = null;
 
+  public Author() {
+
+  }
+
   public Author(String firstName, String lastName) {
     this.setFirstName(firstName);
     this.setLastName(lastName);

@@ -76,16 +76,22 @@ public class LibraryApiController implements LibraryApi {
 
     public ResponseEntity<LibraryBooksReport> getLibraryInventoryBooks(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<LibraryBooksReport>(objectMapper.readValue("{  \"numberOfAvailableBooks\" : 6,  \"books\" : [ \"\", \"\" ],  \"numberOfBooks\" : 0}", LibraryBooksReport.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<LibraryBooksReport>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            if(libraryService.isViewLibraryReportPermittedForToken(token)){
+                LibraryBooksReport libraryBooksReport = libraryService.getLibraryInventoryBooks();
+                if (libraryBooksReport != null) {
+                    return ResponseEntity.ok(libraryBooksReport);
+                } else { 
+                    return ResponseEntity.notFound().build();
+                }
+            } else {
+                return new ResponseEntity<LibraryBooksReport>(HttpStatus.UNAUTHORIZED);
             }
+        } 
+        else 
+        {
+            return new ResponseEntity<LibraryBooksReport>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<LibraryBooksReport>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<SubmitUserReport>> getLibraryInventorySubmittedUsers(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {

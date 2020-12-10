@@ -31,8 +31,8 @@ public class UserTypeServiceImpl implements UserTypeService {
 
     @Override
     public Void initUserTypeValues(){
-        userTypeRepository.save(new UserType("Administrator", "modify_librarian;modify_admin;modify_reader;view_admins;view_librarians;view_readers;modify_book;new_borrow;modify_borrow;"));
-        userTypeRepository.save(new UserType("Librarian", "modify_reader;view_readers;modify_book;new_borrow;modify_borrow;"));
+        userTypeRepository.save(new UserType("Administrator", "modify_librarian;modify_admin;modify_reader;view_admins;view_librarians;view_readers;modify_book;new_borrow;modify_borrow;view_library_report;"));
+        userTypeRepository.save(new UserType("Librarian", "modify_reader;view_readers;modify_book;new_borrow;modify_borrow;view_library_report;"));
         userTypeRepository.save(new UserType("Reader", "new_borrow;"));
         return null;
     }
@@ -137,5 +137,14 @@ public class UserTypeServiceImpl implements UserTypeService {
         }
         return false;
     }
+
+    public Boolean isViewLibraryReportPermited(Long typeId){
+        UserType userType = getUserTypeById(typeId);
+        if(userType != null){
+            return userType.getPermissions().contains("view_library_report;");
+        }
+        return false;
+    }
+
     
 }

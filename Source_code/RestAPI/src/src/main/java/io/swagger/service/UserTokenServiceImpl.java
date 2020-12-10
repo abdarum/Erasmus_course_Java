@@ -36,6 +36,12 @@ public class UserTokenServiceImpl implements UserTokenService {
         return null;
     }
 
+    public UserToken createToken(Long userId, String tokenName){
+        UserToken token = createToken(userId);
+        token.setTokenName(tokenName);
+        return tokenRepository.save(token);
+    }
+
     @Override
     public UserToken deleteUserTokenByUserId(Long userId){
         Optional<UserToken> od = tokenRepository.getUserTokenById(userId);

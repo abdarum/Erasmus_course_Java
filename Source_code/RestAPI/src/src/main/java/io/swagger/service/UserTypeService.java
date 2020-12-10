@@ -19,4 +19,7 @@ public interface UserTypeService {
     public Boolean isModifyBookPermited(Long typeId);
     public Boolean isNewBorrowPermited(Long typeId);
     public Boolean isModifyBorrowPermited(Long typeId);
+
+    public Boolean isViewLibraryReportPermited(Long typeId);
+
 }

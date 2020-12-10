@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.swagger.model.BorrowPlace;
 import io.swagger.model.Borrowed;
+import io.swagger.model.LibraryBooksReport;
 import io.swagger.model.BorrowPeriod;
 
 
@@ -12,11 +13,13 @@ public interface LibraryService {
     public int countBorrowPlaces();
     public List<BorrowPlace> getAllBorrowPlaces();
     public BorrowPlace getBorrowPlaceById(Long id);
+    public String getBorrowPlaceNameById(Long id);
     public Void initBorrowPeriodValues();
     public int countBorrowPeriods();
     public List<BorrowPeriod> getAllBorrowPeriods();
     public Integer getValueBorrowPeriodsById(Long id);
     public BorrowPeriod getBorrowPeriodById(Long id);
+    public String getBorrowPeriodNameById(Long id);
 
     public Void initBorrowedValues();
     public int countBorrowed();
@@ -39,5 +42,9 @@ public interface LibraryService {
     public Boolean isViewBorrowedPermittedForToken(Long i, String token);
     public Boolean isNewBorrowedPermittedForToken(Borrowed borrowed, String token);
     public Boolean isNewBorrowedPermittedForToken(Long i, String token);
+
+    public Boolean isViewLibraryReportPermittedForToken(String token);
+
+    public LibraryBooksReport getLibraryInventoryBooks();
 
 }

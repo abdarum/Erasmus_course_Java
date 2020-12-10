@@ -7,6 +7,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Book;
+import io.swagger.service.BookService;
+import io.swagger.service.LibraryService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -21,6 +25,12 @@ import javax.validation.constraints.*;
 
 
 public class BookReport extends Book  {
+  @Autowired
+  private BookService bookService;
+
+  @Autowired
+  private LibraryService libraryService;
+
   @JsonProperty("authorTypeName")
   private String authorTypeName = null;
 
@@ -39,6 +49,14 @@ public class BookReport extends Book  {
   @JsonProperty("statusName")
   private String statusName = null;
 
+  public BookReport(){
+
+  }
+
+  public BookReport(Book book){
+    super(book);
+  }
+  
   public BookReport authorTypeName(String authorTypeName) {
     this.authorTypeName = authorTypeName;
     return this;

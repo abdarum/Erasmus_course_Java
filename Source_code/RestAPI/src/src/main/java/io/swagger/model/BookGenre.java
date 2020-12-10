@@ -38,6 +38,10 @@ public class BookGenre   {
   @JsonProperty("name")
   private String name = null;
 
+  public BookGenre() {
+    
+  }
+
   public BookGenre(String name) {
     this.setName(name);
   }
