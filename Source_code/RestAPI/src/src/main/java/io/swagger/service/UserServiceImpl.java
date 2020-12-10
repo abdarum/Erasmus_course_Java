@@ -1,5 +1,6 @@
 package io.swagger.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.message.ReusableMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,6 +109,15 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers(){
 		return userRepository.findAll();
     }
+
+    public List<User> getAllNotVeryfiedUsers(){
+        List<User> users = new ArrayList<User>();
+        User userSearch = new User();
+        userSearch.setStatus(StatusEnum.TO_VERYFICATION);
+        users = userRepository.findAll(Example.of(userSearch));
+        return users;
+    }
+
 
 	@Override
     public User deleteUserByName(String email){

@@ -282,6 +282,16 @@ public class BookServiceImpl implements BookService {
         else return null;
     }
 
+	@Override
+    public String getBookNameById(Long id){
+        Book book = getBookById(id);
+        String returnString = null;
+        if(book != null){
+            returnString = book.getName();
+        }
+        if(returnString != null) return returnString;
+        else return null;
+    }
 
 	@Override
     public Book updateBookById(Long id, Book body){

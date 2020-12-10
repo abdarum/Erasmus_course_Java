@@ -17,6 +17,7 @@ public interface BookService {
     public List<Book> getAllBooks();
     public Book deleteBookById(Long id);
     public Book getBookById(Long id);
+    public String getBookNameById(Long id);
     public Book updateBookById(Long id, Book body);
     public Boolean updateBookStatus(Long id, StatusEnum status);
     public List<Book> getAllAvailableBooks();

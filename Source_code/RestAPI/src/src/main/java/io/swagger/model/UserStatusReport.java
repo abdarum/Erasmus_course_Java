@@ -223,5 +223,13 @@ public class UserStatusReport extends User  {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  public UserStatusReport(){
+
+  }
+
+  public UserStatusReport(User user){
+    super(user);
+  }
 }
 

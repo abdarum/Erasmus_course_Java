@@ -23,6 +23,10 @@ import io.swagger.model.BorrowPlace;
 import io.swagger.model.Borrowed;
 import io.swagger.model.CoverType;
 import io.swagger.model.LibraryBooksReport;
+import io.swagger.model.SubmitUserReport;
+import io.swagger.model.User;
+import io.swagger.model.UserStatusReport;
+import io.swagger.model.UserStatusReportCurrentBorrowed;
 import io.swagger.model.Book.StatusEnum;
 import io.swagger.repository.AuthorRepository;
 import io.swagger.repository.BookGenreRepository;
@@ -428,6 +432,45 @@ public class LibraryServiceImpl implements LibraryService {
             booksReport.addBooksItem(bookReport);
         }
         return booksReport;       
+    }
+
+    public List<SubmitUserReport> getLibraryInventorySubmittedUsers(){
+        List<SubmitUserReport> submitUserReportList = new ArrayList<>();
+        List<User> userList = userService.getAllNotVeryfiedUsers();
+        for(User user: userList){
+            SubmitUserReport submitUserReport = new SubmitUserReport(user);
+            submitUserReport.setUserTypeName(userTypeService.getUserTypeNameById(user.getUserTypeId()));
+            submitUserReportList.add(submitUserReport);
+        }
+        return submitUserReportList;
+    }
+
+    public List<UserStatusReport> getLibraryInventoryUsers(){
+        List<UserStatusReport> userStatusReportList = new ArrayList<>();
+        List<User> userList = userService.getAllUsers();
+        for(User user: userList){
+            UserStatusReport userStatusReport = new UserStatusReport(user);
+            userStatusReport.setUserTypeName(userTypeService.getUserTypeNameById(user.getUserTypeId()));
+            
+            List<Borrowed> allBorrowed = getAllBorrowedByUser(Long.valueOf(user.getId()));
+            List<Borrowed> damagedBorrowed = getAllDamagedBorrowedBooksByList( allBorrowed );
+            List<Borrowed> currentBorrowed = getAllCurrentBorrowedBooksByList( allBorrowed );
+            List<Borrowed> delayedBorrowed = getAllDelayedBorrowedBooksByList( allBorrowed );
+            
+            userStatusReport.setNumberOfAllBorrowedBooks(allBorrowed.size());
+            userStatusReport.setNumberOfAllDamagedBooks(damagedBorrowed.size());
+            userStatusReport.setNumberOfCurrentBorrowedBooks(currentBorrowed.size());
+            userStatusReport.setNumberOfDelayedBooks(delayedBorrowed.size());
+
+            for(Borrowed borrowed: currentBorrowed){
+                UserStatusReportCurrentBorrowed currentBorrowedItem = new UserStatusReportCurrentBorrowed();
+                currentBorrowedItem.setBookId(borrowed.getBookId());
+                currentBorrowedItem.setBookName(bookService.getBookNameById(borrowed.getBookId()));
+                userStatusReport.addCurrentBorrowedItem(currentBorrowedItem);
+            }
+            userStatusReportList.add(userStatusReport);
+        }
+        return userStatusReportList;
     }
 
 }

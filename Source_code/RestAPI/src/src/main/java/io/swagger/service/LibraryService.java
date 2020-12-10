@@ -5,6 +5,8 @@ import java.util.List;
 import io.swagger.model.BorrowPlace;
 import io.swagger.model.Borrowed;
 import io.swagger.model.LibraryBooksReport;
+import io.swagger.model.SubmitUserReport;
+import io.swagger.model.UserStatusReport;
 import io.swagger.model.BorrowPeriod;
 
 
@@ -46,5 +48,8 @@ public interface LibraryService {
     public Boolean isViewLibraryReportPermittedForToken(String token);
 
     public LibraryBooksReport getLibraryInventoryBooks();
+    public List<SubmitUserReport> getLibraryInventorySubmittedUsers();
+    public List<UserStatusReport> getLibraryInventoryUsers();
+    
 
 }

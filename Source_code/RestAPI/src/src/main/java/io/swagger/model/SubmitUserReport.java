@@ -30,6 +30,14 @@ public class SubmitUserReport extends User  {
     return this;
   }
 
+  public SubmitUserReport(){
+
+  }
+
+  public SubmitUserReport(User user){
+    super(user);
+  }
+
   /**
    * Get userTypeName
    * @return userTypeName

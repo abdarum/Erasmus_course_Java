@@ -434,5 +434,26 @@ public class User   {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+  
+  public User() {
+
+  }
+
+  public User(User user) {
+    id = user.getId();
+    userTypeId = user.getUserTypeId();
+    firstName = user.getFirstName();
+    lastName = user.getLastName();
+    email = user.getEmail();
+    password = user.getPassword();
+    phone = user.getPhone();
+    birthdate = user.getBirthdate();
+    registrated = user.getRegistrated();
+    gender = user.getGender();
+    adress = user.getAdress();
+    city = user.getCity();
+    status = user.getStatus();
+  }
 }
 

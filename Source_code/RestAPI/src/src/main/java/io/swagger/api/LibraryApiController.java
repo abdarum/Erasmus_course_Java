@@ -33,6 +33,7 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-09T16:01:46.842Z")
 
@@ -96,30 +97,34 @@ public class LibraryApiController implements LibraryApi {
 
     public ResponseEntity<List<SubmitUserReport>> getLibraryInventorySubmittedUsers(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<SubmitUserReport>>(objectMapper.readValue("[ \"\", \"\" ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<SubmitUserReport>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            if(libraryService.isViewLibraryReportPermittedForToken(token)){
+                List<SubmitUserReport> list = libraryService.getLibraryInventorySubmittedUsers();
+                return ResponseEntity.ok(list);
+            } else {
+                return new ResponseEntity<List<SubmitUserReport>>(HttpStatus.UNAUTHORIZED);
             }
+        } 
+        else 
+        {
+            return new ResponseEntity<List<SubmitUserReport>>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<List<SubmitUserReport>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<UserStatusReport>> getLibraryInventoryUsers(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<UserStatusReport>>(objectMapper.readValue("[ \"\", \"\" ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<UserStatusReport>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            if(libraryService.isViewLibraryReportPermittedForToken(token)){
+                List<UserStatusReport> list = libraryService.getLibraryInventoryUsers();
+                return ResponseEntity.ok(list);
+            } else {
+                return new ResponseEntity<List<UserStatusReport>>(HttpStatus.UNAUTHORIZED);
             }
+        } 
+        else 
+        {
+            return new ResponseEntity<List<UserStatusReport>>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<List<UserStatusReport>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public ResponseEntity<List<UsersRatingReport>> getLibraryInventoryUsersRating(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
