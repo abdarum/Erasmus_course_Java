@@ -27,6 +27,7 @@ import io.swagger.model.SubmitUserReport;
 import io.swagger.model.User;
 import io.swagger.model.UserStatusReport;
 import io.swagger.model.UserStatusReportCurrentBorrowed;
+import io.swagger.model.UsersRatingReport;
 import io.swagger.model.Book.StatusEnum;
 import io.swagger.repository.AuthorRepository;
 import io.swagger.repository.BookGenreRepository;
@@ -473,4 +474,12 @@ public class LibraryServiceImpl implements LibraryService {
         return userStatusReportList;
     }
 
+    public List<UsersRatingReport> getLibraryInventoryUsersRating(){
+        List<UsersRatingReport> usersRatingReportList = new ArrayList<>();
+        List<User> userList = userService.getAllUsers();
+        for(User user: userList){
+
+        }
+        return usersRatingReportList;
+    }
 }

@@ -7,6 +7,7 @@ import io.swagger.model.Borrowed;
 import io.swagger.model.LibraryBooksReport;
 import io.swagger.model.SubmitUserReport;
 import io.swagger.model.UserStatusReport;
+import io.swagger.model.UsersRatingReport;
 import io.swagger.model.BorrowPeriod;
 
 
@@ -50,6 +51,7 @@ public interface LibraryService {
     public LibraryBooksReport getLibraryInventoryBooks();
     public List<SubmitUserReport> getLibraryInventorySubmittedUsers();
     public List<UserStatusReport> getLibraryInventoryUsers();
+    public List<UsersRatingReport> getLibraryInventoryUsersRating();
     
 
 }

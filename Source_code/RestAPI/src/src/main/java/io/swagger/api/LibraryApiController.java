@@ -129,16 +129,19 @@ public class LibraryApiController implements LibraryApi {
 
     public ResponseEntity<List<UsersRatingReport>> getLibraryInventoryUsersRating(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<UsersRatingReport>>(objectMapper.readValue("[ \"\", \"\" ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<UsersRatingReport>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            if(libraryService.isViewLibraryReportPermittedForToken(token)){
+                List<UsersRatingReport> list = libraryService.getLibraryInventoryUsersRating();
+                // return ResponseEntity.ok(list);
+                return new ResponseEntity<List<UsersRatingReport>>(HttpStatus.NOT_IMPLEMENTED);
+            } else {
+                return new ResponseEntity<List<UsersRatingReport>>(HttpStatus.UNAUTHORIZED);
             }
+        } 
+        else 
+        {
+            return new ResponseEntity<List<UsersRatingReport>>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<List<UsersRatingReport>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     public SseEmitter notifyBook()

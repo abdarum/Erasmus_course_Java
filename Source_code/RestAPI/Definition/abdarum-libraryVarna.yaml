@@ -770,29 +770,28 @@ definitions:
                   type: string
           
   UsersRatingReport:
-    allOf:
-      - type: object
-        properties:
-          loyal:
-            type: array
-            items:
-              type: object
-              properties:
-                userId:
-                  type: integer
-                  format: int64
-                userName:
-                  type: string
-          disloyal:
-            type: array
-            items:
-              type: object
-              properties:
-                userId:
-                  type: integer
-                  format: int64
-                userName:
-                  type: string
+    type: object
+    properties:
+      loyal:
+        type: array
+        items:
+          type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+            userName:
+              type: string
+      disloyal:
+        type: array
+        items:
+          type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+            userName:
+              type: string
 
   Author:
     type: object
