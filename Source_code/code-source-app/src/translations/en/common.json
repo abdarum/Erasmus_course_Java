@@ -1,0 +1,291 @@
+{
+    "others": {
+        "warnings": {
+            "not_implemented": "Not implemented",
+            "sorry_not_implemented_yet": "Sorry not implemented yet"
+        },
+        "errors": {}
+    },
+    "pages": {
+        "signup_page": {
+            "title": "Sign up for an account",
+            "already_have_account": "Already have an account?",
+            "log_in_now_link": "Log in now",
+            "forms": {
+                "basic_data": {
+                    "first_name": "First Name",
+                    "last_name": "Last Name",
+                    "date_of_birth": "Date of birth",
+                    "education_level": "Education level",
+                    "email_address": "Email address",
+                    "password": "Password"
+                },
+                "validation": {
+                    "first_name_is_required": "First name is required",
+                    "last_name_is_required": "Last name is required",
+                    "invalid_email": "Invalid email",
+                    "email_is_required": "Email is required",
+                    "password_is_required": "Password is required"
+                }
+            },
+            "sign_up_button": "Sign Up"
+        },
+        "account_page": {
+            "title": "Account",
+            "personal_info_section": {
+                "header": "Personal Info"
+            },
+            "sensitive_data_section": {
+                "header": "Sensitive data"
+            },
+            "change_password_section": {
+                "header": "Change password"
+            },
+            "user_role_section": {
+                "header": "User Role",
+                "select_a_role_for_yourself": "Select a role for yourself"
+            },
+            "user_avatar_section": {
+                "header": "Change your avatar",
+                "set_up_an_avatar_encourage": "Let people know and recognize you! Avatar will help "
+            }
+        },
+        "teacher_dashboard_page": {
+            "title": "Teacher Dashboard",
+            "teacher_info_section": {
+                "header": "Teacher info",
+                "collapsed_description": "Expand section to view or edit. The following data will be used to contact with you by students",
+                "expand_button": "Expand",
+                "collapse_button": "Collapse"
+            },
+            "existing_lesson_items_section": {
+                "no_lesson_items": "No lesson items"
+            },
+            "new_lesson_item_section": {
+                "header": "Add new lesson item",
+                "add_contact_info_before": "Before adding lesson items please save contact data"
+            }
+        },
+        "find_lessons_page": {
+            "no_lesson_items": "Sorry, no lesson items found. Please try to search another classes",
+            "set_filters_and_search": "Set filters and click Find button to see results"
+        }
+    },
+    "components": {
+        "nav_bar": {
+            "log_out": "Log Out"
+        },
+        "sidebar_component": {
+            "link_label": {
+                "dashboard": "Dashboard",
+                "find_lessons": "Find Lesson",
+                "become_a_teacher": "Become a teacher",
+                "teacher_lessons": "Your Lesson Items",
+                "lesson_items": "Lesson Items Administration",
+                "inventory": "Inventory",
+                "account": "Account",
+                "settings": "Settings",
+                "users": "Users"
+            }
+        },
+        "account_personal_data_info_component": {
+            "forms": {
+                "data": {
+                    "first_name": "First Name",
+                    "last_name": "Last Name",
+                    "date_of_birth": "Date of birth",
+                    "education_level": "Education level"
+                },
+                "validation": {
+                    "first_name_is_required": "First name can not be empty. Refresh page to avoid changes",
+                    "last_name_is_required": "Last name can not be empty. Refresh page to avoid changes"
+                }
+            },
+            "some_data_visible_in_page_can_stay_unchanged": "Some data visible in page can stay unchanged. Please, sign in again",
+            "save_button": "Save",
+            "reset_changes_button": "Reset changes"
+        },
+        "account_sensitive_data_info_component": {
+            "forms": {
+                "data": {
+                    "email_address": "Email address",
+                    "phone_number": "Phone number"
+                },
+                "validation": {
+                    "invalid_email": "Invalid email",
+                    "email_address_is_required": "Email address can not be empty. Refresh page to avoid changes"
+                }
+            },
+            "some_data_visible_in_page_can_stay_unchanged": "Some data visible in page can stay unchanged. Please, sign in again",
+            "description": "The following data will be used us to contact you. Other users will not have access to this data",
+            "save_button": "Save"
+        },
+        "account_change_password_component": {
+            "forms": {
+                "data": {
+                    "old_password": "Old password",
+                    "new_password": "New password",
+                    "repeat_new_password": "Repeat new password"
+                },
+                "validation": {
+                    "password_is_required": "Password is required",
+                    "passwords_not_mach": "Passwords must match"
+                }
+            },
+            "save_button": "Save"
+        },
+        "teacher_contact_data_component": {
+            "forms": {
+                "data": {
+                    "email_address": "Email address",
+                    "email_address_visible": "Email address visible: ",
+                    "phone_number": "Phone number",
+                    "phone_number_visible": "Phone number visible: ",
+                    "first_free_lesson_enable": "First free lesson enable: ",
+                    "description": "Description",
+                    "description_placeholder": "Description of your pearson"
+                },
+                "validation": {}
+            },
+            "description": "The following data will be used to contact with you by students",
+            "save_button": "Save"
+        },
+        "lesson_item_form_component": {
+            "forms": {
+                "data": {
+                    "field_of_study": "Field of study",
+                    "education_level": "Education level",
+                    "places": "Places",
+                    "teaching_languages": "Teaching languages",
+                    "hourly_rate": "Hourly rate",
+                    "online_mode_enable_header": "Online mode",
+                    "online_mode_enable_values": {
+                        "true": "Online mode is enabled",
+                        "false": "Online mode is disabled"
+                    },
+                    "face_to_face_mode_student_place_enable_header": "Student place",
+                    "face_to_face_mode_student_place_enable_values": {
+                        "true": "Face to face mode student place is enabled",
+                        "false": "Face to face mode student place is disabled"
+                    },
+                    "face_to_face_mode_teacher_place_enable_header": "Teacher place",
+                    "face_to_face_mode_teacher_place_enable_values": {
+                        "true": "Face to face mode teacher place is enabled",
+                        "false": "Face to face mode teacher place is disabled"
+                    },
+                    "description": "Description",
+                    "description_placeholder": "Description of the lesson item"
+                },
+                "validation": {}
+            },
+            "some_data_visible_in_page_can_stay_unchanged": "Some data visible in page can stay unchanged. Please, sign in again",
+            "save_button": "Save",
+            "save_changes_button": "Save changes",
+            "add_new_item_button": "Add new item",
+            "do_you_want_delete_window": "Are you sure you want to delete this item?",
+            "delete_button": "Delete"
+        },
+        "lesson_item_find_filter_form_component": {
+            "forms": {
+                "data": {
+                    "field_of_study": "Field of study",
+                    "education_level": "Education level",
+                    "teaching_languages": "Teaching languages",
+                    "hourly_rate_max": "Max hourly rate",
+                    "hourly_rate_min": "Min hourly rate"
+                },
+                "validation": {}
+            },
+            "find_button": "Find"
+        },
+        "lesson_item_overview_short_component": {
+            "labels": {
+                "first_free_lesson_enable": "Free first lesson!",
+                "hourly_rate": "Hourly rate",
+                "rating": "Rating",
+                "number_of_feedbacks": "Number of feedbacks: ",
+                "no_feedbacks_description": "There was no feedback",
+                "no_feedbacks_value": "?",
+                "teaching_languages": "Teaching languages",
+                "online_mode_enable": "Teacher can teach online",
+                "email_address": "Email address: ",
+                "phone_number": "Phone number: "
+            },
+            "find_button": "Find"
+        }
+    },
+    "datasets": {
+        "field_of_study": {
+            "values": {
+                "lan_english": "English",
+                "lan_german": "German",
+                "lan_french": "French",
+                "lan_russian": "Russian",
+                "lan_spanish": "Spanish",
+                "lan_italian": "Italian",
+                "lan_polish": "Polish",
+                "lan_polish_for_foreigners": "Polish for foreigners",
+                "lan_other": "Other",
+                "hum_history": "History",
+                "hum_civics": "Civics",
+                "hum_art_history": "Art History",
+                "hum_other": "Other",
+                "sci_mathematics": "Mathematics",
+                "sci_chemistry": "Chemistry",
+                "sci_physics": "Physics",
+                "sci_biology": "Biology",
+                "sci_geography": "Geography",
+                "sci_statistics": "Statistics",
+                "sci_other": "Other",
+                "compsci_informatics": "Computer Science",
+                "compsci_computer_use": "Computer use",
+                "compsci_programming": "Programming",
+                "compsci_other": "Other",
+                "art_musical_instruments": "Musical instruments",
+                "art_music": "Music",
+                "art_drawing": "Drawing",
+                "art_other": "Other",
+                "other_primary_learning": "Primary learning",
+                "other_other": "Other"
+            },
+            "groups": {
+                "languages": "Languages",
+                "humanities": "Humanities",
+                "science": "Science",
+                "it_fields": "IT fields",
+                "art": "Art",
+                "other": "Other"
+            }
+        },
+        "teaching_languages": {
+            "values": {
+                "teach_lan_polish": "Polish",
+                "teach_lan_english": "English",
+                "teach_lan_german": "German",
+                "teach_lan_spanish": "Spanish",
+                "teach_lan_italian": "Italian",
+                "teach_lan_french": "French",
+                "teach_lan_russian": "Russian",
+                "teach_lan_ukrainian": "Ukrainian"
+            }
+        },
+        "education_level": {
+            "values": {
+                "pl_level1_group_1": "Klasy 1-3",
+                "pl_level1_group_2": "Klasy 4-8",
+                "pl_level2_element_1": "Nauka szkolna",
+                "pl_level2_element_2": "Przygotowanie do matury",
+                "pl_level3_element_1": "Licencjat / Inżynier",
+                "pl_level3_element_2": "Magister / Mgr. Inż",
+                "pl_level3_element_3": "Doktorat",
+                "pl_level4_element_1": "Dorośli"
+            },
+            "groups": {
+                "level1Options": "Szkoła podstawowa",
+                "level2Options": "Szkoła średnia",
+                "level3Options": "Szkolnictwo wyższe",
+                "level4Options": "Inne"
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "signup_page": {
+        "title": "Sign up for an account",
+        "already_have_account": "Already have an account?",
+        "log_in_now_link": "Log in now",
+        "forms": {
+            "basic_data": {
+                "first_name": "First Name",
+                "last_name": "Last Name",
+                "email_address": "Email address",
+                "password": "Password"
+            },
+            "validation": {
+                "first_name_is_required": "-First name is required",
+                "last_name_is_required": "-Last name is required",
+                "invalid_email": "-Invalid email",
+                "email_is_required": "-Email is required",
+                "password_is_required": "-Password is required"
+            }
+        },
+        "sign_up_button": "Sign Up"
+    }
+}
