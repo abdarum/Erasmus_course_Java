@@ -31,12 +31,16 @@ const Login = () => {
   const submitCredentials = async credentials => {
     try {
       setLoginLoading(true);
-      const { data } = await publicFetch.post(
-        `authenticate`,
+      var data = {};
+      await publicFetch.post(
+        `user/login`,
         credentials
-      );
+      ).then(response => {
+        data = response;
+      });
 
-      authContext.setAuthState(data);
+      var loginData = {userInfo: data.data, token: data.headers.token};
+      authContext.setAuthState(loginData);
       setLoginSuccess(data.message);
       setLoginError(null);
 

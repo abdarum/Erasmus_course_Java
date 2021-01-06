@@ -14,16 +14,12 @@ const AuthDebugger = () => {
   const authContext = useContext(AuthContext);
   const {
     token,
-    expiresAt,
     userInfo
   } = authContext.authState;
   return (
     <section className="rounded-lg shadow bg-white p-4">
       <div className="mb-2">
         <AuthStateItem title="Token" value={token} />
-      </div>
-      <div className="mb-2">
-        <AuthStateItem title="Expiry" value={expiresAt} />
       </div>
       <div className="mb-2">
         <AuthStateItem
