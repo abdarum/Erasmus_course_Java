@@ -43,7 +43,19 @@ const AuthProvider = ({ children }) => {
   };
 
   const isAdmin = () => {
-    return authState.userInfo.role === 'admin';
+    return authState.userInfo.userTypeId === getAdminUserTypeId();
+  };
+
+  const getAdminUserTypeId = () => {
+    return 1;
+  };
+  
+  const getLibrarianUserTypeId = () => {
+    return 2;
+  };
+
+  const getReaderUserTypeId = () => {
+    return 3;
   };
 
   return (

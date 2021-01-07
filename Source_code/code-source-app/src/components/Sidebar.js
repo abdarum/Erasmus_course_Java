@@ -55,7 +55,7 @@ const navItems = [
     label: 'components.sidebar_component.link_label.reports',
     path: 'notimplemented',
     icon: faList,
-    allowedRoles: [admin] // remove admin
+    allowedRoles: [admin]
   },
   {
     label: 'components.sidebar_component.link_label.account',
