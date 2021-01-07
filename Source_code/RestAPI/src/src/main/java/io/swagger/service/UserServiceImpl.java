@@ -202,7 +202,10 @@ public class UserServiceImpl implements UserService {
     public User initNewUserAccordingToPermissions(User user, String token){
         Long requestUserId = getUserIdFormToken(token);
         Long requestUserTypeId = getUserTypeIdByUserId(requestUserId);
-        if(user.getUserTypeId() == userTypeService.getUserTypeIdByName("Reader") &&
+        if(user.getUserTypeId() == null){
+            user.setUserTypeId(userTypeService.getUserTypeIdByName("Reader"));
+        }
+        if((user.getUserTypeId() == null || user.getUserTypeId() == userTypeService.getUserTypeIdByName("Reader")) &&
             (token == null || !userTypeService.isModifyReaderPermited(requestUserTypeId))
         ){
             user.setStatus(StatusEnum.TO_VERYFICATION);
