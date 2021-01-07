@@ -57,7 +57,7 @@ const Login = () => {
 
   return (
     <>
-      {redirectOnLogin && <Redirect to="/find-lessons" />}
+      {redirectOnLogin && <Redirect to="/find-books" />}
       <section className="w-full sm:w-1/2 h-screen m-auto p-8 sm:pt-10">
         <GradientBar />
         <Card>

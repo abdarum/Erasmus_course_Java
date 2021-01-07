@@ -66,8 +66,8 @@ public class User   {
   @JsonProperty("gender")
   private String gender = null;
 
-  @JsonProperty("adress")
-  private String adress = null;
+  @JsonProperty("address")
+  private String address = null;
 
   @JsonProperty("city")
   private String city = null;
@@ -312,24 +312,24 @@ public class User   {
     this.gender = gender;
   }
 
-  public User adress(String adress) {
-    this.adress = adress;
+  public User address(String address) {
+    this.address = address;
     return this;
   }
 
   /**
-   * Get adress
-   * @return adress
+   * Get address
+   * @return address
   **/
   @ApiModelProperty(value = "")
 
 
   public String getAdress() {
-    return adress;
+    return address;
   }
 
-  public void setAdress(String adress) {
-    this.adress = adress;
+  public void setAdress(String address) {
+    this.address = address;
   }
 
   public User city(String city) {
@@ -392,14 +392,14 @@ public class User   {
         Objects.equals(this.birthdate, user.birthdate) &&
         Objects.equals(this.registrated, user.registrated) &&
         Objects.equals(this.gender, user.gender) &&
-        Objects.equals(this.adress, user.adress) &&
+        Objects.equals(this.address, user.address) &&
         Objects.equals(this.city, user.city) &&
         Objects.equals(this.status, user.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userTypeId, firstName, lastName, email, password, phone, birthdate, registrated, gender, adress, city, status);
+    return Objects.hash(id, userTypeId, firstName, lastName, email, password, phone, birthdate, registrated, gender, address, city, status);
   }
 
   @Override
@@ -417,7 +417,7 @@ public class User   {
     sb.append("    birthdate: ").append(toIndentedString(birthdate)).append("\n");
     sb.append("    registrated: ").append(toIndentedString(registrated)).append("\n");
     sb.append("    gender: ").append(toIndentedString(gender)).append("\n");
-    sb.append("    adress: ").append(toIndentedString(adress)).append("\n");
+    sb.append("    address: ").append(toIndentedString(address)).append("\n");
     sb.append("    city: ").append(toIndentedString(city)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
@@ -451,7 +451,7 @@ public class User   {
     birthdate = user.getBirthdate();
     registrated = user.getRegistrated();
     gender = user.getGender();
-    adress = user.getAdress();
+    address = user.getAdress();
     city = user.getCity();
     status = user.getStatus();
   }

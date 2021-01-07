@@ -16,7 +16,10 @@
                     "first_name": "First Name",
                     "last_name": "Last Name",
                     "date_of_birth": "Date of birth",
-                    "education_level": "Education level",
+                    "gender": "Gender",
+                    "phone_number": "Phone number",
+                    "address": "Address",
+                    "city": "City",
                     "email_address": "Email address",
                     "password": "Password"
                 },
@@ -30,6 +33,12 @@
             },
             "sign_up_button": "Sign Up"
         },
+
+
+        
+
+
+        "remove_below_translations": "remove_below_translations", 
         "account_page": {
             "title": "Account",
             "personal_info_section": {
@@ -77,17 +86,21 @@
         },
         "sidebar_component": {
             "link_label": {
-                "dashboard": "Dashboard",
-                "find_lessons": "Find Lesson",
-                "become_a_teacher": "Become a teacher",
-                "teacher_lessons": "Your Lesson Items",
-                "lesson_items": "Lesson Items Administration",
-                "inventory": "Inventory",
+                "find_books": "Find books",
+                "orders": "Orders",
+                "manage_orders": "Manage orders",
+                "operators": "Operators",
+                "users": "Users",
+                "reports": "Reports",
                 "account": "Account",
-                "settings": "Settings",
-                "users": "Users"
+                "settings": "Settings"
             }
         },
+
+        
+
+
+        "remove_below_translations": "remove_below_translations", 
         "account_personal_data_info_component": {
             "forms": {
                 "data": {
@@ -215,48 +228,19 @@
         }
     },
     "datasets": {
-        "field_of_study": {
+        "gender": {
             "values": {
-                "lan_english": "English",
-                "lan_german": "German",
-                "lan_french": "French",
-                "lan_russian": "Russian",
-                "lan_spanish": "Spanish",
-                "lan_italian": "Italian",
-                "lan_polish": "Polish",
-                "lan_polish_for_foreigners": "Polish for foreigners",
-                "lan_other": "Other",
-                "hum_history": "History",
-                "hum_civics": "Civics",
-                "hum_art_history": "Art History",
-                "hum_other": "Other",
-                "sci_mathematics": "Mathematics",
-                "sci_chemistry": "Chemistry",
-                "sci_physics": "Physics",
-                "sci_biology": "Biology",
-                "sci_geography": "Geography",
-                "sci_statistics": "Statistics",
-                "sci_other": "Other",
-                "compsci_informatics": "Computer Science",
-                "compsci_computer_use": "Computer use",
-                "compsci_programming": "Programming",
-                "compsci_other": "Other",
-                "art_musical_instruments": "Musical instruments",
-                "art_music": "Music",
-                "art_drawing": "Drawing",
-                "art_other": "Other",
-                "other_primary_learning": "Primary learning",
-                "other_other": "Other"
+                "male": "Male",
+                "female": "Female",
+                "other": "Other"
             },
             "groups": {
-                "languages": "Languages",
-                "humanities": "Humanities",
-                "science": "Science",
-                "it_fields": "IT fields",
-                "art": "Art",
-                "other": "Other"
             }
         },
+
+
+
+        "remove_below_translations": "remove_below_translations", 
         "teaching_languages": {
             "values": {
                 "teach_lan_polish": "Polish",

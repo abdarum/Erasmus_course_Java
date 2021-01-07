@@ -28,7 +28,7 @@ const Home = () => {
             <GradientLink
               to={
                 auth.isAuthenticated()
-                  ? '/find-lessons'
+                  ? '/find-books'
                   : '/login'
               }
               text="Log In"
@@ -58,7 +58,7 @@ const Home = () => {
                 size="lg"
                 to={
                   auth.isAuthenticated()
-                    ? '/find-lessons' 
+                    ? '/find-books' 
                     : '/login'
                 }
               />

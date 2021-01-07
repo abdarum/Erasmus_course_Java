@@ -717,7 +717,7 @@ definitions:
         format: date-time
       gender:
         type: string
-      adress:
+      address:
         type: string
       city:
         type: string

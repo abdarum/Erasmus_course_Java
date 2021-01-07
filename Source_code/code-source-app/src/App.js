@@ -98,10 +98,10 @@ const AppRoutes = () => {
           <AdminRoute path="/inventory">
             <Inventory />
           </AdminRoute>
-          <AuthenticatedRoute path="/find-lessons">
+          <AuthenticatedRoute path="/find-books">
             <FindLessons />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="/teacher-dashboard">
+          <AuthenticatedRoute path="/orders">
             <TeacherDashboard />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/account">

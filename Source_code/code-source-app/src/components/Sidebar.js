@@ -2,13 +2,12 @@ import React, { useContext } from 'react';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faChartLine,
-  faUserGraduate,
-  faChalkboardTeacher,
+  faBook,
+  faBookOpen,
+  faBookReader,
   faTasks,
   faList,
   faAddressCard,
-  faChartPie,
   faCogs,
   faUsersCog
 } from '@fortawesome/free-solid-svg-icons';
@@ -17,60 +16,58 @@ import logo from './../images/logo.png';
 import { AuthContext } from './../context/AuthContext';
 import { useTranslation } from "react-i18next";
 
+var admin = 1;
+var librarian = 2;
+var reader = 3;
+
 const navItems = [
   {
-    label: 'components.sidebar_component.link_label.dashboard',
-    path: 'dashboard',
-    icon: faChartLine,
-    allowedRoles: ['old_user']
+    label: 'components.sidebar_component.link_label.find_books',
+    path: 'find-books',
+    icon: faBook,
+    allowedRoles: [reader, librarian]
   },
   {
-    label: 'components.sidebar_component.link_label.inventory',
-    path: 'inventory',
-    icon: faChartPie,
-    allowedRoles: ['old_user']
+    label: 'components.sidebar_component.link_label.orders',
+    path: 'orders', // orders
+    icon: faBookOpen,
+    allowedRoles: [reader]
   },
   {
-    label: 'components.sidebar_component.link_label.find_lessons',
-    path: 'find-lessons',
-    icon: faUserGraduate,
-    allowedRoles: ['student', 'teacher']
-  },
-  {
-    label: 'components.sidebar_component.link_label.become_a_teacher',
-    path: 'teacher-dashboard',
-    icon: faChalkboardTeacher,
-    allowedRoles: ['student']
-  },
-  {
-    label: 'components.sidebar_component.link_label.teacher_lessons',
-    path: 'teacher-dashboard',
+    label: 'components.sidebar_component.link_label.manage_orders',
+    path: 'notimplemented', //manage-orders
     icon: faTasks,
-    allowedRoles: ['teacher']
+    allowedRoles: [librarian]
   },
   {
-    label: 'components.sidebar_component.link_label.lesson_items',
-    path: 'notimplemented',
-    icon: faList,
-    allowedRoles: ['admin'] // remove admin
+    label: 'components.sidebar_component.link_label.operators',
+    path: 'notimplemented', // operators
+    icon: faUsersCog,
+    allowedRoles: [admin]
   },
   {
     label: 'components.sidebar_component.link_label.users',
     path: 'users',
-    icon: faUsersCog,
-    allowedRoles: ['admin']
+    icon: faBookReader,
+    allowedRoles: [admin, librarian]
+  },
+  {
+    label: 'components.sidebar_component.link_label.reports',
+    path: 'notimplemented',
+    icon: faList,
+    allowedRoles: [admin] // remove admin
   },
   {
     label: 'components.sidebar_component.link_label.account',
     path: 'account',
     icon: faAddressCard,
-    allowedRoles: ['student',  'teacher', 'admin']
+    allowedRoles: [reader,  librarian, admin]
   },
   {
     label: 'components.sidebar_component.link_label.settings',
     path: 'settings',
     icon: faCogs,
-    allowedRoles: ['student',  'teacher', 'admin']
+    allowedRoles: []
   }
 ];
 
@@ -104,7 +101,7 @@ const NavItemContainer = ({ children }) => (
 
 const Sidebar = () => {
   const auth = useContext(AuthContext);
-  const { role } = auth.authState.userInfo;
+  const { userTypeId } = auth.authState.userInfo;
   return (
     <section className="h-screen">
       <div className="w-16 sm:w-24 m-auto">
@@ -113,7 +110,7 @@ const Sidebar = () => {
       <div className="mt-20">
         {navItems.map((navItem, i) => (
           <NavItemContainer key={i}>
-            {navItem.allowedRoles.includes(role) && (
+            {navItem.allowedRoles.includes(userTypeId) && (
               <NavItem navItem={navItem} />
             )}
           </NavItemContainer>

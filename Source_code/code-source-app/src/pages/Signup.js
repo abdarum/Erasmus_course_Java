@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Form, Formik } from 'formik';
+import { Form, Formik, Field } from 'formik';
 import * as Yup from 'yup';
 import Card from '../components/common/Card';
 import GradientButton from '../components/common/GradientButton';
@@ -29,7 +29,6 @@ const Signup = () => {
   const [loginLoading, setLoginLoading] = useState(false);
 
   const { t } = useTranslation('common');
-  const [dateOfBirthValue, dateOfBirthOnChange] = useState(new Date());
 
   function translateOptions(options) {
     options.forEach(function (entry) {
@@ -48,8 +47,6 @@ const Signup = () => {
   }
 
   const SignupSchema = Yup.object().shape({
-    // dateOfBirth: Yup.date().required("not working"),
-    // educationLevel: Yup.string().required("bababab"),
     firstName: Yup.string().required(
       t('pages.signup_page.forms.validation.first_name_is_required')
     ),
@@ -63,15 +60,13 @@ const Signup = () => {
   const submitCredentials = async credentials => {
     try {
       var saveLessonItem = Object.assign({}, credentials);
-      saveLessonItem.educationLevel = credentials.educationLevel.value;
 
       setLoginLoading(true);
       const { data } = await publicFetch.post(
-        `signup`,
+        `user`,
         saveLessonItem
       );
 
-      authContext.setAuthState(data);
       setSignupSuccess(data.message);
       setSignupError('');
 
@@ -88,7 +83,7 @@ const Signup = () => {
 
   return (
     <>
-      {redirectOnLogin && <Redirect to="/find-lessons" />}
+      {redirectOnLogin && <Redirect to="/login" />}
       <section className="w-1/2 h-screen m-auto p-8 sm:pt-10">
         <GradientBar />
         <Card>
@@ -111,19 +106,21 @@ const Signup = () => {
                 initialValues={{
                   firstName: '',
                   lastName: '',
-                  dateOfBirth: new Date(),
-                  educationLevel: '',
+                  birthdate: new Date(),
+                  gender: '',
+                  address: '',
+                  city: '',
+                  phone: '',
                   email: '',
                   password: ''
                 }}
                 onSubmit={values => {
-                  values.dateOfBirth = dateOfBirthValue;
                   submitCredentials(values);
                 }
                 }
                 validationSchema={SignupSchema}
               >
-                {({values, setFieldValue}) => (
+                {({ values, setFieldValue }) => (
                   <Form className="mt-8">
                     {signupSuccess && (
                       <FormSuccess text={signupSuccess} />
@@ -167,22 +164,62 @@ const Signup = () => {
                             <Label text={t('pages.signup_page.forms.basic_data.date_of_birth')} />
                           </div>
                           <DatePicker
-                            onChange={dateOfBirthOnChange}
-                            value={dateOfBirthValue}
+                            onChange={
+                              (value) => {
+                                setFieldValue("birthdate", value);
+                              }}
+                            value={values.birthdate}
                           />
                         </div>
                         <div className="mb-2 ml-2 w-1/2">
                           <div className="mb-1">
-                            <Label text={t('pages.signup_page.forms.basic_data.education_level')} />
+                            <Label text={t('pages.signup_page.forms.basic_data.gender')} />
                           </div>
-                          <Select
-                            name="educationLevel"
-                            id="educationLevel"
-                            value={values.educationLevel}
-                            options={translateOptions(getEducationLevelSelectOptions())}
-                            onChange={(opt, e) => {
-                              setFieldValue("educationLevel", opt);
-                            }} />
+                          <div className="flex justify-between">
+                            <p><Field type="radio" value="male" name="gender" /> {t('datasets.gender.values.male')}</p>
+                            <p><Field type="radio" value="female" name="gender" /> {t('datasets.gender.values.female')}</p>
+                            <p><Field type="radio" value="other" name="gender" /> {t('datasets.gender.values.other')}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex">
+                        <div className="mb-2 mr-2 w-1/2">
+                          <div className="mb-1">
+                            <Label text={t('pages.signup_page.forms.basic_data.phone_number')} />
+                          </div>
+                          <FormInput
+                            ariaLabel={t('pages.signup_page.forms.basic_data.phone_number')}
+                            name="phone"
+                            type="text"
+                            placeholder={t('pages.signup_page.forms.basic_data.phone_number')}
+                          />
+                        </div>
+                        <div className="mb-2 ml-2 w-1/2">
+
+                        </div>
+                      </div>
+                      <div className="flex">
+                        <div className="mb-2 mr-2 w-1/2">
+                          <div className="mb-1">
+                            <Label text={t('pages.signup_page.forms.basic_data.address')} />
+                          </div>
+                          <FormInput
+                            ariaLabel={t('pages.signup_page.forms.basic_data.address')}
+                            name="address"
+                            type="text"
+                            placeholder={t('pages.signup_page.forms.basic_data.address')}
+                          />
+                        </div>
+                        <div className="mb-2 ml-2 w-1/2">
+                          <div className="mb-1">
+                            <Label text={t('pages.signup_page.forms.basic_data.city')} />
+                          </div>
+                          <FormInput
+                            ariaLabel={t('pages.signup_page.forms.basic_data.city')}
+                            name="city"
+                            type="text"
+                            placeholder={t('pages.signup_page.forms.basic_data.city')}
+                          />
                         </div>
                       </div>
                       <div className="mb-2">
