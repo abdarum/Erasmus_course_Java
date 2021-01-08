@@ -97,7 +97,7 @@ public class UserApiController implements UserApi {
     public ResponseEntity<List<User>> findUsersByStatus(@ApiParam(value = "") @Valid @RequestParam(value = "token", required = false) String token,@ApiParam(value = "User first name") @Valid @RequestParam(value = "firstName", required = false) String firstName,@ApiParam(value = "User last name") @Valid @RequestParam(value = "lastName", required = false) String lastName,@ApiParam(value = "User last name") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "User type id") @Valid @RequestParam(value = "userTypeId", required = false) Long userTypeId,@ApiParam(value = "User status", allowableValues = "active, suspended, inactive, to veryfication", defaultValue = "available") @Valid @RequestParam(value = "status", required = false, defaultValue="available") String status,@ApiParam(value = "User gender, not implemented") @Valid @RequestParam(value = "gender", required = false) String gender) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
-            List<User> users = userService.getAllUsers();
+            List<User> users = userService.findUsersByStatus(firstName, lastName, status, userTypeId, email);
             return ResponseEntity.ok(users);
         }
 

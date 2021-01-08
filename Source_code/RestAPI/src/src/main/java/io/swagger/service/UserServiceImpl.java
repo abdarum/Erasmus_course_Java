@@ -110,12 +110,22 @@ public class UserServiceImpl implements UserService {
 		return userRepository.findAll();
     }
 
+	@Override
     public List<User> getAllNotVeryfiedUsers(){
         List<User> users = new ArrayList<User>();
         User userSearch = new User();
         userSearch.setStatus(StatusEnum.TO_VERYFICATION);
         users = userRepository.findAll(Example.of(userSearch));
         return users;
+    }
+
+	@Override
+    public List<User> findUsersByStatus(String firstName, String lastName, StatusEnum status, Long userTypeId, String email){
+        List<User> users = new ArrayList<>();
+        User exampleUser = new User();
+        exampleUser.firstName(firstName).lastName(lastName).status(status).userTypeId(userTypeId).email(email);
+        users = bookRepository.findAll(Example.of(exampleUser));
+        return books;
     }
 
 
