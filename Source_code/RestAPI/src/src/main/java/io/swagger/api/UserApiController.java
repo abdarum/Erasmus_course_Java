@@ -94,6 +94,16 @@ public class UserApiController implements UserApi {
         }
     }
 
+    public ResponseEntity<List<User>> findUsersByStatus(@ApiParam(value = "") @Valid @RequestParam(value = "token", required = false) String token,@ApiParam(value = "User first name") @Valid @RequestParam(value = "firstName", required = false) String firstName,@ApiParam(value = "User last name") @Valid @RequestParam(value = "lastName", required = false) String lastName,@ApiParam(value = "User last name") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "User type id") @Valid @RequestParam(value = "userTypeId", required = false) Long userTypeId,@ApiParam(value = "User status", allowableValues = "active, suspended, inactive, to veryfication", defaultValue = "available") @Valid @RequestParam(value = "status", required = false, defaultValue="available") String status,@ApiParam(value = "User gender, not implemented") @Valid @RequestParam(value = "gender", required = false) String gender) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            List<User> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        }
+
+        return new ResponseEntity<List<User>>(HttpStatus.BAD_REQUEST);
+    }
+
     public ResponseEntity<UserStatus> getStatsById(@ApiParam(value = "",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
