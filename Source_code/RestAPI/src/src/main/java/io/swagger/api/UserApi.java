@@ -57,6 +57,18 @@ public interface UserApi {
     ResponseEntity<Void> deleteUserById(@ApiParam(value = "The Id that needs to be deleted",required=true) @PathVariable("id") Long id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 
+    @ApiOperation(value = "Finds user items by params", nickname = "findUsersByStatus", notes = "Multiple status values can be provided with comma separated strings", response = User.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "user", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = User.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid status value") })
+    @RequestMapping(value = "/user",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<User>> findUsersByStatus(@ApiParam(value = "") @Valid @RequestParam(value = "token", required = false) String token,@ApiParam(value = "User first name") @Valid @RequestParam(value = "firstName", required = false) String firstName,@ApiParam(value = "User last name") @Valid @RequestParam(value = "lastName", required = false) String lastName,@ApiParam(value = "User last name") @Valid @RequestParam(value = "email", required = false) String email,@ApiParam(value = "User type id") @Valid @RequestParam(value = "userTypeId", required = false) Long userTypeId,@ApiParam(value = "User status", allowableValues = "active, suspended, inactive, to veryfication", defaultValue = "available") @Valid @RequestParam(value = "status", required = false, defaultValue="available") String status,@ApiParam(value = "User gender, not implemented") @Valid @RequestParam(value = "gender", required = false) String gender);
+
+
     @ApiOperation(value = "Get user statistics by user name", nickname = "getStatsById", notes = "", response = UserStatus.class, authorizations = {
         @Authorization(value = "bearerAuth")
     }, tags={ "user", })
