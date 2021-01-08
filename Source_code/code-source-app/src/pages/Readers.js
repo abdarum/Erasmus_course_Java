@@ -10,11 +10,13 @@ import defaultAvatar from './../images/defaultAvatar.png';
 import UserFullDetailsForm from '../components/UserFullDetailsForm';
 import { AuthContext } from '../context/AuthContext';
 import qs from 'query-string';
+import { useTranslation } from "react-i18next";
 
 const Readers = () => {
   const fetchContext = useContext(FetchContext);
   const [readers, setReaders] = useState([]);
   const auth = useContext(AuthContext);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     var queryValues = {
@@ -38,15 +40,17 @@ const Readers = () => {
 
   return (
     <>
-      <PageTitle title="Readers" />
+      <PageTitle title={t('pages.readers_page.title')} />
       <div className="flex flex-col">
         <Card>
-          <UserFullDetailsForm userTypeId={3}/>
+          <UserFullDetailsForm userTypeId={3} />
         </Card>
         {!!readers.length &&
           readers.map(user => (
             <div className="m-2">
-              <UserFullDetailsForm key={user._id} user={user} userTypeId={3} />
+              <Card>
+                <UserFullDetailsForm key={user._id} user={user} userTypeId={3} />
+              </Card>
             </div>
           ))}
       </div>

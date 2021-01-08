@@ -33,7 +33,12 @@
             },
             "sign_up_button": "Sign Up"
         },
-
+        "readers_page": {
+            "title": "Readers"
+        },
+        "users_page": {
+            "title": "Users"
+        },
 
         
 

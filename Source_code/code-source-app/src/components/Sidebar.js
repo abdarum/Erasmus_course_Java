@@ -41,7 +41,7 @@ const navItems = [
   },
   {
     label: 'components.sidebar_component.link_label.all_users',
-    path: 'notimplemented', // operators_and_admins
+    path: 'users',
     icon: faUsersCog,
     allowedRoles: [admin]
   },
