@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         admin.setPhone("888444666");
         birthdate = OffsetDateTime.of(1990, 12, 6, 12, 25, 0, 0, ZoneOffset.ofHours(0));
         admin.setBirthdate(birthdate);
-        admin.setGender("man");
+        admin.setGender("male");
         admin.setAdress("Studentska 1");
         admin.setCity("Varna");
         admin.setStatus(StatusEnum.ACTIVE);
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
         librarian.setPhone("111222333");
         birthdate = OffsetDateTime.of(1985, 1, 10, 0, 10, 0, 0, ZoneOffset.ofHours(0));
         librarian.setBirthdate(birthdate);
-        librarian.setGender("woman");
+        librarian.setGender("female");
         librarian.setAdress("Studentska 1");
         librarian.setCity("Varna");
         librarian.setStatus(StatusEnum.ACTIVE);
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         reader.setPhone("333222555");
         birthdate = OffsetDateTime.of(2000, 3, 15, 15, 30, 0, 0, ZoneOffset.ofHours(0));
         reader.setBirthdate(birthdate);
-        reader.setGender("man");
+        reader.setGender("male");
         reader.setAdress("Studentska 1");
         reader.setCity("Varna");
         reader.setStatus(StatusEnum.TO_VERYFICATION);
