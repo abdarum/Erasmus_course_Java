@@ -12,6 +12,8 @@ public interface UserService {
     public User createUser(User User);
     public List<User> getAllUsers();
     public List<User> getAllNotVeryfiedUsers();
+    public List<User> findUsersByStatus(String firstName, String lastName, StatusEnum status, Long userTypeId, String email );
+    
     public User deleteUserByName(String email);
     public User getUserByName(String email);
     public User updateUser(String email, User body);
