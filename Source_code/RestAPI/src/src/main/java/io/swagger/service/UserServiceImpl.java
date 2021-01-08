@@ -120,12 +120,12 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
-    public List<User> findUsersByStatus(String firstName, String lastName, StatusEnum status, Long userTypeId, String email){
+    public List<User> findUsersByStatus(String firstName, String lastName, String status, Long userTypeId, String email){
         List<User> users = new ArrayList<>();
         User exampleUser = new User();
-        exampleUser.firstName(firstName).lastName(lastName).status(status).userTypeId(userTypeId).email(email);
-        users = bookRepository.findAll(Example.of(exampleUser));
-        return books;
+        exampleUser.firstName(firstName).lastName(lastName).status(User.StatusEnum.fromValue(status)).userTypeId(userTypeId).email(email);
+        users = userRepository.findAll(Example.of(exampleUser));
+        return users;
     }
 
 
