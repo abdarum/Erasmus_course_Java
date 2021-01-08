@@ -52,6 +52,68 @@ paths:
           description: "Forbidden"
       security:
       - bearerAuth: []
+    get:
+      tags:
+        - user
+      summary: Finds user items by params
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findUsersByStatus
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: query
+          required: false
+          type: string
+        - name: firstName
+          in: query
+          description: User first name
+          required: false
+          type: string
+        - name: lastName
+          in: query
+          description: User last name
+          required: false
+          type: string
+        - name: email
+          in: query
+          description: User last name
+          required: false
+          type: string
+        - name: userTypeId
+          in: query
+          description: User type id 
+          required: false
+          type: integer
+          format: int64
+        - name: status
+          in: query
+          description: User status
+          required: false
+          type: string
+          enum:
+            - active
+            - suspended
+            - inactive
+            - to veryfication
+          default: available
+        - name: gender
+          in: query
+          description: User gender, not implemented 
+          required: false
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: Invalid status value
+      security:
+        - bearerAuth: []
+
   /user/login:
     post:
       tags:
