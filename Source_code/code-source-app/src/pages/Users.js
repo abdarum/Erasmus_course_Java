@@ -7,6 +7,7 @@ import PageTitle from '../components/common/PageTitle';
 import { FetchContext } from '../context/FetchContext';
 import Card from '../components/common/Card';
 import defaultAvatar from './../images/defaultAvatar.png';
+import UserFullDetailsForm from '../components/UserFullDetailsForm';
 
 const UserDetailLabel = ({ text }) => (
   <p className="mt-2 uppercase font-bold text-gray-500 text-xs">
@@ -35,10 +36,10 @@ const UserDetail = ({ user }) => (
               dangerouslySetInnerHTML={{ __html: user.bio }}
             />
           ) : (
-            <p className="text-gray-500 italic">
-              No bio set
-            </p>
-          )}
+              <p className="text-gray-500 italic">
+                No bio set
+              </p>
+            )}
         </div>
       </div>
     </div>
@@ -52,10 +53,10 @@ const Users = () => {
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const { data } = await fetchContext.authAxios.get(
-          'users'
-        );
-        setUsers(data.users);
+        // const { data } = await fetchContext.authAxios.get(
+        //   'users'
+        // );
+        // setUsers(data.users);
       } catch (err) {
         console.log(err);
       }
@@ -67,10 +68,13 @@ const Users = () => {
     <>
       <PageTitle title="Users" />
       <div className="flex flex-col">
+        <Card>
+          <UserFullDetailsForm />
+        </Card>
         {!!users.length &&
           users.map(user => (
             <div className="m-2">
-              <UserDetail key={user._id} user={user} />
+              <UserFullDetailsForm key={user._id} user={user} />
             </div>
           ))}
       </div>

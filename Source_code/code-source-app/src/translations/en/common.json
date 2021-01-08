@@ -96,28 +96,40 @@
                 "settings": "Settings"
             }
         },
-
-        
-
-
-        "remove_below_translations": "remove_below_translations", 
-        "account_personal_data_info_component": {
+        "user_full_details_form_component": {
             "forms": {
                 "data": {
                     "first_name": "First Name",
                     "last_name": "Last Name",
                     "date_of_birth": "Date of birth",
-                    "education_level": "Education level"
+                    "education_level": "Education level",
+                    "user_type": "User type",
+                    "status": "Status",
+                    "phone": "Phone",
+                    "email": "Email",
+                    "password": "Password",
+                    "birthdate": "Birthday",
+                    "gender": "Gender",
+                    "address": "Address",
+                    "city": "City"
+
+
                 },
                 "validation": {
                     "first_name_is_required": "First name can not be empty. Refresh page to avoid changes",
                     "last_name_is_required": "Last name can not be empty. Refresh page to avoid changes"
                 }
             },
+            "new_user_header": "Create new user account",
             "some_data_visible_in_page_can_stay_unchanged": "Some data visible in page can stay unchanged. Please, sign in again",
             "save_button": "Save",
             "reset_changes_button": "Reset changes"
         },
+
+        
+
+
+        "remove_below_translations": "remove_below_translations", 
         "account_sensitive_data_info_component": {
             "forms": {
                 "data": {
@@ -237,8 +249,25 @@
             "groups": {
             }
         },
-
-
+        "user_type": {
+            "values": {
+                "1": "Admin",
+                "2": "Librarian",
+                "3": "Reader"
+            },
+            "groups": {
+            }
+        },
+        "status": {
+            "values": {
+                "active": "Active",
+                "suspended": "Suspended",
+                "inactive": "Inactive",
+                "to veryfication": "To veryfication"
+            },
+            "groups": {
+            }
+        },
 
         "remove_below_translations": "remove_below_translations", 
         "teaching_languages": {
