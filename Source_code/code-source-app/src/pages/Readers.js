@@ -29,7 +29,6 @@ const Readers = () => {
         const { data } = await fetchContext.authAxios.get(
           'user?' + qs.stringify(queryValues)
         );
-        console.log(data);
         setReaders(data);
       } catch (err) {
         console.log(err);

@@ -6,12 +6,13 @@ const getUserTypeSelectOptions = (initValue) => {
     ]
 
     const userTypeValuesSelect = [];
+    var userTypeSingleValueSelect = {};
 
     function setUserTypeSelect() {
         userTypeValues.forEach(function (entry) {
             if (initValue !== undefined) {
                 if (initValue === entry) {
-                    userTypeValuesSelect.push({ value: `${entry}`, label: 'datasets.user_type.values.' + `${entry}` });
+                    userTypeSingleValueSelect = { value: `${entry}`, label: 'datasets.user_type.values.' + `${entry}` };
                 }
             } else {
                 userTypeValuesSelect.push({ value: `${entry}`, label: 'datasets.user_type.values.' + `${entry}` });
@@ -21,14 +22,10 @@ const getUserTypeSelectOptions = (initValue) => {
 
     setUserTypeSelect();
 
-    return (userTypeValuesSelect);
+    return userTypeValuesSelect.length ? userTypeValuesSelect : userTypeSingleValueSelect;
 };
 
-const getUserTypeDatabaseValues = (initArray) => {
-    var returnValuesArray = []
-    initArray.forEach(function (entry) {
-        returnValuesArray.push(entry.value);
-    });
-    return returnValuesArray;
+const getUserTypeDatabaseValues = (initValue) => {
+    return initValue.value;
 }
-export  {getUserTypeSelectOptions, getUserTypeDatabaseValues};
+export { getUserTypeSelectOptions, getUserTypeDatabaseValues };

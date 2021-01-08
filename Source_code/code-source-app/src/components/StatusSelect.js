@@ -7,12 +7,13 @@ const getStatusSelectOptions = (initValue) => {
     ]
 
     const statusValuesSelect = [];
+    var statusSingleValueSelect = {};
 
     function setStatusSelect() {
         statusValues.forEach(function (entry) {
             if (initValue !== undefined) {
                 if (initValue === entry) {
-                    statusValuesSelect.push({ value: `${entry}`, label: 'datasets.status.values.' + `${entry}` });
+                    statusSingleValueSelect = { value: `${entry}`, label: 'datasets.status.values.' + `${entry}` };
                 }
             } else {
                 statusValuesSelect.push({ value: `${entry}`, label: 'datasets.status.values.' + `${entry}` });
@@ -22,14 +23,11 @@ const getStatusSelectOptions = (initValue) => {
 
     setStatusSelect();
 
-    return (statusValuesSelect);
+    return statusValuesSelect.length ? statusValuesSelect :statusSingleValueSelect;
 };
 
-const getStatusDatabaseValues = (initArray) => {
-    var returnValuesArray = []
-    initArray.forEach(function (entry) {
-        returnValuesArray.push(entry.value);
-    });
-    return returnValuesArray;
+const getStatusDatabaseValues = (initValue) => {
+    return initValue.value;
 }
+
 export  {getStatusSelectOptions, getStatusDatabaseValues};

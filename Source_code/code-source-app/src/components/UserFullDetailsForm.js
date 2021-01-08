@@ -11,8 +11,9 @@ import Select from 'react-select';
 import GradientButton from './common/GradientButton';
 import { FetchContext } from '../context/FetchContext';
 import { AuthContext } from '../context/AuthContext';
-import { getUserTypeSelectOptions } from './UserTypeSelect';
-import { getStatusSelectOptions } from './StatusSelect';
+import { getUserTypeSelectOptions, getUserTypeDatabaseValues } from './UserTypeSelect';
+import { getStatusSelectOptions, getStatusDatabaseValues } from './StatusSelect';
+import qs from 'query-string';
 
 
 const UserFullDetailsForm = ({ user, userTypeId, key }) => {
@@ -25,7 +26,6 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
 
 
   useEffect(() => {
-    console.log(user);
   }, []);
 
   const dumpUserInfo = {
@@ -51,32 +51,42 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
   }
 
   function translateOptions(options) {
-    options.forEach(function (entry) {
-      if (entry.label !== undefined) {
-        entry.label = t(entry.label);
+    if(Array.isArray(options)){
+      options.forEach(function (entry) {
+        if (entry.label !== undefined) {
+          entry.label = t(entry.label);
+        }
+        if (entry.options !== undefined) {
+          entry.options.forEach(function (entry) {
+            if (entry.label !== undefined) {
+              entry.label = t(entry.label);
+            }
+          });
+        }
+      });
+      return options;
+    } else {
+      if (options.label !== undefined) {
+        options.label = t(options.label);
       }
-      if (entry.options !== undefined) {
-        entry.options.forEach(function (entry) {
-          if (entry.label !== undefined) {
-            entry.label = t(entry.label);
-          }
-        });
-      }
-    });
-    return options;
+      return options;
+    }
   }
 
   const submitCredentialsReaderForm = async credentials => {
     try {
       var saveLessonItem = Object.assign({}, credentials);
-      saveLessonItem.userTypeId = credentials.userTypeId.value ? credentials.userTypeId.value : null;
-      saveLessonItem.status = credentials.status.value ? credentials.status.value : null;
+      saveLessonItem.userTypeId = getUserTypeDatabaseValues(credentials.userTypeId);
+      saveLessonItem.status = getStatusDatabaseValues(credentials.status);
       console.log(saveLessonItem);
 
+      var queryValues = {
+        token: auth.authState.token
+      }
       setSaveLoadingReaderForm(true);
       const { data } = credentials.id ? (
         await fetchContext.authAxios.put(
-          `/user/` + credentials.id,
+          `/user/` + credentials.id + '?' + qs.stringify(queryValues),
           saveLessonItem
         )
       ) : (
@@ -90,6 +100,7 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
       setSaveSuccessReaderForm(data.message);
       setSaveErrorReaderForm('');
     } catch (error) {
+      console.log(error);
       setSaveLoadingReaderForm(false);
       const { data } = error.response;
       setSaveErrorReaderForm(data.message);
