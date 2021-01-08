@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import FormSuccess from './FormSuccess';
@@ -10,10 +10,9 @@ import DatePicker from 'react-date-picker';
 import Select from 'react-select';
 import GradientButton from './common/GradientButton';
 import { FetchContext } from '../context/FetchContext';
-import { getEducationLevelSelectOptions } from './EducationLevelSelect';
 import { AuthContext } from '../context/AuthContext';
-import { getUserTypeSelectOptions, getUserTypeDatabaseValues } from './UserTypeSelect';
-import { getStatusSelectOptions, getStatusDatabaseValues } from './StatusSelect';
+import { getUserTypeSelectOptions } from './UserTypeSelect';
+import { getStatusSelectOptions } from './StatusSelect';
 
 
 const UserFullDetailsForm = ({ user, userTypeId, key }) => {
@@ -23,6 +22,11 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
   const [saveErrorReaderForm, setSaveErrorReaderForm] = useState();
   const { t } = useTranslation('common');
   const [saveLoadingReaderForm, setSaveLoadingReaderForm] = useState(false);
+
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   const dumpUserInfo = {
     id: null,
@@ -38,6 +42,13 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
     address: '',
     city: ''
   };
+
+  function prepareFormData(user) {
+    var processedUser = Object.assign({}, user);
+    processedUser.userTypeId = user.userTypeId ? translateOptions(getUserTypeSelectOptions(user.userTypeId)) : user.userTypeId;
+    processedUser.status = user.status ? translateOptions(getStatusSelectOptions(user.status)) : user.status;
+    return processedUser;
+  }
 
   function translateOptions(options) {
     options.forEach(function (entry) {
@@ -65,15 +76,15 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
       setSaveLoadingReaderForm(true);
       const { data } = credentials.id ? (
         await fetchContext.authAxios.put(
-          `/user/`+credentials.id,
+          `/user/` + credentials.id,
           saveLessonItem
         )
       ) : (
-        await fetchContext.authAxios.post(
-          `/user`,
-          saveLessonItem
-        )
-      );
+          await fetchContext.authAxios.post(
+            `/user`,
+            saveLessonItem
+          )
+        );
       setSaveLoadingReaderForm(false);
 
       setSaveSuccessReaderForm(data.message);
@@ -93,7 +104,7 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
 
   return (
     <Formik
-      initialValues={user ? user : dumpUserInfo}
+      initialValues={user ? prepareFormData(user) : prepareFormData(dumpUserInfo)}
       onSubmit={values => {
         submitCredentialsReaderForm(values);
       }
@@ -114,7 +125,11 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
             value="true"
           />
           <div>
-            <p className="font-bold text-lg">{t('components.user_full_details_form_component.new_user_header')}</p>
+            {values.id ? (
+              <p className="font-bold text-lg">{t('components.user_full_details_form_component.user_id_header') + values.id}</p>
+            ) : (
+                <p className="font-bold text-lg">{t('components.user_full_details_form_component.new_user_header')}</p>
+              )}
             <div className="flex">
               <div className="mb-2 px-1 w-1/4">
                 <div className="mb-1">
@@ -151,19 +166,22 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
                     setFieldValue("status", opt);
                   }} />
               </div>
-              <div className="mb-2 px-1 w-1/4">
-                <div className="mb-1">
-                  <Label text={t('components.user_full_details_form_component.forms.data.user_type')} />
+              {userTypeId ? (<p />) : (
+                <div className="mb-2 px-1 w-1/4">
+
+                  <div className="mb-1">
+                    <Label text={t('components.user_full_details_form_component.forms.data.user_type')} />
+                  </div>
+                  <Select
+                    name="userTypeId"
+                    id="userTypeId"
+                    value={values.userTypeId}
+                    options={translateOptions(getUserTypeSelectOptions())}
+                    onChange={(opt, e) => {
+                      setFieldValue("userTypeId", opt);
+                    }} />
                 </div>
-                <Select
-                  name="userTypeId"
-                  id="userTypeId"
-                  value={values.userTypeId}
-                  options={translateOptions(getUserTypeSelectOptions())}
-                  onChange={(opt, e) => {
-                    setFieldValue("userTypeId", opt);
-                  }} />
-              </div>
+              )}
             </div>
             <div className="flex">
               <div className="mb-2 px-1 w-1/4">
@@ -260,8 +278,9 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
             </div>
           </div>
         </Form>
-      )}
-    </Formik>
+      )
+      }
+    </Formik >
 
   );
 };

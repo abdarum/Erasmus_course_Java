@@ -40,14 +40,14 @@ const navItems = [
     allowedRoles: [librarian]
   },
   {
-    label: 'components.sidebar_component.link_label.operators',
-    path: 'notimplemented', // operators
+    label: 'components.sidebar_component.link_label.all_users',
+    path: 'notimplemented', // operators_and_admins
     icon: faUsersCog,
     allowedRoles: [admin]
   },
   {
-    label: 'components.sidebar_component.link_label.users',
-    path: 'users',
+    label: 'components.sidebar_component.link_label.readers',
+    path: 'readers',
     icon: faBookReader,
     allowedRoles: [admin, librarian]
   },

@@ -89,8 +89,8 @@
                 "find_books": "Find books",
                 "orders": "Orders",
                 "manage_orders": "Manage orders",
-                "operators": "Operators",
-                "users": "Users",
+                "readers": "Readers",
+                "all_users": "All users",
                 "reports": "Reports",
                 "account": "Account",
                 "settings": "Settings"
@@ -121,6 +121,7 @@
                 }
             },
             "new_user_header": "Create new user account",
+            "user_id_header": "User id: ",
             "some_data_visible_in_page_can_stay_unchanged": "Some data visible in page can stay unchanged. Please, sign in again",
             "save_button": "Save",
             "reset_changes_button": "Reset changes"

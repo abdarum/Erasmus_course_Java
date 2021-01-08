@@ -1,4 +1,4 @@
-const getUserTypeSelectOptions = (initArray) => {
+const getUserTypeSelectOptions = (initValue) => {
     const userTypeValues = [
         1,
         2,
@@ -9,8 +9,8 @@ const getUserTypeSelectOptions = (initArray) => {
 
     function setUserTypeSelect() {
         userTypeValues.forEach(function (entry) {
-            if (initArray !== undefined) {
-                if (initArray.includes(entry)) {
+            if (initValue !== undefined) {
+                if (initValue === entry) {
                     userTypeValuesSelect.push({ value: `${entry}`, label: 'datasets.user_type.values.' + `${entry}` });
                 }
             } else {

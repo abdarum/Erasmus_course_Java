@@ -27,6 +27,7 @@ const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard'));
 const FindLessons = lazy(() => import('./pages/FindLessons'));
 const Account = lazy(() => import('./pages/Account'));
 const Settings = lazy(() => import('./pages/Settings'));
+const Readers = lazy(() => import('./pages/Readers'));
 const Users = lazy(() => import('./pages/Users'));
 
 const LoadingFallback = () => (
@@ -61,8 +62,8 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
         auth.isAuthenticated() ? (
           <AppShell>{children}</AppShell>
         ) : (
-          <Redirect to="/" />
-        )
+            <Redirect to="/" />
+          )
       }
     ></Route>
   );
@@ -77,8 +78,8 @@ const AdminRoute = ({ children, ...rest }) => {
         auth.isAuthenticated() && auth.isAdmin() ? (
           <AppShell>{children}</AppShell>
         ) : (
-          <Redirect to="/" />
-        )
+            <Redirect to="/" />
+          )
       }
     ></Route>
   );
@@ -112,6 +113,9 @@ const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/users">
             <Users />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute path="/readers">
+            <Readers />
           </AuthenticatedRoute>
           <UnauthenticatedRoutes />
         </Switch>

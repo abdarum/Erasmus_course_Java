@@ -8,55 +8,27 @@ import { FetchContext } from '../context/FetchContext';
 import Card from '../components/common/Card';
 import defaultAvatar from './../images/defaultAvatar.png';
 import UserFullDetailsForm from '../components/UserFullDetailsForm';
-
-const UserDetailLabel = ({ text }) => (
-  <p className="mt-2 uppercase font-bold text-gray-500 text-xs">
-    {text}
-  </p>
-);
-const UserDetail = ({ user }) => (
-  <Card>
-    <div className="flex">
-      <div className="w-24">
-        <img
-          src={user.avatar || defaultAvatar}
-          alt="avatar"
-        />
-      </div>
-
-      <div>
-        <p className="font-bold text-lg">
-          {user.firstName} {user.lastName}
-        </p>
-
-        <div className="mt-2">
-          <UserDetailLabel text="Bio" />
-          {user.bio ? (
-            <div
-              dangerouslySetInnerHTML={{ __html: user.bio }}
-            />
-          ) : (
-              <p className="text-gray-500 italic">
-                No bio set
-              </p>
-            )}
-        </div>
-      </div>
-    </div>
-  </Card>
-);
+import { AuthContext } from './../context/AuthContext';
+import qs from 'query-string';
 
 const Users = () => {
   const fetchContext = useContext(FetchContext);
   const [users, setUsers] = useState([]);
+  const auth = useContext(AuthContext);
 
   useEffect(() => {
+    var queryValues = {
+      token: auth.authState.token,
+      userTypeId: undefined
+    }
+    console.log(queryValues);
     const getUsers = async () => {
       try {
-        // const { data } = await fetchContext.authAxios.get(
-        //   'users'
-        // );
-        // setUsers(data.users);
+        const { data } = await fetchContext.authAxios.get(
+          'user?' + qs.stringify(queryValues)
+        );
+        console.log(data);
+        setUsers(data);
       } catch (err) {
         console.log(err);
       }

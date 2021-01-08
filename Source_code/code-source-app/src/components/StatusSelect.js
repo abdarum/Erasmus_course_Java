@@ -1,4 +1,4 @@
-const getStatusSelectOptions = (initArray) => {
+const getStatusSelectOptions = (initValue) => {
     const statusValues = [
         "active",
         "suspended",
@@ -10,8 +10,8 @@ const getStatusSelectOptions = (initArray) => {
 
     function setStatusSelect() {
         statusValues.forEach(function (entry) {
-            if (initArray !== undefined) {
-                if (initArray.includes(entry)) {
+            if (initValue !== undefined) {
+                if (initValue === entry) {
                     statusValuesSelect.push({ value: `${entry}`, label: 'datasets.status.values.' + `${entry}` });
                 }
             } else {
