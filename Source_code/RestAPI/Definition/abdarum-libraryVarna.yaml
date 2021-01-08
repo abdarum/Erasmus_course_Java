@@ -779,6 +779,10 @@ definitions:
         format: date-time
       gender:
         type: string
+        enum:
+          - male
+          - female
+          - other
       address:
         type: string
       city:
