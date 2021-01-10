@@ -23,11 +23,11 @@ const getStatusSelectOptions = (initValue) => {
 
     setStatusSelect();
 
-    return statusValuesSelect.length ? statusValuesSelect :statusSingleValueSelect;
+    return statusValuesSelect.length ? statusValuesSelect : statusSingleValueSelect;
 };
 
 const getStatusDatabaseValues = (initValue) => {
     return initValue.value;
 }
 
-export  {getStatusSelectOptions, getStatusDatabaseValues};
+export { getStatusSelectOptions, getStatusDatabaseValues };

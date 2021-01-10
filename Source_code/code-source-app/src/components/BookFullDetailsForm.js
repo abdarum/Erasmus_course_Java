@@ -11,12 +11,12 @@ import Select from 'react-select';
 import GradientButton from './common/GradientButton';
 import { FetchContext } from '../context/FetchContext';
 import { AuthContext } from '../context/AuthContext';
-import { getUserTypeSelectOptions, getUserTypeDatabaseValues } from './UserTypeSelect';
+import { getAuthorSelectOptions, getAuthorDatabaseValues } from './AuthorSelect';
 import { getStatusSelectOptions, getStatusDatabaseValues } from './StatusSelect';
 import qs from 'query-string';
 
 
-const BookFullDetailsForm = ({ book, userTypeId, key }) => {
+const BookFullDetailsForm = ({ book, authorsRawList, key, statusSelectAvailable }) => {
   const fetchContext = useContext(FetchContext);
   const auth = useContext(AuthContext);
   const [saveSuccessBookFullDetailsForm, setSaveSuccessBookFullDetailsForm] = useState();
@@ -47,7 +47,7 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
 
   function prepareFormData(bookItem) {
     var processedBook = Object.assign({}, bookItem);
-    // processedBook.userTypeId = bookItem.userTypeId ? translateOptions(getUserTypeSelectOptions(bookItem.userTypeId)) : bookItem.userTypeId;
+    processedBook.authorId = bookItem.authorId ? getAuthorSelectOptions(authorsRawList, bookItem.authorId) : bookItem.authorId;
     // processedBook.status = bookItem.status ? translateOptions(getStatusSelectOptions(bookItem.status)) : bookItem.status;
     return processedBook;
   }
@@ -78,7 +78,7 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
   const submitCredentialsBookFullDetailsForm = async credentials => {
     try {
       var saveBookItem = Object.assign({}, credentials);
-      // saveBookItem.userTypeId = getUserTypeDatabaseValues(credentials.userTypeId);
+      saveBookItem.authorId = getAuthorDatabaseValues(credentials.authorId);
       // saveBookItem.status = getStatusDatabaseValues(credentials.status);
       console.log(saveBookItem);
 
@@ -145,15 +145,23 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
                   )}
               </div>
               <div className="mb-2 px-1 flex items-center">
-                <div className="mb-1 mr-2">
-                  <Label text={t('components.user_full_details_form_component.forms.data.status') + values.status} />
-                </div>
-                {/* <FormInput
-                  ariaLabel={t('components.book_full_details_form_component.forms.data.status')}
-                  name="status"
-                  type="text"
-                  placeholder={t('components.book_full_details_form_component.forms.data.status')}
-                /> */}
+                {statusSelectAvailable ? (
+                  <div>
+                    <div className="mb-1 mr-2">
+                      <Label text={t('components.user_full_details_form_component.forms.data.status_select')} />
+                    </div>
+                    <FormInput
+                      ariaLabel={t('components.book_full_details_form_component.forms.data.status')}
+                      name="status"
+                      type="text"
+                      placeholder={t('components.book_full_details_form_component.forms.data.status')}
+                    />
+                  </div>
+                ) : (
+                    <div className="mb-1 mr-2">
+                      <Label text={t('components.user_full_details_form_component.forms.data.status') + values.status} />
+                    </div>
+                  )}
               </div>
             </div>
             <div className="flex">
@@ -183,12 +191,18 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
                 <div className="mb-1">
                   <Label text={t('components.book_full_details_form_component.forms.data.author_id')} />
                 </div>
-                <FormInput
-                  ariaLabel={t('components.book_full_details_form_component.forms.data.author_id')}
-                  name="authorId"
-                  type="text"
-                  placeholder={t('components.book_full_details_form_component.forms.data.author_id')}
-                />
+                {authorsRawList ? (
+                  <Select
+                    name="status"
+                    id="status"
+                    value={values.authorId}
+                    options={getAuthorSelectOptions(authorsRawList)}
+                    onChange={(opt, e) => {
+                      setFieldValue("authorId", opt);
+                    }} />
+                ) : (
+                    <p>Loading ...</p>
+                  )}
               </div>
               <div className="mb-2 px-1 w-1/4">
                 <div className="mb-1">
@@ -225,7 +239,7 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
                   placeholder={t('components.book_full_details_form_component.forms.data.genre_id')}
                 />
               </div>
-              <div className="mb-2 mr-2 w-1/4">
+              <div className="mb-2 px-1 w-1/4">
                 <div className="mb-1">
                   <Label text={t('components.book_full_details_form_component.forms.data.sugered_period_id')} />
                 </div>
@@ -236,7 +250,7 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
                   placeholder={t('components.book_full_details_form_component.forms.data.sugered_period_id')}
                 />
               </div>
-              <div className="mb-2 ml-2 w-1/4">
+              <div className="mb-2 px-1 w-1/4">
                 <div className="mb-1">
                   <Label text={t('components.book_full_details_form_component.forms.data.sugered_place_id')} />
                 </div>

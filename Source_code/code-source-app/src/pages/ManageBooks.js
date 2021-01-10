@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 const ManageBooks = () => {
   const fetchContext = useContext(FetchContext);
   const [books, setBooks] = useState([]);
+  const [authorsRaw, setAuthorsRaw] = useState([]);
   const auth = useContext(AuthContext);
   const { t } = useTranslation('common');
 
@@ -33,7 +34,20 @@ const ManageBooks = () => {
         console.log(err);
       }
     };
+
+    const getAuthors = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/author'
+        );
+        console.log(data);
+        setAuthorsRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getBooks();
+    getAuthors();
   }, [fetchContext.authAxios]);
 
   return (
@@ -41,13 +55,13 @@ const ManageBooks = () => {
       <PageTitle title={t('pages.manage_books_page.title')} />
       <div className="flex flex-col">
         <Card>
-          <BookFullDetailsForm />
+          <BookFullDetailsForm authorsRawList={authorsRaw} />
         </Card>
         {!!books.length &&
           books.map(book => (
             <div className="m-2">
               <Card>
-                <BookFullDetailsForm key={book._id} book={book} />
+                <BookFullDetailsForm key={book._id} book={book} authorsRawList={authorsRaw} />
               </Card>
             </div>
           ))}
