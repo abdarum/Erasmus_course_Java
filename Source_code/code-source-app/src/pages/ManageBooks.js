@@ -6,7 +6,7 @@ import React, {
 import PageTitle from '../components/common/PageTitle';
 import { FetchContext } from '../context/FetchContext';
 import Card from '../components/common/Card';
-import UserFullDetailsForm from '../components/UserFullDetailsForm';
+import BookFullDetailsForm from '../components/BookFullDetailsForm';
 import { AuthContext } from './../context/AuthContext';
 import qs from 'query-string';
 import { useTranslation } from "react-i18next";
@@ -41,13 +41,13 @@ const ManageBooks = () => {
       <PageTitle title={t('pages.manage_books_page.title')} />
       <div className="flex flex-col">
         <Card>
-          {/* <UserFullDetailsForm /> */}
+          <BookFullDetailsForm />
         </Card>
         {!!books.length &&
-          books.map(user => (
+          books.map(book => (
             <div className="m-2">
               <Card>
-                {/* <UserFullDetailsForm key={user._id} user={user} /> */}
+                <BookFullDetailsForm key={book._id} book={book} />
               </Card>
             </div>
           ))}

@@ -135,6 +135,27 @@
             "save_button": "Save",
             "reset_changes_button": "Reset changes"
         },
+        "book_full_details_form_component": {
+            "forms": {
+                "data": {
+                    "name": "Name",
+                    "isbn": "ISBN",
+                    "author_id": "Author id",
+                    "page_count": "Page count",
+                    "cover_type_id": "Cover type id",
+                    "genre_id": "Genre id",
+                    "sugered_period_id": "Sugered period id",
+                    "sugered_place_id": "Sugered place id",
+                    "status": "Status"
+                },
+                "validation": {
+                }
+            },
+            "new_book_header": "Create new book item",
+            "book_id_header": "Book id: ",
+            "save_button": "Save"
+        },
+
 
         
 
