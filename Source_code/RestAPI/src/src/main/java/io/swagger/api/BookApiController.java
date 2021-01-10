@@ -88,6 +88,18 @@ public class BookApiController implements BookApi {
         return new ResponseEntity<List<Book>>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    public ResponseEntity<List<Book>> getAllBooks(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            if(bookService.isModifyBookPermittedForToken(token)){
+                List<Book> books = bookService.getAllBooks();
+                return ResponseEntity.ok(books);
+            }
+            return new ResponseEntity<List<Book>>(HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<List<Book>>(HttpStatus.BAD_REQUEST);
+    }
+
     public ResponseEntity<Book> getBookById(@ApiParam(value = "The id that needs to be fetched.",required=true) @PathVariable("id") Long id,@ApiParam(value = "") @Valid @RequestParam(value = "token", required = false) String token) {
         String accept = request.getHeader("Accept");
         if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){

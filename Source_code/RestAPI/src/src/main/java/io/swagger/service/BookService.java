@@ -36,6 +36,7 @@ public interface BookService {
     public String getCoverTypeNameById(Long id);
 
     public List<Book> findBookByStatus(String status, String author, String title, String genere);
+    public Boolean isModifyBookPermittedForToken(String token);
     public Boolean isModifyBookPermittedForToken(Book book, String token);
     public Boolean isModifyBookPermittedForToken(Long i, String token);
     public Boolean isViewBookPermittedForToken(Book book, String token);
