@@ -26,7 +26,7 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
 
 
   useEffect(() => {
-    if(book !== undefined){
+    if (book !== undefined) {
       console.log(book.status);
     }
 
@@ -47,8 +47,8 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
 
   function prepareFormData(bookItem) {
     var processedBook = Object.assign({}, bookItem);
-    processedBook.userTypeId = bookItem.userTypeId ? translateOptions(getUserTypeSelectOptions(bookItem.userTypeId)) : bookItem.userTypeId;
-    processedBook.status = bookItem.status ? translateOptions(getStatusSelectOptions(bookItem.status)) : bookItem.status;
+    // processedBook.userTypeId = bookItem.userTypeId ? translateOptions(getUserTypeSelectOptions(bookItem.userTypeId)) : bookItem.userTypeId;
+    // processedBook.status = bookItem.status ? translateOptions(getStatusSelectOptions(bookItem.status)) : bookItem.status;
     return processedBook;
   }
 
@@ -144,16 +144,16 @@ const BookFullDetailsForm = ({ book, userTypeId, key }) => {
                     <p className="font-bold text-lg">{t('components.book_full_details_form_component.new_book_header')}</p>
                   )}
               </div>
-              <div className="mb-2 px-1 w-1/3 flex items-center">
+              <div className="mb-2 px-1 flex items-center">
                 <div className="mb-1 mr-2">
-                  <Label text={t('components.book_full_details_form_component.forms.data.status')} />
+                  <Label text={t('components.user_full_details_form_component.forms.data.status') + values.status} />
                 </div>
-                <FormInput
+                {/* <FormInput
                   ariaLabel={t('components.book_full_details_form_component.forms.data.status')}
                   name="status"
                   type="text"
                   placeholder={t('components.book_full_details_form_component.forms.data.status')}
-                />
+                /> */}
               </div>
             </div>
             <div className="flex">
