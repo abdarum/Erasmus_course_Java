@@ -443,6 +443,19 @@ public class BookServiceImpl implements BookService {
         return books;
     }
 
+    @Override
+    public Boolean isModifyBookPermittedForToken(String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        if(token != null && requestUserTypeId != null){
+            return userTypeService.isModifyBookPermited(requestUserTypeId);
+        }
+
+        return false;
+    }
+
+    @Override
     public Boolean isModifyBookPermittedForToken(Book book, String token){
         Long requestUserId = userService.getUserIdFormToken(token);
         Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);

@@ -65,6 +65,16 @@ public interface BookApi {
         method = RequestMethod.GET)
     ResponseEntity<List<Book>> findBookByStatus(@ApiParam(value = "Status values that need to be considered for filter", allowableValues = "available, all") @Valid @RequestParam(value = "status", required = false) List<String> status,@ApiParam(value = "Author of the book") @Valid @RequestParam(value = "author", required = false) String author,@ApiParam(value = "Title of the book") @Valid @RequestParam(value = "title", required = false) String title,@ApiParam(value = "Genere of the book") @Valid @RequestParam(value = "genere", required = false) String genere);
 
+    @ApiOperation(value = "Get all books", nickname = "getAllBooks", notes = "Can be done only by librarian", response = Book.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "book", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Book.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid status value") })
+    @RequestMapping(value = "/book",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Book>> getAllBooks(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
     @ApiOperation(value = "Get book by book id", nickname = "getBookById", notes = "", response = Book.class, authorizations = {
         @Authorization(value = "bearerAuth")
