@@ -29,6 +29,7 @@ const Account = lazy(() => import('./pages/Account'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Readers = lazy(() => import('./pages/Readers'));
 const Users = lazy(() => import('./pages/Users'));
+const ManageBooks = lazy(() => import('./pages/ManageBooks'));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -116,6 +117,9 @@ const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/readers">
             <Readers />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute path="/manage-books">
+            <ManageBooks />
           </AuthenticatedRoute>
           <UnauthenticatedRoutes />
         </Switch>

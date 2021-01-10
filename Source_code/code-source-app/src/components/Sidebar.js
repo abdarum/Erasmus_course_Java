@@ -5,6 +5,7 @@ import {
   faBook,
   faBookOpen,
   faBookReader,
+  faEdit,
   faTasks,
   faList,
   faAddressCard,
@@ -32,6 +33,12 @@ const navItems = [
     path: 'orders', // orders
     icon: faBookOpen,
     allowedRoles: [reader]
+  },
+  {
+    label: 'components.sidebar_component.link_label.manage_books',
+    path: 'manage-books',
+    icon: faEdit,
+    allowedRoles: [librarian]
   },
   {
     label: 'components.sidebar_component.link_label.manage_orders',

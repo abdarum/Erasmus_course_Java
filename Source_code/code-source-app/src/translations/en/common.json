@@ -39,6 +39,9 @@
         "users_page": {
             "title": "Users"
         },
+        "manage_books_page": {
+            "title": "Manage books"
+        },
 
         
 
@@ -94,6 +97,7 @@
                 "find_books": "Find books",
                 "orders": "Orders",
                 "manage_orders": "Manage orders",
+                "manage_books": "Manage books",
                 "readers": "Readers",
                 "all_users": "All users",
                 "reports": "Reports",
