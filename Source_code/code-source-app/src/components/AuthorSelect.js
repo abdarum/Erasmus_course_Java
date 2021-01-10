@@ -1,6 +1,4 @@
 const getAuthorSelectOptions = (asyncList, initValue) => {
-    console.log(asyncList);
-
     const authorValuesSelect = [];
     var authorSingleValueSelect = {};
 

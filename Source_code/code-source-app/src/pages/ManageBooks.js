@@ -15,6 +15,7 @@ const ManageBooks = () => {
   const fetchContext = useContext(FetchContext);
   const [books, setBooks] = useState([]);
   const [authorsRaw, setAuthorsRaw] = useState([]);
+  const [coverTypesRaw, setCoverTypesRaw] = useState([]);
   const auth = useContext(AuthContext);
   const { t } = useTranslation('common');
 
@@ -22,25 +23,31 @@ const ManageBooks = () => {
     var queryValues = {
       token: auth.authState.token
     }
-    console.log(queryValues);
     const getBooks = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
-          '/book?'+qs.stringify(queryValues)
+          '/book?' + qs.stringify(queryValues)
         );
-        console.log(data);
         setBooks(data);
       } catch (err) {
         console.log(err);
       }
     };
-
+    const getCoverTypes = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/coverType'
+        );
+        setCoverTypesRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     const getAuthors = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
           '/dataset/author'
         );
-        console.log(data);
         setAuthorsRaw(data);
       } catch (err) {
         console.log(err);
@@ -48,6 +55,7 @@ const ManageBooks = () => {
     };
     getBooks();
     getAuthors();
+    getCoverTypes();
   }, [fetchContext.authAxios]);
 
   return (
@@ -55,13 +63,25 @@ const ManageBooks = () => {
       <PageTitle title={t('pages.manage_books_page.title')} />
       <div className="flex flex-col">
         <Card>
-          <BookFullDetailsForm authorsRawList={authorsRaw} />
+          <BookFullDetailsForm
+            authorsRawList={authorsRaw}
+            coverTypesRawList={coverTypesRaw}
+          // genereRawList={ }
+          // sugeredPeriodRawList={ }
+          // sugeredPlaceRawList={ }
+          />
         </Card>
         {!!books.length &&
           books.map(book => (
             <div className="m-2">
               <Card>
-                <BookFullDetailsForm key={book._id} book={book} authorsRawList={authorsRaw} />
+                <BookFullDetailsForm key={book._id} book={book}
+                  authorsRawList={authorsRaw}
+                  coverTypesRawList={coverTypesRaw}
+                // genereRawList={ }
+                // sugeredPeriodRawList={ }
+                // sugeredPlaceRawList={ }
+                />
               </Card>
             </div>
           ))}

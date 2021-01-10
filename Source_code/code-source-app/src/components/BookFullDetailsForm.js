@@ -12,11 +12,20 @@ import GradientButton from './common/GradientButton';
 import { FetchContext } from '../context/FetchContext';
 import { AuthContext } from '../context/AuthContext';
 import { getAuthorSelectOptions, getAuthorDatabaseValues } from './AuthorSelect';
-import { getStatusSelectOptions, getStatusDatabaseValues } from './StatusSelect';
+import { getCommonNameSelectOptions, getCommonNameDatabaseValues } from './CommonNameSelect';
 import qs from 'query-string';
 
 
-const BookFullDetailsForm = ({ book, authorsRawList, key, statusSelectAvailable }) => {
+const BookFullDetailsForm = ({
+  book,
+  authorsRawList,
+  coverTypesRawList,
+  genereRawList,
+  sugeredPeriodRawList,
+  sugeredPlaceRawList,
+  key,
+  statusSelectAvailable
+}) => {
   const fetchContext = useContext(FetchContext);
   const auth = useContext(AuthContext);
   const [saveSuccessBookFullDetailsForm, setSaveSuccessBookFullDetailsForm] = useState();
@@ -27,7 +36,7 @@ const BookFullDetailsForm = ({ book, authorsRawList, key, statusSelectAvailable 
 
   useEffect(() => {
     if (book !== undefined) {
-      console.log(book.status);
+      // console.log(book.status);
     }
 
   }, []);
@@ -48,6 +57,7 @@ const BookFullDetailsForm = ({ book, authorsRawList, key, statusSelectAvailable 
   function prepareFormData(bookItem) {
     var processedBook = Object.assign({}, bookItem);
     processedBook.authorId = bookItem.authorId ? getAuthorSelectOptions(authorsRawList, bookItem.authorId) : bookItem.authorId;
+    processedBook.coverTypeId = bookItem.coverTypeId ? getCommonNameSelectOptions(coverTypesRawList, bookItem.coverTypeId) : bookItem.coverTypeId;
     // processedBook.status = bookItem.status ? translateOptions(getStatusSelectOptions(bookItem.status)) : bookItem.status;
     return processedBook;
   }
@@ -79,6 +89,7 @@ const BookFullDetailsForm = ({ book, authorsRawList, key, statusSelectAvailable 
     try {
       var saveBookItem = Object.assign({}, credentials);
       saveBookItem.authorId = getAuthorDatabaseValues(credentials.authorId);
+      saveBookItem.coverTypeId = getCommonNameDatabaseValues(credentials.coverTypeId);
       // saveBookItem.status = getStatusDatabaseValues(credentials.status);
       console.log(saveBookItem);
 
@@ -193,8 +204,6 @@ const BookFullDetailsForm = ({ book, authorsRawList, key, statusSelectAvailable 
                 </div>
                 {authorsRawList ? (
                   <Select
-                    name="status"
-                    id="status"
                     value={values.authorId}
                     options={getAuthorSelectOptions(authorsRawList)}
                     onChange={(opt, e) => {
@@ -221,12 +230,16 @@ const BookFullDetailsForm = ({ book, authorsRawList, key, statusSelectAvailable 
                 <div className="mb-1">
                   <Label text={t('components.book_full_details_form_component.forms.data.cover_type_id')} />
                 </div>
-                <FormInput
-                  ariaLabel={t('components.book_full_details_form_component.forms.data.cover_type_id')}
-                  name="coverTypeId"
-                  type="number"
-                  placeholder={t('components.book_full_details_form_component.forms.data.cover_type_id')}
-                />
+                {coverTypesRawList ? (
+                  <Select
+                    value={values.coverTypeId}
+                    options={getCommonNameSelectOptions(coverTypesRawList)}
+                    onChange={(opt, e) => {
+                      setFieldValue("coverTypeId", opt);
+                    }} />
+                ) : (
+                    <p>Loading ...</p>
+                  )}
               </div>
               <div className="mb-2 px-1 w-1/4">
                 <div className="mb-1">
