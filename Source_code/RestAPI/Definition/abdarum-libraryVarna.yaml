@@ -16,6 +16,8 @@ tags:
     description: Everything about your Books
   - name: library
     description: Everything about Library
+  - name: dataset
+    description: Print datasets stored in database
 host: localhost:8080
 # basePath: /
 schemes:
@@ -495,6 +497,133 @@ paths:
               $ref: "#/definitions/Book"
         400:
           description: Invalid status value
+      security:
+        - bearerAuth: []
+  /dataset/author:
+    get:
+      tags:
+        - dataset
+      summary: Get authors dataset
+      description: Get authors dataset
+      operationId: getDatasetAuthors
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the author. If not entered then all authors are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Author"
+      security:
+        - bearerAuth: []
+  /dataset/coverType:
+    get:
+      tags:
+        - dataset
+      summary: Get cover type dataset
+      description: Get cover type dataset
+      operationId: getDatasetCoverType
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the cover type. If not entered then all cover types are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CoverType"
+      security:
+        - bearerAuth: []
+  /dataset/bookGenre:
+    get:
+      tags:
+        - dataset
+      summary: Get book genre dataset
+      description: Get book genre dataset
+      operationId: getDatasetBookGenre
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the book genre. If not entered then all book genre are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BookGenre"
+      security:
+        - bearerAuth: []
+
+  /dataset/borrowPeriod:
+    get:
+      tags:
+        - dataset
+      summary: Get borrow period dataset
+      description: Get borrow period dataset
+      operationId: getDatasetBorrowPeriod
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the borrow period. If not entered then all borrow period are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BorrowPeriod"
+      security:
+        - bearerAuth: []
+
+  /dataset/borrowPlace:
+    get:
+      tags:
+        - dataset
+      summary: Get borrow place dataset
+      description: Get borrow place dataset
+      operationId: getDatasetBorrowPlace
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the borrow place. If not entered then all borrow place are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BorrowPlace"
       security:
         - bearerAuth: []
 

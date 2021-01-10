@@ -25,6 +25,7 @@ public interface BookService {
     public Void initAuthorValues();
     public int countAuthors();
     public List<Author> getAllAuthors();
+    public Author getAuthorById(Long id);
     public String getAuthorNameById(Long id);
     public Void initBookGenreValues();
     public int countBookGenres();

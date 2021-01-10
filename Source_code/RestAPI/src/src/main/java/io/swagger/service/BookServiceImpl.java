@@ -356,6 +356,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Author getAuthorById(Long id){
+        Optional<Author> od = authorRepository.getAuthorById(id);
+        if(od.isPresent()) return od.get();
+        else return null;
+    }
+
+    @Override
     public String getAuthorNameById(Long id){
         Optional<Author> od = authorRepository.getAuthorById(id);
         String returnString = null;
