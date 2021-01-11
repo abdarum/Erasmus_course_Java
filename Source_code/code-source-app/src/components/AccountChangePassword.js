@@ -8,9 +8,12 @@ import { useTranslation } from "react-i18next";
 import FormInput from '../components/FormInput';
 import GradientButton from '../components/common/GradientButton';
 import { FetchContext } from '../context/FetchContext';
+import { AuthContext } from '../context/AuthContext';
+import qs from 'query-string';
 
 const AccountChangePassword = ({ user }) => {
   const fetchContext = useContext(FetchContext);
+  const auth = useContext(AuthContext);
   const [saveSuccessAccountChangePassword, setSaveSuccessAccountChangePassword] = useState();
   const [saveErrorAccountChangePassword, setSaveErrorAccountChangePassword] = useState();
   const { t } = useTranslation('common');
@@ -18,14 +21,23 @@ const AccountChangePassword = ({ user }) => {
 
   const submitCredentialsAccountChangePassword = async credentials => {
     try {
-      setSaveLoadingAccountChangePassword(true);
-      const { data } = await fetchContext.authAxios.put(
-        `/v1/users/password`,
-        credentials
-      );
-      setSaveLoadingAccountChangePassword(false);
-      setSaveSuccessAccountChangePassword(data.message);
-      setSaveErrorAccountChangePassword('');
+      if(credentials.oldPassword !== auth.authState.userInfo.password){
+        setSaveLoadingAccountChangePassword(false);
+        setSaveErrorAccountChangePassword(t('components.account_change_password_component.forms.validation.wrong_old_password'));
+        setSaveSuccessAccountChangePassword('');
+      } else {
+        setSaveLoadingAccountChangePassword(true);
+        var queryValues = {
+          token: auth.authState.token
+        }
+        const { data } = await fetchContext.authAxios.put(
+          `/user/` + auth.authState.userInfo.id + '?' + qs.stringify(queryValues),
+          {password: credentials.newPassword}
+        )
+        setSaveLoadingAccountChangePassword(false);
+        setSaveSuccessAccountChangePassword(data.message);
+        setSaveErrorAccountChangePassword('');
+      }
     } catch (error) {
       console.log(error);
       setSaveLoadingAccountChangePassword(false);

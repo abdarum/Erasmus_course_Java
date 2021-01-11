@@ -42,31 +42,24 @@
         "manage_books_page": {
             "title": "Manage books"
         },
-
-        
-
-
-        "remove_below_translations": "remove_below_translations", 
         "account_page": {
             "title": "Account",
             "personal_info_section": {
                 "header": "Personal Info"
             },
-            "sensitive_data_section": {
-                "header": "Sensitive data"
-            },
             "change_password_section": {
                 "header": "Change password"
-            },
-            "user_role_section": {
-                "header": "User Role",
-                "select_a_role_for_yourself": "Select a role for yourself"
-            },
-            "user_avatar_section": {
-                "header": "Change your avatar",
-                "set_up_an_avatar_encourage": "Let people know and recognize you! Avatar will help "
             }
         },
+        "find_books_page": {
+            "no_books_found": "Sorry, no books found. Please try to search another filters",
+            "set_filters_and_search": "Set filters and click Find button to see results"
+        },
+
+        
+
+
+        "remove_below_translations": "remove_below_translations", 
         "teacher_dashboard_page": {
             "title": "Teacher Dashboard",
             "teacher_info_section": {
@@ -82,10 +75,6 @@
                 "header": "Add new lesson item",
                 "add_contact_info_before": "Before adding lesson items please save contact data"
             }
-        },
-        "find_lessons_page": {
-            "no_lesson_items": "Sorry, no lesson items found. Please try to search another classes",
-            "set_filters_and_search": "Set filters and click Find button to see results"
         }
     },
     "components": {
@@ -122,8 +111,6 @@
                     "gender": "Gender",
                     "address": "Address",
                     "city": "City"
-
-
                 },
                 "validation": {
                     "first_name_is_required": "First name can not be empty. Refresh page to avoid changes",
@@ -149,19 +136,52 @@
                     "sugered_place_id": "Sugered place id",
                     "status": "Status"
                 },
-                "validation": {
-                }
+                "validation": {}
             },
             "new_book_header": "Create new book item",
             "book_id_header": "Book id: ",
             "save_button": "Save"
         },
+        "books_find_filter_form_component": {
+            "forms": {
+                "data": {
+                    "title": "Title"
+                },
+                "validation": {}
+            },
+            "find_button": "Find"
+        },
+        "book_item_overview_short_component": {
+            "labels": {
+                "book_id_header": "Book id: ",
+                "not_available": "Not available",
+                "cover_type": "Cover type: ",
+                "sugered_place": "Sugered place: ",
+                "page_count": "Page count: "
+            },
+            "find_button": "Find"
+        },        
+        "account_change_password_component": {
+            "forms": {
+                "data": {
+                    "old_password": "Old password",
+                    "new_password": "New password",
+                    "repeat_new_password": "Repeat new password"
+                },
+                "validation": {
+                    "wrong_old_password": "Wrong old password was entered",
+                    "password_is_required": "Password is required",
+                    "passwords_not_mach": "Passwords must match"
+                }
+            },
+            "save_button": "Save"
+        },
 
 
-        
 
 
-        "remove_below_translations": "remove_below_translations", 
+
+        "remove_below_translations": "remove_below_translations",
         "account_sensitive_data_info_component": {
             "forms": {
                 "data": {
@@ -175,20 +195,6 @@
             },
             "some_data_visible_in_page_can_stay_unchanged": "Some data visible in page can stay unchanged. Please, sign in again",
             "description": "The following data will be used us to contact you. Other users will not have access to this data",
-            "save_button": "Save"
-        },
-        "account_change_password_component": {
-            "forms": {
-                "data": {
-                    "old_password": "Old password",
-                    "new_password": "New password",
-                    "repeat_new_password": "Repeat new password"
-                },
-                "validation": {
-                    "password_is_required": "Password is required",
-                    "passwords_not_mach": "Passwords must match"
-                }
-            },
             "save_button": "Save"
         },
         "teacher_contact_data_component": {
@@ -241,34 +247,6 @@
             "add_new_item_button": "Add new item",
             "do_you_want_delete_window": "Are you sure you want to delete this item?",
             "delete_button": "Delete"
-        },
-        "lesson_item_find_filter_form_component": {
-            "forms": {
-                "data": {
-                    "field_of_study": "Field of study",
-                    "education_level": "Education level",
-                    "teaching_languages": "Teaching languages",
-                    "hourly_rate_max": "Max hourly rate",
-                    "hourly_rate_min": "Min hourly rate"
-                },
-                "validation": {}
-            },
-            "find_button": "Find"
-        },
-        "lesson_item_overview_short_component": {
-            "labels": {
-                "first_free_lesson_enable": "Free first lesson!",
-                "hourly_rate": "Hourly rate",
-                "rating": "Rating",
-                "number_of_feedbacks": "Number of feedbacks: ",
-                "no_feedbacks_description": "There was no feedback",
-                "no_feedbacks_value": "?",
-                "teaching_languages": "Teaching languages",
-                "online_mode_enable": "Teacher can teach online",
-                "email_address": "Email address: ",
-                "phone_number": "Phone number: "
-            },
-            "find_button": "Find"
         }
     },
     "datasets": {
@@ -278,8 +256,7 @@
                 "female": "Female",
                 "other": "Other"
             },
-            "groups": {
-            }
+            "groups": {}
         },
         "user_type": {
             "values": {
@@ -287,8 +264,7 @@
                 "2": "Librarian",
                 "3": "Reader"
             },
-            "groups": {
-            }
+            "groups": {}
         },
         "status": {
             "values": {
@@ -297,8 +273,7 @@
                 "inactive": "Inactive",
                 "to veryfication": "To veryfication"
             },
-            "groups": {
-            }
+            "groups": {}
         },
 
         "remove_below_translations": "remove_below_translations", 

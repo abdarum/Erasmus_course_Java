@@ -1,25 +1,30 @@
 import React, { useContext, useState, useEffect } from 'react';
 import PageTitle from '../components/common/PageTitle';
 import Card from '../components/common/Card';
+import { AuthContext } from '../context/AuthContext';
 import { FetchContext } from '../context/FetchContext';
 import { useTranslation } from "react-i18next";
-import AccountPersonalData from './../components/AccountPersonalData';
-import AccountSensitiveData from './../components/AccountSensitiveData';
+import UserFullDetailsForm from './../components/UserFullDetailsForm';
 import AccountChangePassword from './../components/AccountChangePassword';
+import qs from 'query-string';
 
 
 const Account = () => {
   const fetchContext = useContext(FetchContext);
+  const auth = useContext(AuthContext);
   const { t } = useTranslation('common');
   const [userData, setUserData] = useState();
 
   useEffect(() => {
+    var queryValues = {
+      token: auth.authState.token
+    }
     const getUserData = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
-          '/v1/users'
+          '/user/' + auth.authState.userInfo.id + '?' + qs.stringify(queryValues)
         );
-        setUserData(data.user);
+        setUserData(data);
       } catch (err) {
         console.log(err);
       }
@@ -34,28 +39,22 @@ const Account = () => {
       <Card>
         <p className="font-bold">{t('pages.account_page.personal_info_section.header')}</p>
         {userData && (
-                <AccountPersonalData
-                  user={userData}
-                />
-              )}
-      </Card>
-      <br />      
-      <Card>
-        <p className="font-bold">{t('pages.account_page.sensitive_data_section.header')}</p>
-        {userData && (
-                <AccountSensitiveData
-                  user={userData}
-                />
-              )}
+          <UserFullDetailsForm
+            user={userData}
+            passwordNotVisible
+            statusNotEditable
+            userTypeNotEditable
+          />
+        )}
       </Card>
       <br />
       <Card>
         <p className="font-bold">{t('pages.account_page.change_password_section.header')}</p>
         {userData && (
-                <AccountChangePassword
-                  user={userData}
-                />
-              )}
+          <AccountChangePassword
+            user={userData}
+          />
+        )}
       </Card>
     </>
   );

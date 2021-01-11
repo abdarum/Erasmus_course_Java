@@ -24,7 +24,7 @@ import FiveOOne from './pages/FiveOOne';
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Inventory = lazy(() => import('./pages/Inventory'));
 const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard'));
-const FindLessons = lazy(() => import('./pages/FindLessons'));
+const FindBooks = lazy(() => import('./pages/FindBooks'));
 const Account = lazy(() => import('./pages/Account'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Readers = lazy(() => import('./pages/Readers'));
@@ -101,7 +101,7 @@ const AppRoutes = () => {
             <Inventory />
           </AdminRoute>
           <AuthenticatedRoute path="/find-books">
-            <FindLessons />
+            <FindBooks />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/orders">
             <TeacherDashboard />

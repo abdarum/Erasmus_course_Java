@@ -16,7 +16,7 @@ import { getStatusSelectOptions, getStatusDatabaseValues } from './StatusSelect'
 import qs from 'query-string';
 
 
-const UserFullDetailsForm = ({ user, userTypeId, key }) => {
+const UserFullDetailsForm = ({ user, userTypeId, key, passwordNotVisible, statusNotEditable, userTypeNotEditable }) => {
   const fetchContext = useContext(FetchContext);
   const auth = useContext(AuthContext);
   const [saveSuccessReaderForm, setSaveSuccessReaderForm] = useState();
@@ -51,7 +51,7 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
   }
 
   function translateOptions(options) {
-    if(Array.isArray(options)){
+    if (Array.isArray(options)) {
       options.forEach(function (entry) {
         if (entry.label !== undefined) {
           entry.label = t(entry.label);
@@ -171,6 +171,7 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
                 <Select
                   name="status"
                   id="status"
+                  isDisabled={statusNotEditable}
                   value={values.status}
                   options={translateOptions(getStatusSelectOptions())}
                   onChange={(opt, e) => {
@@ -186,6 +187,7 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
                   <Select
                     name="userTypeId"
                     id="userTypeId"
+                    isDisabled={userTypeNotEditable}
                     value={values.userTypeId}
                     options={translateOptions(getUserTypeSelectOptions())}
                     onChange={(opt, e) => {
@@ -217,17 +219,19 @@ const UserFullDetailsForm = ({ user, userTypeId, key }) => {
                   placeholder={t('components.user_full_details_form_component.forms.data.email')}
                 />
               </div>
-              <div className="mb-2 mr-2 w-1/4">
-                <div className="mb-1">
-                  <Label text={t('components.user_full_details_form_component.forms.data.password')} />
+              {passwordNotVisible ? <div /> : (
+                <div className="mb-2 mr-2 w-1/4">
+                  <div className="mb-1">
+                    <Label text={t('components.user_full_details_form_component.forms.data.password')} />
+                  </div>
+                  <FormInput
+                    ariaLabel={t('components.user_full_details_form_component.forms.data.password')}
+                    name="password"
+                    type="password"
+                    placeholder={t('components.user_full_details_form_component.forms.data.password')}
+                  />
                 </div>
-                <FormInput
-                  ariaLabel={t('components.user_full_details_form_component.forms.data.password')}
-                  name="password"
-                  type="password"
-                  placeholder={t('components.user_full_details_form_component.forms.data.password')}
-                />
-              </div>
+              )}
               <div className="mb-2 ml-2 w-1/4">
               </div>
             </div>
