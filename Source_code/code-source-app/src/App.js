@@ -21,9 +21,6 @@ import Signup from './pages/Signup';
 import FourOFour from './pages/FourOFour';
 import FiveOOne from './pages/FiveOOne';
 
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Inventory = lazy(() => import('./pages/Inventory'));
-const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard'));
 const FindBooks = lazy(() => import('./pages/FindBooks'));
 const Account = lazy(() => import('./pages/Account'));
 const Settings = lazy(() => import('./pages/Settings'));
@@ -91,20 +88,15 @@ const AppRoutes = () => {
     <>
       <Suspense fallback={<LoadingFallback />}>
         <Switch>
-          <AuthenticatedRoute path="/dashboard">
-            <Dashboard />
-          </AuthenticatedRoute>
           <AuthenticatedRoute path="/notimplemented">
             <FiveOOne />
           </AuthenticatedRoute>
           <AdminRoute path="/inventory">
-            <Inventory />
           </AdminRoute>
           <AuthenticatedRoute path="/find-books">
             <FindBooks />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="/orders">
-            <TeacherDashboard />
+          <AuthenticatedRoute path="/order">
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/account">
             <Account />

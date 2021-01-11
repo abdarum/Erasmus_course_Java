@@ -83,7 +83,6 @@ const FindBooks = () => {
         <BooksFindFilterForm
           onChange={(data) => {
             setFoundBooks(data);
-            console.log(data);
             setBeforeFirstSearch(false);
           }}
         />
