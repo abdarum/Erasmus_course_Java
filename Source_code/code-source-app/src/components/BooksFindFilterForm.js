@@ -30,8 +30,6 @@ const BooksFindFilterForm = ({ onChange }) => {
   const submitCredentialsLessonItemForm = async credentials => {
     try {
       var saveBookItem = Object.assign({}, credentials);
-      console.log(saveBookItem);
-
 
       setSaveLoadingLessonItemForm(true);
       const { data } = await fetchContext.authAxios.get(

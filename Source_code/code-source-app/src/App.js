@@ -21,12 +21,14 @@ import Signup from './pages/Signup';
 import FourOFour from './pages/FourOFour';
 import FiveOOne from './pages/FiveOOne';
 
+const Order = lazy(() => import('./pages/Order'));
 const FindBooks = lazy(() => import('./pages/FindBooks'));
 const Account = lazy(() => import('./pages/Account'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Readers = lazy(() => import('./pages/Readers'));
 const Users = lazy(() => import('./pages/Users'));
 const ManageBooks = lazy(() => import('./pages/ManageBooks'));
+const ManageOrders = lazy(() => import('./pages/ManageOrders'));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -92,11 +94,13 @@ const AppRoutes = () => {
             <FiveOOne />
           </AuthenticatedRoute>
           <AdminRoute path="/inventory">
+            <Order />
           </AdminRoute>
           <AuthenticatedRoute path="/find-books">
             <FindBooks />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/order">
+            <Order />
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/account">
             <Account />
@@ -112,6 +116,9 @@ const AppRoutes = () => {
           </AuthenticatedRoute>
           <AuthenticatedRoute path="/manage-books">
             <ManageBooks />
+          </AuthenticatedRoute>
+          <AuthenticatedRoute path="/manage-orders">
+            <ManageOrders />
           </AuthenticatedRoute>
           <UnauthenticatedRoutes />
         </Switch>

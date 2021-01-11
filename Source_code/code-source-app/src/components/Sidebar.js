@@ -42,7 +42,7 @@ const navItems = [
   },
   {
     label: 'components.sidebar_component.link_label.manage_orders',
-    path: 'notimplemented', //manage-orders
+    path: 'manage-orders',
     icon: faTasks,
     allowedRoles: [librarian]
   },

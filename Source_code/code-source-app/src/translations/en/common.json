@@ -42,6 +42,9 @@
         "manage_books_page": {
             "title": "Manage books"
         },
+        "manage_orders_page": {
+            "title": "Manage orders"
+        },
         "account_page": {
             "title": "Account",
             "personal_info_section": {
@@ -159,7 +162,8 @@
                 "sugered_place": "Sugered place: ",
                 "page_count": "Page count: "
             },
-            "find_button": "Find"
+            "find_button": "Find",
+            "borrow_button": "Borrow"
         },        
         "account_change_password_component": {
             "forms": {

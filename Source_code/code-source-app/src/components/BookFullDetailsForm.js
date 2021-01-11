@@ -32,13 +32,14 @@ const BookFullDetailsForm = ({
   const [saveErrorBookFullDetailsForm, setSaveErrorBookFullDetailsForm] = useState();
   const { t } = useTranslation('common');
   const [saveLoadingBookFullDetailsForm, setSaveLoadingBookFullDetailsForm] = useState(false);
+  const statusSelectValues = [
+    { value: "available", label: "available" },
+    { value: "in use", label: "in use" },
+    { value: "archived", label: "archived" }
+  ]
 
 
   useEffect(() => {
-    if (book !== undefined) {
-      // console.log(book.status);
-    }
-
   }, []);
 
   const dumpBookInfo = {
@@ -61,6 +62,7 @@ const BookFullDetailsForm = ({
     processedBook.genreId = bookItem.genreId ? getCommonNameSelectOptions(bookGenresRawList, bookItem.genreId) : bookItem.genreId;
     processedBook.sugeredPeriodId = bookItem.sugeredPeriodId ? getCommonNameSelectOptions(borrowPeriodsRawList, bookItem.sugeredPeriodId) : bookItem.sugeredPeriodId;
     processedBook.sugeredPlaceId = bookItem.sugeredPlaceId ? getCommonNameSelectOptions(borrowPlaceRawList, bookItem.sugeredPlaceId) : bookItem.sugeredPlaceId;
+    processedBook.status = { value: bookItem.status, label: bookItem.status };
     return processedBook;
   }
 
@@ -73,6 +75,7 @@ const BookFullDetailsForm = ({
       saveBookItem.genreId = getCommonNameDatabaseValues(credentials.genreId);
       saveBookItem.sugeredPeriodId = getCommonNameDatabaseValues(credentials.sugeredPeriodId);
       saveBookItem.sugeredPlaceId = getCommonNameDatabaseValues(credentials.sugeredPlaceId);
+      saveBookItem.status = getCommonNameDatabaseValues(credentials.status);
       console.log(saveBookItem);
 
       var queryValues = {
@@ -129,33 +132,33 @@ const BookFullDetailsForm = ({
             value="true"
           />
           <div>
-            <div className="flex justify-between">
-              <div className="mb-2 px-1 w-1/4">
+            <div className="flex justify-between mb-2">
+              <div className="px-1 w-1/4">
                 {values.id ? (
                   <p className="font-bold text-lg">{t('components.book_full_details_form_component.book_id_header') + values.id}</p>
                 ) : (
                     <p className="font-bold text-lg">{t('components.book_full_details_form_component.new_book_header')}</p>
                   )}
               </div>
-              <div className="mb-2 px-1 flex items-center">
-                {statusSelectAvailable ? (
-                  <div>
-                    <div className="mb-1 mr-2">
-                      <Label text={t('components.user_full_details_form_component.forms.data.status_select')} />
-                    </div>
-                    <FormInput
-                      ariaLabel={t('components.book_full_details_form_component.forms.data.status')}
-                      name="status"
-                      type="text"
-                      placeholder={t('components.book_full_details_form_component.forms.data.status')}
-                    />
+              {values.status.value !== "in use" ? (
+                <div className="flex items-center w-1/6">
+                  <div className="mr-2">
+                    <Label text={t('components.user_full_details_form_component.forms.data.status_select')} />
                   </div>
-                ) : (
-                    <div className="mb-1 mr-2">
-                      <Label text={t('components.user_full_details_form_component.forms.data.status') + values.status} />
-                    </div>
-                  )}
-              </div>
+                  <div className="w-full">
+                    <Select
+                      value={values.status}
+                      options={statusSelectValues}
+                      onChange={(opt, e) => {
+                        setFieldValue("status", opt);
+                      }} />
+                  </div>
+                </div>
+              ) : (
+                  <div className="">
+                    <Label text={t('components.user_full_details_form_component.forms.data.status') + values.status.label} />
+                  </div>
+                )}
             </div>
             <div className="flex">
               <div className="mb-2 px-1 w-1/4">
