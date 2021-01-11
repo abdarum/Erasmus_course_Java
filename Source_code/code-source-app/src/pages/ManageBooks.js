@@ -16,6 +16,9 @@ const ManageBooks = () => {
   const [books, setBooks] = useState([]);
   const [authorsRaw, setAuthorsRaw] = useState([]);
   const [coverTypesRaw, setCoverTypesRaw] = useState([]);
+  const [bookGenresRaw, setBookGenresRaw] = useState([]);
+  const [borrowPeriodsRaw, setBorrowPeriodsRaw] = useState([]);
+  const [borrowPlaceRaw, setBorrowPlaceRaw] = useState([]);
   const auth = useContext(AuthContext);
   const { t } = useTranslation('common');
 
@@ -53,9 +56,42 @@ const ManageBooks = () => {
         console.log(err);
       }
     };
+    const getBookGenres = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/bookGenre'
+        );
+        setBookGenresRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getBorrowPeriods = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/borrowPeriod'
+        );
+        setBorrowPeriodsRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getBorrowPlace = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/borrowPlace'
+        );
+        setBorrowPlaceRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getBooks();
     getAuthors();
     getCoverTypes();
+    getBookGenres();
+    getBorrowPeriods();
+    getBorrowPlace();
   }, [fetchContext.authAxios]);
 
   return (
@@ -66,9 +102,9 @@ const ManageBooks = () => {
           <BookFullDetailsForm
             authorsRawList={authorsRaw}
             coverTypesRawList={coverTypesRaw}
-          // genereRawList={ }
-          // sugeredPeriodRawList={ }
-          // sugeredPlaceRawList={ }
+            bookGenresRawList={bookGenresRaw}
+            borrowPeriodsRawList={borrowPeriodsRaw}
+            borrowPlaceRawList={borrowPlaceRaw}
           />
         </Card>
         {!!books.length &&
@@ -78,9 +114,9 @@ const ManageBooks = () => {
                 <BookFullDetailsForm key={book._id} book={book}
                   authorsRawList={authorsRaw}
                   coverTypesRawList={coverTypesRaw}
-                // genereRawList={ }
-                // sugeredPeriodRawList={ }
-                // sugeredPlaceRawList={ }
+                  bookGenresRawList={bookGenresRaw}
+                  borrowPeriodsRawList={borrowPeriodsRaw}
+                  borrowPlaceRawList={borrowPlaceRaw}
                 />
               </Card>
             </div>

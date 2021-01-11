@@ -20,9 +20,9 @@ const BookFullDetailsForm = ({
   book,
   authorsRawList,
   coverTypesRawList,
-  genereRawList,
-  sugeredPeriodRawList,
-  sugeredPlaceRawList,
+  bookGenresRawList,
+  borrowPeriodsRawList,
+  borrowPlaceRawList,
   key,
   statusSelectAvailable
 }) => {
@@ -58,39 +58,21 @@ const BookFullDetailsForm = ({
     var processedBook = Object.assign({}, bookItem);
     processedBook.authorId = bookItem.authorId ? getAuthorSelectOptions(authorsRawList, bookItem.authorId) : bookItem.authorId;
     processedBook.coverTypeId = bookItem.coverTypeId ? getCommonNameSelectOptions(coverTypesRawList, bookItem.coverTypeId) : bookItem.coverTypeId;
-    // processedBook.status = bookItem.status ? translateOptions(getStatusSelectOptions(bookItem.status)) : bookItem.status;
+    processedBook.genreId = bookItem.genreId ? getCommonNameSelectOptions(bookGenresRawList, bookItem.genreId) : bookItem.genreId;
+    processedBook.sugeredPeriodId = bookItem.sugeredPeriodId ? getCommonNameSelectOptions(borrowPeriodsRawList, bookItem.sugeredPeriodId) : bookItem.sugeredPeriodId;
+    processedBook.sugeredPlaceId = bookItem.sugeredPlaceId ? getCommonNameSelectOptions(borrowPlaceRawList, bookItem.sugeredPlaceId) : bookItem.sugeredPlaceId;
     return processedBook;
   }
 
-  function translateOptions(options) {
-    if (Array.isArray(options)) {
-      options.forEach(function (entry) {
-        if (entry.label !== undefined) {
-          entry.label = t(entry.label);
-        }
-        if (entry.options !== undefined) {
-          entry.options.forEach(function (entry) {
-            if (entry.label !== undefined) {
-              entry.label = t(entry.label);
-            }
-          });
-        }
-      });
-      return options;
-    } else {
-      if (options.label !== undefined) {
-        options.label = t(options.label);
-      }
-      return options;
-    }
-  }
 
   const submitCredentialsBookFullDetailsForm = async credentials => {
     try {
       var saveBookItem = Object.assign({}, credentials);
       saveBookItem.authorId = getAuthorDatabaseValues(credentials.authorId);
       saveBookItem.coverTypeId = getCommonNameDatabaseValues(credentials.coverTypeId);
-      // saveBookItem.status = getStatusDatabaseValues(credentials.status);
+      saveBookItem.genreId = getCommonNameDatabaseValues(credentials.genreId);
+      saveBookItem.sugeredPeriodId = getCommonNameDatabaseValues(credentials.sugeredPeriodId);
+      saveBookItem.sugeredPlaceId = getCommonNameDatabaseValues(credentials.sugeredPlaceId);
       console.log(saveBookItem);
 
       var queryValues = {
@@ -245,34 +227,46 @@ const BookFullDetailsForm = ({
                 <div className="mb-1">
                   <Label text={t('components.book_full_details_form_component.forms.data.genre_id')} />
                 </div>
-                <FormInput
-                  ariaLabel={t('components.book_full_details_form_component.forms.data.genre_id')}
-                  name="genreId"
-                  type="number"
-                  placeholder={t('components.book_full_details_form_component.forms.data.genre_id')}
-                />
+                {bookGenresRawList ? (
+                  <Select
+                    value={values.genreId}
+                    options={getCommonNameSelectOptions(bookGenresRawList)}
+                    onChange={(opt, e) => {
+                      setFieldValue("genreId", opt);
+                    }} />
+                ) : (
+                    <p>Loading ...</p>
+                  )}
               </div>
               <div className="mb-2 px-1 w-1/4">
                 <div className="mb-1">
                   <Label text={t('components.book_full_details_form_component.forms.data.sugered_period_id')} />
                 </div>
-                <FormInput
-                  ariaLabel={t('components.book_full_details_form_component.forms.data.sugered_period_id')}
-                  name="sugeredPeriodId"
-                  type="number"
-                  placeholder={t('components.book_full_details_form_component.forms.data.sugered_period_id')}
-                />
+                {borrowPeriodsRawList ? (
+                  <Select
+                    value={values.sugeredPeriodId}
+                    options={getCommonNameSelectOptions(borrowPeriodsRawList)}
+                    onChange={(opt, e) => {
+                      setFieldValue("sugeredPeriodId", opt);
+                    }} />
+                ) : (
+                    <p>Loading ...</p>
+                  )}
               </div>
               <div className="mb-2 px-1 w-1/4">
                 <div className="mb-1">
                   <Label text={t('components.book_full_details_form_component.forms.data.sugered_place_id')} />
                 </div>
-                <FormInput
-                  ariaLabel={t('components.book_full_details_form_component.forms.data.sugered_place_id')}
-                  name="sugeredPlaceId"
-                  type="number"
-                  placeholder={t('components.book_full_details_form_component.forms.data.sugered_place_id')}
-                />
+                {borrowPlaceRawList ? (
+                  <Select
+                    value={values.sugeredPlaceId}
+                    options={getCommonNameSelectOptions(borrowPlaceRawList)}
+                    onChange={(opt, e) => {
+                      setFieldValue("sugeredPlaceId", opt);
+                    }} />
+                ) : (
+                    <p>Loading ...</p>
+                  )}
               </div>
             </div>
           </div>
