@@ -4,6 +4,7 @@ import { Formik, Form, Field } from 'formik';
 import FormSuccess from './FormSuccess';
 import FormError from './FormError';
 import Label from './common/Label';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import FormInput from './FormInput';
 import GradientButton from './common/GradientButton';
@@ -20,6 +21,7 @@ import qs from 'query-string';
 import Card from './common/Card';
 
 const OrderForm = ({ orderItem, disabled, librarianMode }) => {
+  const history = useHistory();
   const authContext = useContext(AuthContext);
   const fetchContext = useContext(FetchContext);
   const [saveSuccessLessonItemForm, setSaveSuccessLessonItemForm] = useState();
@@ -41,7 +43,7 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
     id: '',
     userId: '',
     bookId: '',
-    damageNotes: '',
+    damageNotes: null,
     borrowedDate: null,
     returnedDate: null,
     placeId: '',
@@ -198,10 +200,16 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
             saveLessonItem
           )
         );
+      history.push(data ? "/order?" + qs.stringify({ id: data.id }) : "/find-books");
       setSaveLoadingLessonItemForm(false);
 
       setSaveSuccessLessonItemForm(data.message);
       setSaveErrorLessonItemForm('');
+      if (data) {
+        setTimeout(() => {
+          window.location.reload();
+        }, 700);
+      }
     } catch (error) {
       console.log(error);
       setSaveLoadingLessonItemForm(false);
