@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import PageTitle from '../components/common/PageTitle';
 import { FetchContext } from '../context/FetchContext';
-import { formatCurrency } from '../util';
+import Card from '../components/common/Card';
 import OrderForm from '../components/OrderForm';
 import DangerButton from '../components/common/DangerButton';
 import FormError from '../components/FormError';
@@ -61,13 +61,15 @@ const Order = () => {
   return (
     <>
       <PageTitle title="Order" />
-      {order ? (
+      {/* {order ? (
         <></>
-      ) : (
-          <OrderForm
-            orderItem={order}
-          />
-        )}
+      ) : ( */}
+      <Card>
+        <OrderForm
+          orderItem={order}
+        />
+      </Card>
+      {/* )} */}
 
     </>
   );

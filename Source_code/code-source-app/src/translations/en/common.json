@@ -164,7 +164,19 @@
             },
             "find_button": "Find",
             "borrow_button": "Borrow"
-        },        
+        },     
+        "user_overview_short_component": {
+            "labels": {
+                "phone": "Phone: ",
+                "email": "Email: ",
+                "birthdate": "Birthdate: ",
+                "address": "Address: ",
+                "city": "City: ",
+                "not_available": "Not available"
+            },
+            "find_button": "Find",
+            "borrow_button": "Borrow"
+        },     
         "account_change_password_component": {
             "forms": {
                 "data": {
@@ -180,7 +192,24 @@
             },
             "save_button": "Save"
         },
-
+        "order_form_component": {
+            "forms": {
+                "data": {
+                    "user_id": "User id",
+                    "book_id": "Book id",
+                    "description": "Damage notes",
+                    "description_placeholder": "Description of damage",
+                    "book_overview": "Book overview",
+                    "book_overview_not_found": "Sorry, book was not found",
+                    "user_overview": "User overview",
+                    "user_overview_not_found": "Sorry, user was not found"
+                },
+                "validation": {
+                }
+            },
+            "save_changes_button": "Save changes",
+            "add_new_item_button": "Borrow"
+        },
 
 
 

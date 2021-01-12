@@ -7,7 +7,8 @@ const FormInput = ({
   ariaLabel,
   name,
   type,
-  placeholder
+  placeholder,
+  onClick
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -18,6 +19,7 @@ const FormInput = ({
         name={field.name}
         type={type}
         placeholder={placeholder}
+        onClick={onClick}
       />
       {meta.touched && meta.error ? (
         <FormError text={meta.error}></FormError>

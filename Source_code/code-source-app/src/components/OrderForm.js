@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import FormSuccess from './FormSuccess';
@@ -14,6 +14,10 @@ import Select from 'react-select';
 import { getTeachingLanguagesSelectOptions, getTeachingLanguagesDatabaseValues } from './TeachingLanguagesSelect';
 import { getEducationLevelSelectOptions, getEducationLevelDatabaseValues } from './EducationLevelSelect';
 import { getFieldOfStudySelectOptions, getFieldOfStudyDatabaseValues } from './FieldOfStudySelect';
+import BookItemOverviewShort from '../components/BookItemOverviewShort';
+import UserOverviewShort from '../components/UserOverviewShort';
+import qs from 'query-string';
+import Card from './common/Card';
 
 const OrderForm = ({ orderItem }) => {
   const authContext = useContext(AuthContext);
@@ -22,74 +26,177 @@ const OrderForm = ({ orderItem }) => {
   const [saveErrorLessonItemForm, setSaveErrorLessonItemForm] = useState();
   const { t } = useTranslation('common');
   const [saveLoadingLessonItemForm, setSaveLoadingLessonItemForm] = useState(false);
+  const [order, setOrder] = useState();
+  const [user, setUser] = useState();
+  const [book, setBook] = useState();
+  const [authorsRaw, setAuthorsRaw] = useState([]);
+  const [coverTypesRaw, setCoverTypesRaw] = useState([]);
+  const [bookGenresRaw, setBookGenresRaw] = useState([]);
+  const [borrowPeriodsRaw, setBorrowPeriodsRaw] = useState([]);
+  const [borrowPlaceRaw, setBorrowPlaceRaw] = useState([]);
+  const auth = useContext(AuthContext);
+  const formRef = useRef();
 
-  const dumpOrderItem = {
+  const dumpOrderItem = Object.assign({
     id: '',
     userId: '',
     bookId: '',
     damageNotes: '',
     placeId: '',
     periodId: ''
+  }, qs.parse(window.location.search));
+
+  var queryValues = {
+    token: auth.authState.token
+  }
+  const getOrder = async () => {
+    try {
+      if (dumpOrderItem.id) {
+        const { data } = await fetchContext.authAxios.get(
+          '/library/order/' + dumpOrderItem.id + '?' + qs.stringify(queryValues)
+        );
+        setOrder(data);
+        console.log(data);
+      } else {
+        console.log(dumpOrderItem);
+        setOrder(dumpOrderItem);
+      }
+    } catch (err) {
+      console.log('the err', err);
+    }
+  };
+  const getUser = async (userId) => {
+    try {
+      if (userId) {
+        const { data } = await fetchContext.authAxios.get(
+          '/user/' + userId + '?' + qs.stringify(queryValues)
+        );
+        setUser(data);
+        console.log(data);
+      }
+    } catch (err) {
+      console.log('the err', err);
+      setUser();
+    }
+  };
+  const getBook = async (bookId) => {
+    try {
+      if (bookId) {
+        const { data } = await fetchContext.authAxios.get(
+          '/book/' + bookId + '?' + qs.stringify(queryValues)
+        );
+        setBook(data);
+        formRef.current.values.placeId = data.sugeredPlaceId;
+        formRef.current.values.periodId = data.sugeredPeriodId;
+      }
+    } catch (err) {
+      console.log('the err', err);
+      setBook();
+    }
   };
 
   useEffect(() => {
-    console.log(orderItem);
+    const getCoverTypes = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/coverType'
+        );
+        setCoverTypesRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getAuthors = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/author'
+        );
+        setAuthorsRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getBookGenres = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/bookGenre'
+        );
+        setBookGenresRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getBorrowPeriods = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/borrowPeriod'
+        );
+        setBorrowPeriodsRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    const getBorrowPlace = async () => {
+      try {
+        const { data } = await fetchContext.authAxios.get(
+          '/dataset/borrowPlace'
+        );
+        setBorrowPlaceRaw(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAuthors();
+    getCoverTypes();
+    getBookGenres();
+    getBorrowPeriods();
+    getBorrowPlace();
+
+
+    getOrder();
+    getUser(dumpOrderItem.userId);
+    getBook(dumpOrderItem.bookId);
   }, []);
+
+  function onClick() {
+    if (book === undefined ||
+      isNaN(formRef.current.values.bookId) ? parseInt(formRef.current.values.bookId, 10) : formRef.current.values.bookId !== book.id) {
+      getBook(formRef.current.values.bookId);
+    }
+    if (user === undefined ||
+      isNaN(formRef.current.values.userId) ? parseInt(formRef.current.values.userId, 10) : formRef.current.values.userId != user.id) {
+      getUser(formRef.current.values.userId);
+    }
+  }
 
   const submitCredentialsLessonItemForm = async credentials => {
     try {
       var saveLessonItem = Object.assign({}, credentials);
-      saveLessonItem.teachingLanguages = Object.assign([], getTeachingLanguagesDatabaseValues(credentials.teachingLanguages));
-      saveLessonItem.educationLevel = Object.assign([], getEducationLevelDatabaseValues(credentials.educationLevel));
-      if (orderItem === undefined) {
-        saveLessonItem.fieldOfStudy = getFieldOfStudyDatabaseValues(credentials.fieldOfStudy);
-      }
+      // saveLessonItem.teachingLanguages = Object.assign([], getTeachingLanguagesDatabaseValues(credentials.teachingLanguages));
+      // saveLessonItem.educationLevel = Object.assign([], getEducationLevelDatabaseValues(credentials.educationLevel));
+      // if (orderItem === undefined) {
+      //   saveLessonItem.fieldOfStudy = getFieldOfStudyDatabaseValues(credentials.fieldOfStudy);
+      // }
 
-      setSaveLoadingLessonItemForm(true);
-      const { data } = orderItem === undefined ? (
-        await fetchContext.authAxios.post(
-          `/v1/lessons`,
-          saveLessonItem
-        )
-      ) : (
-          await fetchContext.authAxios.put(
-            `/v1/lessons/` + saveLessonItem._id,
-            saveLessonItem
-          )
-        );
-      setSaveLoadingLessonItemForm(false);
+      // setSaveLoadingLessonItemForm(true);
+      // const { data } = orderItem === undefined ? (
+      //   await fetchContext.authAxios.post(
+      //     `/v1/lessons`,
+      //     saveLessonItem
+      //   )
+      // ) : (
+      //     await fetchContext.authAxios.put(
+      //       `/v1/lessons/` + saveLessonItem._id,
+      //       saveLessonItem
+      //     )
+      //   );
+      // setSaveLoadingLessonItemForm(false);
 
-      setSaveSuccessLessonItemForm(data.message);
-      setSaveErrorLessonItemForm('');
-      setTimeout(() => {
-        window.location.reload();
-      }, 700);
-    } catch (error) {
-      console.log(error);
-      setSaveLoadingLessonItemForm(false);
-      const { data } = error.response;
-      setSaveErrorLessonItemForm(data.message);
-      setSaveSuccessLessonItemForm('');
-    }
-  };
-
-  const onDeleteLessonItemForm = async credentials => {
-    try {
-      if (
-        window.confirm(t('components.lesson_item_form_component.do_you_want_delete_window'))
-      ) {
-
-        setSaveLoadingLessonItemForm(true);
-        const { data } = await fetchContext.authAxios.delete(
-          `/v1/lessons/` + orderItem._id,
-        );
-        setSaveLoadingLessonItemForm(false);
-        setSaveSuccessLessonItemForm(data.message);
-        setSaveErrorLessonItemForm('');
-        setTimeout(() => {
-          window.location.reload();
-        }, 700);
-      }
+      // setSaveSuccessLessonItemForm(data.message);
+      // setSaveErrorLessonItemForm('');
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 700);
     } catch (error) {
       console.log(error);
       setSaveLoadingLessonItemForm(false);
@@ -104,49 +211,19 @@ const OrderForm = ({ orderItem }) => {
 
   return (
     <div>
-      <div className="flex">
-        {orderItem === undefined ? (
-          <div />
-        ) : (
-            <div className="">
-              <div className="flex items-center">
-                <div className="mt-2 mb-2 mr-2">
-                  <p className="font-bold">{t('datasets.field_of_study.values.' + orderItem.fieldOfStudy)}</p>
-                </div>
-                <DangerButton
-                  className="w-auto mt-2 mb-2 mr-2" style={{ marginLeft: "auto" }}
-                  text={t('components.lesson_item_form_component.delete_button')}
-                  onClick={() => onDeleteLessonItemForm()}
-                />
-              </div>
-            </div>
-          )
-        }
-      </div>
       <Formik
-        initialValues={{
-          _id: orderItem !== undefined ? (orderItem._id !== undefined ? orderItem._id : dumpOrderItem._id) : dumpOrderItem._id,
-          teacherId: orderItem !== undefined ? (orderItem.teacherId !== undefined ? orderItem.teacherId : dumpOrderItem.teacherId) : dumpOrderItem.teacherId,
-          // fieldOfStudy: orderItem !== undefined ? (orderItem.fieldOfStudy !== undefined ? orderItem.fieldOfStudy : dumpOrderItem.fieldOfStudy) : translateOptions(getFieldOfStudySelectOptions(dumpOrderItem.fieldOfStudy)),
-          // educationLevel: orderItem !== undefined ? (translateOptions(getEducationLevelSelectOptions(orderItem.educationLevel)) !== undefined ? translateOptions(getEducationLevelSelectOptions(orderItem.educationLevel)) : translateOptions(getEducationLevelSelectOptions(dumpOrderItem.educationLevel))) : translateOptions(getEducationLevelSelectOptions(dumpOrderItem.educationLevel)),
-          // teachingLanguages: orderItem !== undefined ? (translateOptions(getTeachingLanguagesSelectOptions(orderItem.teachingLanguages)) !== undefined ? translateOptions(getTeachingLanguagesSelectOptions(orderItem.teachingLanguages)) : translateOptions(getTeachingLanguagesSelectOptions(dumpOrderItem.teachingLanguages))) : translateOptions(getTeachingLanguagesSelectOptions(dumpOrderItem.teachingLanguages)),
-          hourlyRate: orderItem !== undefined ? (orderItem.hourlyRate !== undefined ? orderItem.hourlyRate : dumpOrderItem.hourlyRate) : dumpOrderItem.hourlyRate,
-          onlineModeEnable: orderItem !== undefined ? (orderItem.onlineModeEnable !== undefined ? orderItem.onlineModeEnable : dumpOrderItem.onlineModeEnable) : dumpOrderItem.onlineModeEnable,
-          faceToFaceModeStudentPlaceEnable: orderItem !== undefined ? (orderItem.faceToFaceModeStudentPlaceEnable !== undefined ? orderItem.faceToFaceModeStudentPlaceEnable : dumpOrderItem.faceToFaceModeStudentPlaceEnable) : dumpOrderItem.faceToFaceModeStudentPlaceEnable,
-          faceToFaceModeTeacherPlaceEnable: orderItem !== undefined ? (orderItem.faceToFaceModeTeacherPlaceEnable !== undefined ? orderItem.faceToFaceModeTeacherPlaceEnable : dumpOrderItem.faceToFaceModeTeacherPlaceEnable) : dumpOrderItem.faceToFaceModeTeacherPlaceEnable,
-          places: orderItem !== undefined ? (orderItem.places !== undefined ? orderItem.places : dumpOrderItem.places) : dumpOrderItem.places,
-          description: orderItem !== undefined ? (orderItem.description !== undefined ? orderItem.description : dumpOrderItem.description) : dumpOrderItem.description
-        }}
+        initialValues={orderItem ? orderItem : dumpOrderItem}
         onSubmit={values => {
           submitCredentialsLessonItemForm(values);
         }
         }
         validationSchema={SignupSchema}
+        innerRef={formRef}
       >
         {({ values, setFieldValue }) => (
           <Form className="">
             {saveSuccessLessonItemForm && (
-              <FormSuccess text={saveSuccessLessonItemForm + ' ' + t('components.lesson_item_form_component.some_data_visible_in_page_can_stay_unchanged')} />
+              <FormSuccess text={saveSuccessLessonItemForm + ' ' + t('components.order_form_component.some_data_visible_in_page_can_stay_unchanged')} />
             )}
             {saveErrorLessonItemForm && (
               <FormError text={saveErrorLessonItemForm} />
@@ -158,134 +235,67 @@ const OrderForm = ({ orderItem }) => {
             />
             <div>
               <div className="flex">
-                {orderItem === undefined ? (
-                  <div className="mb-2 mt-2 w-1/2">
-                    <Select
-                      name="fieldOfStudy"
-                      id="fieldOfStudy"
-                      value={values.fieldOfStudy}
-                      // options={translateOptions(getFieldOfStudySelectOptions())}
-                      onChange={(opt, e) => {
-                        setFieldValue("fieldOfStudy", opt);
-                      }} />
+                <div className="mb-2 mr-2 w-1/2">
+                  <div className="mb-1">
+                    <Label text={t('components.order_form_component.forms.data.user_id')} />
                   </div>
+                  <FormInput
+                    ariaLabel={t('components.order_form_component.forms.data.user_id')}
+                    name="userId"
+                    type="number"
+                    placeholder={t('components.order_form_component.forms.data.user_id')}
+                    onClick={onClick}
+                  />
+                </div>
+                <div className="mb-2 mr-2 w-1/2">
+                  <div className="mb-1">
+                    <Label text={t('components.order_form_component.forms.data.book_id')} />
+                  </div>
+                  <FormInput
+                    ariaLabel={t('components.order_form_component.forms.data.book_id')}
+                    name="bookId"
+                    type="number"
+                    placeholder={t('components.order_form_component.forms.data.book_id')}
+                    onClick={onClick}
+                  />
+                </div>
+              </div>
+              <div className="border border-green-300 rounded p-3 m-2">
+                <Label text={t('components.order_form_component.forms.data.user_overview')} />
+                {user ? (
+                  // <p>User id {user.id}</p>
+                  <UserOverviewShort userItem={user}/>
                 ) : (
-                    <div />
+                    <p>{t('components.order_form_component.forms.data.user_overview_not_found')}</p>
                   )
                 }
               </div>
-
-              <div className="flex">
-                <div className="mb-2 mr-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.education_level')} />
-                  </div>
-                  <Select
-                    name="educationLevel"
-                    id="educationLevel"
-                    isMulti
-                    value={values.educationLevel}
-                    // options={translateOptions(getEducationLevelSelectOptions())}
-                    onChange={(opt, e) => {
-                      setFieldValue("educationLevel", opt);
-                    }} />
-                </div>
-                <div className="mb-2 ml-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.teaching_languages')} />
-                  </div>
-                  <Select
-                    name="teachingLanguages"
-                    id="teachingLanguages"
-                    isMulti
-
-                    value={values.teachingLanguages}
-                    // options={translateOptions(getTeachingLanguagesSelectOptions())}
-                    onChange={(opt, e) => {
-                      setFieldValue("teachingLanguages", opt);
-                    }}
+              <div className="border border-green-300 rounded p-3 m-2">
+                <Label text={t('components.order_form_component.forms.data.book_overview')} />
+                {book ? (
+                  <BookItemOverviewShort
+                    bookItem={book}
+                    authorsRawList={authorsRaw}
+                    coverTypesRawList={coverTypesRaw}
+                    bookGenresRawList={bookGenresRaw}
+                    borrowPeriodsRawList={borrowPeriodsRaw}
+                    borrowPlaceRawList={borrowPlaceRaw}
                   />
-
-                </div>
-              </div>
-              <div className="flex">
-                <div className="mb-2 mr-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.hourly_rate')} />
-                  </div>
-                  <FormInput
-                    ariaLabel={t('components.lesson_item_form_component.forms.data.hourly_rate')}
-                    name="hourlyRate"
-                    type="number"
-                    placeholder={t('components.lesson_item_form_component.forms.data.hourly_rate')}
-                  />
-                </div>
-                <div className="mb-2 ml-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.online_mode_enable_header')} />
-                  </div>
-                  <div className="flex">
-                    <div className="">
-                      <Field type="checkbox" name="onlineModeEnable" />
-                    </div>
-                    <div className="ml-2">
-                      <Label text={t('components.lesson_item_form_component.forms.data.online_mode_enable_values.' + values.onlineModeEnable)} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex">
-                <div className="mb-2 mr-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.face_to_face_mode_student_place_enable_header')} />
-                  </div>
-                  <div className="flex">
-                    <div className="">
-                      <Field type="checkbox" name="faceToFaceModeStudentPlaceEnable" />
-                    </div>
-                    <div className="ml-2">
-                      <Label text={t('components.lesson_item_form_component.forms.data.face_to_face_mode_student_place_enable_values.' + values.faceToFaceModeStudentPlaceEnable)} />
-                    </div>
-                  </div>
-                </div>
-                <div className="mb-2 ml-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.face_to_face_mode_teacher_place_enable_header')} />
-                  </div>
-                  <div className="flex">
-                    <div className="">
-                      <Field type="checkbox" name="faceToFaceModeTeacherPlaceEnable" />
-                    </div>
-                    <div className="ml-2">
-                      <Label text={t('components.lesson_item_form_component.forms.data.face_to_face_mode_teacher_place_enable_values.' + values.faceToFaceModeTeacherPlaceEnable)} />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex">
-                <div className="mb-2 mr-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.places')} />
-                  </div>
-                  <Label text={t('others.warnings.sorry_not_implemented_yet')} />
-                </div>
-                <div className="mb-2 ml-2 w-1/2">
-                  <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.places')} />
-                  </div>
-                  <Label text={t('others.warnings.sorry_not_implemented_yet')} />
-                </div>
+                ) : (
+                    <p>{t('components.order_form_component.forms.data.book_overview_not_found')}</p>
+                  )
+                }
               </div>
               <div className="flex">
                 <div className="mb-2 mr-2 w-full">
                   <div className="mb-1">
-                    <Label text={t('components.lesson_item_form_component.forms.data.description')} />
+                    <Label text={t('components.order_form_component.forms.data.description')} />
                   </div>
                   <Field
                     className="border border-gray-300 rounded p-2 w-full mb-2"
                     component="textarea"
                     name="description"
-                    placeholder={t('components.lesson_item_form_component.forms.data.description_placeholder')}
+                    placeholder={t('components.order_form_component.forms.data.description_placeholder')}
                   />
                 </div>
               </div>
@@ -294,7 +304,7 @@ const OrderForm = ({ orderItem }) => {
               <div className="mt-2 mb-2">
                 <GradientButton
                   type="submit"
-                  text={orderItem === undefined ? t('components.lesson_item_form_component.add_new_item_button') : t('components.lesson_item_form_component.save_changes_button')}
+                  text={orderItem === undefined ? t('components.order_form_component.add_new_item_button') : t('components.order_form_component.save_changes_button')}
                   loading={saveLoadingLessonItemForm}
                 />
               </div>
