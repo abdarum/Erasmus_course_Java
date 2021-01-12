@@ -197,8 +197,10 @@
                 "data": {
                     "user_id": "User id",
                     "book_id": "Book id",
+                    "borrowed_date": "Borrowed date",
+                    "returned_date": "Returned date",
                     "description": "Damage notes",
-                    "description_placeholder": "Description of damage",
+                    "description_placeholder": "Description of damage. Please let this element to be empty is book returned in good condition",
                     "book_overview": "Book overview",
                     "book_overview_not_found": "Sorry, book was not found",
                     "user_overview": "User overview",
@@ -207,8 +209,8 @@
                 "validation": {
                 }
             },
-            "save_changes_button": "Save changes",
-            "add_new_item_button": "Borrow"
+            "return_book_button": "Return book",
+            "borrow_book_button": "Borrow"
         },
 
 

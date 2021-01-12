@@ -12,7 +12,8 @@ const BookItemOverviewShort = ({
   coverTypesRawList,
   bookGenresRawList,
   borrowPeriodsRawList,
-  borrowPlaceRawList
+  borrowPlaceRawList,
+  borrowButtonDisabled
 }) => {
   const { t } = useTranslation('common');
   const history = useHistory();
@@ -67,18 +68,22 @@ const BookItemOverviewShort = ({
             <p className="text-gray-600 text-base text-left rounded border border-blue-600 px-2">{bookItem.pageCount}</p>
           </div >
         </div >
-        <button
-          onClick={() => {
-            console.log('borrow');
-            console.log(bookItem);
-            var queryValues = {
-              bookId: bookItem.id,
-              userId: authContext.authState.userInfo.id
-            }
-            history.push("/order?" + qs.stringify(queryValues));
-          }}
-          className="text-red-600 text-sm rounded border border-red-600 px-2 hover:text-white hover:bg-red-600"
-        >{t('components.book_item_overview_short_component.borrow_button')}</button>
+        {borrowButtonDisabled || bookItem.status === "in use" ? (
+          <> </>
+        ) : (
+            <button
+              onClick={() => {
+                console.log('borrow');
+                console.log(bookItem);
+                var queryValues = {
+                  bookId: bookItem.id,
+                  userId: authContext.authState.userInfo.id
+                }
+                history.push("/order?" + qs.stringify(queryValues));
+              }}
+              className="text-red-600 text-sm rounded border border-red-600 px-2 hover:text-white hover:bg-red-600"
+            >{t('components.book_item_overview_short_component.borrow_button')}</button>
+          )}
 
       </div >
     </div >

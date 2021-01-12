@@ -30,7 +30,7 @@ const navItems = [
   },
   {
     label: 'components.sidebar_component.link_label.orders',
-    path: 'orders', // orders
+    path: 'manage-orders',
     icon: faBookOpen,
     allowedRoles: [reader]
   },

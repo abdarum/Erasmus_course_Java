@@ -8,7 +8,8 @@ const FormInput = ({
   name,
   type,
   placeholder,
-  onClick
+  onClick,
+  disabled
 }) => {
   const [field, meta] = useField(name);
   return (
@@ -20,6 +21,7 @@ const FormInput = ({
         type={type}
         placeholder={placeholder}
         onClick={onClick}
+        disabled={disabled}
       />
       {meta.touched && meta.error ? (
         <FormError text={meta.error}></FormError>

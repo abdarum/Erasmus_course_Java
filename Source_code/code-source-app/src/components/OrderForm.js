@@ -19,7 +19,7 @@ import UserOverviewShort from '../components/UserOverviewShort';
 import qs from 'query-string';
 import Card from './common/Card';
 
-const OrderForm = ({ orderItem }) => {
+const OrderForm = ({ orderItem, disabled, librarianMode }) => {
   const authContext = useContext(AuthContext);
   const fetchContext = useContext(FetchContext);
   const [saveSuccessLessonItemForm, setSaveSuccessLessonItemForm] = useState();
@@ -42,6 +42,8 @@ const OrderForm = ({ orderItem }) => {
     userId: '',
     bookId: '',
     damageNotes: '',
+    borrowedDate: null,
+    returnedDate: null,
     placeId: '',
     periodId: ''
   }, qs.parse(window.location.search));
@@ -49,17 +51,18 @@ const OrderForm = ({ orderItem }) => {
   var queryValues = {
     token: auth.authState.token
   }
-  const getOrder = async () => {
+  const getOrder = async (id) => {
     try {
-      if (dumpOrderItem.id) {
+      if (id) {
         const { data } = await fetchContext.authAxios.get(
-          '/library/order/' + dumpOrderItem.id + '?' + qs.stringify(queryValues)
+          '/library/order/' + id + '?' + qs.stringify(queryValues)
         );
         setOrder(data);
-        console.log(data);
+        formRef.current.values = Object.assign(formRef.current.values, data);
+        onClick();
       } else {
         console.log(dumpOrderItem);
-        setOrder(dumpOrderItem);
+        setOrder();
       }
     } catch (err) {
       console.log('the err', err);
@@ -72,7 +75,6 @@ const OrderForm = ({ orderItem }) => {
           '/user/' + userId + '?' + qs.stringify(queryValues)
         );
         setUser(data);
-        console.log(data);
       }
     } catch (err) {
       console.log('the err', err);
@@ -96,6 +98,11 @@ const OrderForm = ({ orderItem }) => {
   };
 
   useEffect(() => {
+    const validateUserId = () => {
+      if (!librarianMode) {
+        dumpOrderItem.userId = auth.authState.userInfo.id;
+      }
+    };
     const getCoverTypes = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
@@ -152,8 +159,8 @@ const OrderForm = ({ orderItem }) => {
     getBorrowPeriods();
     getBorrowPlace();
 
-
-    getOrder();
+    validateUserId();
+    getOrder(dumpOrderItem.id);
     getUser(dumpOrderItem.userId);
     getBook(dumpOrderItem.bookId);
   }, []);
@@ -172,31 +179,29 @@ const OrderForm = ({ orderItem }) => {
   const submitCredentialsLessonItemForm = async credentials => {
     try {
       var saveLessonItem = Object.assign({}, credentials);
-      // saveLessonItem.teachingLanguages = Object.assign([], getTeachingLanguagesDatabaseValues(credentials.teachingLanguages));
-      // saveLessonItem.educationLevel = Object.assign([], getEducationLevelDatabaseValues(credentials.educationLevel));
-      // if (orderItem === undefined) {
-      //   saveLessonItem.fieldOfStudy = getFieldOfStudyDatabaseValues(credentials.fieldOfStudy);
-      // }
+      if (order) {
+        saveLessonItem.returnedDate = new Date();
+      } else {
+        saveLessonItem.borrowedDate = new Date();
+      }
+      console.log(saveLessonItem);
 
-      // setSaveLoadingLessonItemForm(true);
-      // const { data } = orderItem === undefined ? (
-      //   await fetchContext.authAxios.post(
-      //     `/v1/lessons`,
-      //     saveLessonItem
-      //   )
-      // ) : (
-      //     await fetchContext.authAxios.put(
-      //       `/v1/lessons/` + saveLessonItem._id,
-      //       saveLessonItem
-      //     )
-      //   );
-      // setSaveLoadingLessonItemForm(false);
+      setSaveLoadingLessonItemForm(true);
+      const { data } = saveLessonItem.id ? (
+        await fetchContext.authAxios.put(
+          `/library/order/` + saveLessonItem.id + '?' + qs.stringify(queryValues),
+          saveLessonItem
+        )
+      ) : (
+          await fetchContext.authAxios.post(
+            `/library/order` + '?' + qs.stringify(queryValues),
+            saveLessonItem
+          )
+        );
+      setSaveLoadingLessonItemForm(false);
 
-      // setSaveSuccessLessonItemForm(data.message);
-      // setSaveErrorLessonItemForm('');
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 700);
+      setSaveSuccessLessonItemForm(data.message);
+      setSaveErrorLessonItemForm('');
     } catch (error) {
       console.log(error);
       setSaveLoadingLessonItemForm(false);
@@ -245,6 +250,7 @@ const OrderForm = ({ orderItem }) => {
                     type="number"
                     placeholder={t('components.order_form_component.forms.data.user_id')}
                     onClick={onClick}
+                    disabled={disabled ? true : (librarianMode ? (order ? true : false) : true)}
                   />
                 </div>
                 <div className="mb-2 mr-2 w-1/2">
@@ -257,14 +263,14 @@ const OrderForm = ({ orderItem }) => {
                     type="number"
                     placeholder={t('components.order_form_component.forms.data.book_id')}
                     onClick={onClick}
+                    disabled={disabled ? true : (librarianMode ? (order ? true : false) : true)}
                   />
                 </div>
               </div>
               <div className="border border-green-300 rounded p-3 m-2">
                 <Label text={t('components.order_form_component.forms.data.user_overview')} />
                 {user ? (
-                  // <p>User id {user.id}</p>
-                  <UserOverviewShort userItem={user}/>
+                  <UserOverviewShort userItem={user} />
                 ) : (
                     <p>{t('components.order_form_component.forms.data.user_overview_not_found')}</p>
                   )
@@ -280,12 +286,40 @@ const OrderForm = ({ orderItem }) => {
                     bookGenresRawList={bookGenresRaw}
                     borrowPeriodsRawList={borrowPeriodsRaw}
                     borrowPlaceRawList={borrowPlaceRaw}
+                    borrowButtonDisabled
                   />
                 ) : (
                     <p>{t('components.order_form_component.forms.data.book_overview_not_found')}</p>
                   )
                 }
               </div>
+              <div className="flex">
+                <div className="mb-2 mr-2 w-1/2">
+                  <div className="mb-1">
+                    <Label text={t('components.order_form_component.forms.data.borrowed_date')} />
+                  </div>
+                  <FormInput
+                    ariaLabel={t('components.order_form_component.forms.data.borrowed_date')}
+                    name="borrowedDate"
+                    type="text"
+                    placeholder={t('components.order_form_component.forms.data.borrowed_date')}
+                    disabled={true}
+                  />
+                </div>
+                <div className="mb-2 mr-2 w-1/2">
+                  <div className="mb-1">
+                    <Label text={t('components.order_form_component.forms.data.returned_date')} />
+                  </div>
+                  <FormInput
+                    ariaLabel={t('components.order_form_component.forms.data.returned_date')}
+                    name="returnedDate"
+                    type="text"
+                    placeholder={t('components.order_form_component.forms.data.returned_date')}
+                    disabled={true}
+                  />
+                </div>
+              </div>
+
               <div className="flex">
                 <div className="mb-2 mr-2 w-full">
                   <div className="mb-1">
@@ -294,19 +328,34 @@ const OrderForm = ({ orderItem }) => {
                   <Field
                     className="border border-gray-300 rounded p-2 w-full mb-2"
                     component="textarea"
-                    name="description"
+                    name="damageNotes"
                     placeholder={t('components.order_form_component.forms.data.description_placeholder')}
+                    disabled={disabled ? true : (librarianMode ? (order ? (order.returnedDate ? true : false) : true) : true)}
                   />
                 </div>
               </div>
             </div>
             <div className="flex items-center">
               <div className="mt-2 mb-2">
-                <GradientButton
-                  type="submit"
-                  text={orderItem === undefined ? t('components.order_form_component.add_new_item_button') : t('components.order_form_component.save_changes_button')}
-                  loading={saveLoadingLessonItemForm}
-                />
+                {disabled || order && order.returnedDate ? (
+                  <></>
+                ) : (
+                    librarianMode ? (
+                      <GradientButton
+                        type="submit"
+                        text={order ? t('components.order_form_component.return_book_button') : t('components.order_form_component.borrow_book_button')}
+                        loading={saveLoadingLessonItemForm}
+                      />
+                    ) : (
+                        order && order.borrowedDate ? (<></>) : (
+                          <GradientButton
+                            type="submit"
+                            text={t('components.order_form_component.borrow_book_button')}
+                            loading={saveLoadingLessonItemForm}
+                          />
+                        )
+                      )
+                  )}
               </div>
             </div>
 
