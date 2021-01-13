@@ -8,6 +8,7 @@ import io.swagger.model.UserStatusReport;
 import io.swagger.model.UsersRatingReport;
 
 import io.swagger.service.LibraryService;
+import io.swagger.service.UserService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
@@ -49,6 +50,9 @@ public class LibraryApiController implements LibraryApi {
     @Autowired
     private LibraryService libraryService;
 
+    @Autowired
+    private UserService userService;
+
     @org.springframework.beans.factory.annotation.Autowired
     public LibraryApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -72,6 +76,24 @@ public class LibraryApiController implements LibraryApi {
         else 
         {
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public ResponseEntity<List<Borrowed>> getAllOrders(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && (accept.contains("application/json") || accept.contains("*/*")) ){
+            if(libraryService.isModifyBorrowedPermittedForToken(token)){
+                List<Borrowed> borrowed = libraryService.getAllBorrowed();
+                return ResponseEntity.ok(borrowed);
+            } else {
+                Long requestUserId = userService.getUserIdFormToken(token);
+                List<Borrowed> borrowed = libraryService.getAllBorrowedByUser(requestUserId);
+                return ResponseEntity.ok(borrowed);
+            }
+        } 
+        else 
+        {
+            return new ResponseEntity<List<Borrowed>>(HttpStatus.BAD_REQUEST);
         }
     }
 

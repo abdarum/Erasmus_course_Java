@@ -39,6 +39,7 @@ public interface LibraryService {
     public List<Borrowed> getAllCurrentBorrowedBooksByList(List<Borrowed> receivedBorrowedList);
     public List<Borrowed> getAllDelayedBorrowedBooksByList(List<Borrowed> receivedBorrowedList);
 
+    public Boolean isModifyBorrowedPermittedForToken(String token);
     public Boolean isModifyBorrowedPermittedForToken(Borrowed borrowed, String token);
     public Boolean isModifyBorrowedPermittedForToken(Long i, String token);
     public Boolean isViewBorrowedPermittedForToken(Borrowed borrowed, String token);
