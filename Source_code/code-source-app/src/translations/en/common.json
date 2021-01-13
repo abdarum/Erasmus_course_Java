@@ -228,7 +228,11 @@
             "return_book_button": "Return book",
             "borrow_book_button": "Borrow"
         },
-
+        "returned_date_label_component": {
+            "delayed": "Delayed",
+            "left_only": "Left only: ",
+            "days_to_deadline": "Days to deadline: "
+        },
 
 
 

@@ -4,6 +4,7 @@ import { getCommonNameSelectOptions, getCommonNameDatabaseValues } from './Commo
 import { useHistory } from 'react-router-dom';
 import BookItemOverviewShort from './BookItemOverviewShort';
 import UserOverviewShort from './UserOverviewShort';
+import ReturnedDateLabel from './ReturnedDateLabel';
 import { FetchContext } from '../context/FetchContext';
 import { AuthContext } from '../context/AuthContext';
 import qs from 'query-string';
@@ -144,7 +145,11 @@ const BorrowOverviewShort = ({
             <p className="text-gray-600 text-base text-left">{orderItem.returnedDate} </p>
           </div>
         ) : (
-            < ></>
+            <ReturnedDateLabel
+              borrowedDate={orderItem.borrowedDate}
+              borrowPeriodsRawList={borrowPeriodsRawList}
+              periodId={orderItem.periodId}
+            />
           )}
       </div>
     </div >
