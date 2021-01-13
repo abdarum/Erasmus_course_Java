@@ -177,6 +177,22 @@
             "find_button": "Find",
             "borrow_button": "Borrow"
         },     
+        "borrow_overview_short_component": {
+            "labels": {
+                "borrow": "Borrow: ",
+                "user_id": "User id: ",
+                "book_id": "Book id: ",
+                "place_id": "Place id: ",
+                "place_name": "Place: ",
+                "period_id": "Period id: ",
+                "period_name": "Period: ",
+                "borrowed_date": "Borrowed date: ",
+                "returned_date": "Returned date: ",
+                "damage_notes": "Damage notes"
+            },
+            "view_button": "View",
+            "manage_button": "Manage"
+        }, 
         "account_change_password_component": {
             "forms": {
                 "data": {

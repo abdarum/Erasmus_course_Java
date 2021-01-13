@@ -44,25 +44,25 @@ const UserOverviewShort = ({
       </div >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
-          <p className="text-gray-600 text-base text-left mr-1">{t('components.user_overview_short_component.labels.phone')} </p>
+          <p className="text-gray-600 text-base text-left mr-1 font-bold">{t('components.user_overview_short_component.labels.phone')} </p>
           <p className="text-gray-600 text-base text-left">{userItem.phone} </p>
         </div>
         <div className="flex items-center">
-          <p className="text-gray-600 text-base text-left mr-1">{t('components.user_overview_short_component.labels.email')} </p>
+          <p className="text-gray-600 text-base text-left mr-1 font-bold">{t('components.user_overview_short_component.labels.email')} </p>
           <p className="text-gray-600 text-base text-left">{userItem.email} </p>
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <p className="text-gray-600 text-base text-left mr-1">{t('components.user_overview_short_component.labels.birthdate')} </p>
+        <div className="flex items-center mr-2">
+          <p className="text-gray-600 text-base text-left mr-1 font-bold">{t('components.user_overview_short_component.labels.birthdate')} </p>
           <p className="text-gray-600 text-base text-left">{userItem.birthdate} </p>
         </div>
         <div className="flex items-center">
-          <p className="text-gray-600 text-base text-left mr-1">{t('components.user_overview_short_component.labels.city')} </p>
+          <p className="text-gray-600 text-base text-left mr-1 font-bold">{t('components.user_overview_short_component.labels.city')} </p>
           <p className="text-gray-600 text-base text-left">{userItem.city} </p>
         </div>
-        <div className="flex items-center">
-          <p className="text-gray-600 text-base text-left mr-1">{t('components.user_overview_short_component.labels.address')} </p>
+        <div className="flex items-center ml-2">
+          <p className="text-gray-600 text-base text-left mr-1 font-bold">{t('components.user_overview_short_component.labels.address')} </p>
           <p className="text-gray-600 text-base text-left">{userItem.address} </p>
         </div>
       </div>

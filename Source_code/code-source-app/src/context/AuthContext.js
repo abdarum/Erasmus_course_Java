@@ -50,6 +50,10 @@ const AuthProvider = ({ children }) => {
     return authState.userInfo.userTypeId === getLibrarianUserTypeId();
   };
 
+  const isReader = () => {
+    return authState.userInfo.userTypeId === getReaderUserTypeId();
+  };
+
   const getAdminUserTypeId = () => {
     return 1;
   };
@@ -69,8 +73,12 @@ const AuthProvider = ({ children }) => {
         setAuthState: authInfo => setAuthInfo(authInfo),
         logout,
         isAuthenticated,
+        getAdminUserTypeId,
+        getLibrarianUserTypeId,
+        getReaderUserTypeId,
         isAdmin,
-        isLibrarian
+        isLibrarian,
+        isReader
       }}
     >
       {children}
