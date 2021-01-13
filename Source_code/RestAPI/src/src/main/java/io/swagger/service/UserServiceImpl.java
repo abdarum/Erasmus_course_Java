@@ -20,6 +20,7 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import ch.qos.logback.core.status.Status;
 import io.swagger.model.User;
 import io.swagger.model.UserToken;
 import io.swagger.model.UserType;
@@ -178,8 +179,10 @@ public class UserServiceImpl implements UserService {
         User tmpUser = getUserByName(email);
         if (tmpUser != null){
             if (tmpUser.getPassword().equals(password)) {
-                userTokenService.createToken(tmpUser.getId());
-                return tmpUser;
+                if(tmpUser.getStatus().equals(StatusEnum.ACTIVE)){
+                    userTokenService.createToken(tmpUser.getId());
+                    return tmpUser;
+                }
             }
         }
         return null;

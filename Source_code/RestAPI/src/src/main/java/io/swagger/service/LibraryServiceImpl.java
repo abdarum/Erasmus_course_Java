@@ -331,6 +331,18 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    public Boolean isModifyBorrowedPermittedForToken(String token){
+        Long requestUserId = userService.getUserIdFormToken(token);
+        Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);
+
+        if(token != null && requestUserTypeId != null){
+            return userTypeService.isModifyBorrowPermited(requestUserTypeId);
+        }
+
+        return false;
+    }
+
+    @Override
     public Boolean isModifyBorrowedPermittedForToken(Borrowed borrowed, String token){
         Long requestUserId = userService.getUserIdFormToken(token);
         Long requestUserTypeId = userService.getUserTypeIdByUserId(requestUserId);

@@ -757,7 +757,30 @@ paths:
           description: Invalid Order
       security:
       - bearerAuth: []
-
+    get:
+      tags:
+        - library
+      summary: Get orders
+      description: Librarian get all orders, Reader takes only owned orders
+      operationId: getAllOrders
+      produces:
+      - application/json
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Borrowed"
+        400:
+          description: Invalid status value
+      security:
+        - bearerAuth: []
   "/library/order/{orderId}":
     get:
       tags:

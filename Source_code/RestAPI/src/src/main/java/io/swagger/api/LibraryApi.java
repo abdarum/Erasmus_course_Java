@@ -51,6 +51,18 @@ public interface LibraryApi {
     ResponseEntity<Void> deleteOrder(@ApiParam(value = "ID of the order that needs to be deleted",required=true) @PathVariable("orderId") Long orderId,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
 
 
+    @ApiOperation(value = "Get orders", nickname = "getAllOrders", notes = "Librarian get all orders, Reader takes only owned orders", response = Borrowed.class, responseContainer = "List", authorizations = {
+        @Authorization(value = "bearerAuth")
+    }, tags={ "library", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "successful operation", response = Borrowed.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "Invalid status value") })
+    @RequestMapping(value = "/library/order",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<List<Borrowed>> getAllOrders(@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "token", required = true) String token);
+
+
     @ApiOperation(value = "Returns library books", nickname = "getLibraryInventoryBooks", notes = "Returns a stats of the library inventory", response = LibraryBooksReport.class, authorizations = {
         @Authorization(value = "bearerAuth")
     }, tags={ "library", })
