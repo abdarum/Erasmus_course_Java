@@ -8,13 +8,10 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import FormInput from './FormInput';
 import GradientButton from './common/GradientButton';
-import DangerButton from './../components/common/DangerButton';
 import { FetchContext } from '../context/FetchContext';
 import { AuthContext } from '../context/AuthContext';
 import Select from 'react-select';
-import { getTeachingLanguagesSelectOptions, getTeachingLanguagesDatabaseValues } from './TeachingLanguagesSelect';
-import { getEducationLevelSelectOptions, getEducationLevelDatabaseValues } from './EducationLevelSelect';
-import { getFieldOfStudySelectOptions, getFieldOfStudyDatabaseValues } from './FieldOfStudySelect';
+import { getCommonNameSelectOptions, getCommonNameDatabaseValues } from './CommonNameSelect';
 import BookItemOverviewShort from '../components/BookItemOverviewShort';
 import UserOverviewShort from '../components/UserOverviewShort';
 import qs from 'query-string';
@@ -38,6 +35,9 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
   const [borrowPlaceRaw, setBorrowPlaceRaw] = useState([]);
   const auth = useContext(AuthContext);
   const formRef = useRef();
+  const selectPeriodRef = useRef();
+  const selectPlaceRef = useRef();
+
 
   const dumpOrderItem = Object.assign({
     id: '',
@@ -90,71 +90,102 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
           '/book/' + bookId + '?' + qs.stringify(queryValues)
         );
         setBook(data);
-        formRef.current.values.placeId = data.sugeredPlaceId;
-        formRef.current.values.periodId = data.sugeredPeriodId;
+        // formRef.current.values.placeId = data.sugeredPlaceId;
+        // formRef.current.values.periodId = data.sugeredPeriodId;
+
+        // selectPeriodRef.current.props.value = getCommonNameSelectOptions(borrowPeriodsRaw, data.sugeredPeriodId);
+        // formRef.current.values = setPeriodAndPlace(formRef.current.values, data);
+        setPeriodAndPlace(data);
+        // console.log(selectPeriodRef.current.props.value);
       }
     } catch (err) {
       console.log('the err', err);
       setBook();
     }
   };
+  const validateUserId = () => {
+    if (!librarianMode) {
+      dumpOrderItem.userId = auth.authState.userInfo.id;
+    }
+  };
+  const getCoverTypes = async () => {
+    try {
+      const { data } = await fetchContext.authAxios.get(
+        '/dataset/coverType'
+      );
+      setCoverTypesRaw(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getAuthors = async () => {
+    try {
+      const { data } = await fetchContext.authAxios.get(
+        '/dataset/author'
+      );
+      setAuthorsRaw(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getBookGenres = async () => {
+    try {
+      const { data } = await fetchContext.authAxios.get(
+        '/dataset/bookGenre'
+      );
+      setBookGenresRaw(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getBorrowPeriods = async () => {
+    try {
+      const { data } = await fetchContext.authAxios.get(
+        '/dataset/borrowPeriod'
+      );
+      setBorrowPeriodsRaw(data);
+      setPeriodAndPlace();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getBorrowPlace = async () => {
+    try {
+      const { data } = await fetchContext.authAxios.get(
+        '/dataset/borrowPlace'
+      );
+      setBorrowPlaceRaw(data);
+      setPeriodAndPlace();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  function setPeriodAndPlace(bookItem) {
+    if (bookItem === undefined) {
+      // setTimeout(() => {
+      //   setPeriodAndPlace(book);
+      // }, 1500);
+      console.log(book);
+      bookItem = book;
+    }
+    console.log(bookItem);
+    if (bookItem && borrowPeriodsRaw && borrowPlaceRaw) {
+      formRef.current.values.placeId = null;
+      formRef.current.values.periodId = null;
+      // // console.log(getCommonNameSelectOptions(borrowPlaceRaw, book.sugeredPlaceId));
+      // // console.log(getCommonNameSelectOptions(borrowPeriodsRaw, book.sugeredPeriodId));
+      formRef.current.values.placeId = getCommonNameSelectOptions(borrowPlaceRaw, bookItem.sugeredPlaceId);
+      formRef.current.values.periodId = getCommonNameSelectOptions(borrowPeriodsRaw, bookItem.sugeredPeriodId);
+    } else {
+      // console.log(book);
+      // console.log(borrowPeriodsRaw);
+      // console.log(borrowPlaceRaw);
+    }
+  }
+
 
   useEffect(() => {
-    const validateUserId = () => {
-      if (!librarianMode) {
-        dumpOrderItem.userId = auth.authState.userInfo.id;
-      }
-    };
-    const getCoverTypes = async () => {
-      try {
-        const { data } = await fetchContext.authAxios.get(
-          '/dataset/coverType'
-        );
-        setCoverTypesRaw(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getAuthors = async () => {
-      try {
-        const { data } = await fetchContext.authAxios.get(
-          '/dataset/author'
-        );
-        setAuthorsRaw(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getBookGenres = async () => {
-      try {
-        const { data } = await fetchContext.authAxios.get(
-          '/dataset/bookGenre'
-        );
-        setBookGenresRaw(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getBorrowPeriods = async () => {
-      try {
-        const { data } = await fetchContext.authAxios.get(
-          '/dataset/borrowPeriod'
-        );
-        setBorrowPeriodsRaw(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getBorrowPlace = async () => {
-      try {
-        const { data } = await fetchContext.authAxios.get(
-          '/dataset/borrowPlace'
-        );
-        setBorrowPlaceRaw(data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     getAuthors();
     getCoverTypes();
     getBookGenres();
@@ -186,6 +217,8 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
       } else {
         saveLessonItem.borrowedDate = new Date();
       }
+      saveLessonItem.placeId = getCommonNameDatabaseValues(credentials.placeId);
+      saveLessonItem.periodId = getCommonNameDatabaseValues(credentials.periodId);
       console.log(saveLessonItem);
 
       setSaveLoadingLessonItemForm(true);
@@ -313,6 +346,36 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
                     placeholder={t('components.order_form_component.forms.data.borrowed_date')}
                     disabled={true}
                   />
+                </div>
+                <div className="mb-2 px-1 w-1/4">
+                  <div className="mb-1">
+                    <Label text={t('components.order_form_component.forms.data.period_name')} />
+                  </div>
+                  {borrowPeriodsRaw ? (
+                    <Select
+                      value={values.periodId}
+                      options={getCommonNameSelectOptions(borrowPeriodsRaw)}
+                      onChange={(opt, e) => {
+                        setFieldValue("periodId", opt);
+                      }} />
+                  ) : (
+                      <p>Loading ...</p>
+                    )}
+                </div>
+                <div className="mb-2 px-1 w-1/4">
+                  <div className="mb-1">
+                    <Label text={t('components.order_form_component.forms.data.place_name')} />
+                  </div>
+                  {borrowPlaceRaw ? (
+                    <Select
+                      value={values.placeId}
+                      options={getCommonNameSelectOptions(borrowPlaceRaw)}
+                      onChange={(opt, e) => {
+                        setFieldValue("placeId", opt);
+                      }} />
+                  ) : (
+                      <p>Loading ...</p>
+                    )}
                 </div>
                 <div className="mb-2 mr-2 w-1/2">
                   <div className="mb-1">

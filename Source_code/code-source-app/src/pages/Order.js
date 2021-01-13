@@ -21,6 +21,10 @@ const Order = () => {
   const [errorMessage, setErrorMessage] = useState();
   const auth = useContext(AuthContext);
 
+  useEffect(() => {
+  }, []);
+
+
   return (
     <>
       <PageTitle title="Order" />

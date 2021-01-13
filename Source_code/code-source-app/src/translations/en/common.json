@@ -219,6 +219,8 @@
                     "description_placeholder": "Description of damage. Please let this element to be empty is book returned in good condition",
                     "book_overview": "Book overview",
                     "book_overview_not_found": "Sorry, book was not found",
+                    "place_name": "Place: ",
+                    "period_name": "Period: ",
                     "user_overview": "User overview",
                     "user_overview_not_found": "Sorry, user was not found"
                 },
