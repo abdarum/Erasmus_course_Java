@@ -23,13 +23,13 @@ const Users = () => {
       token: auth.authState.token,
       userTypeId: undefined
     }
-    console.log(queryValues);
+    
     const getUsers = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
           'user?' + qs.stringify(queryValues)
         );
-        console.log(data);
+        
         setUsers(data);
       } catch (err) {
         console.log(err);

@@ -22,13 +22,13 @@ const ReportSubmitted = () => {
     var queryValues = {
       token: auth.authState.token
     }
-    console.log(queryValues);
+    
     const getUsers = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
           'library/inventory/submitted?' + qs.stringify(queryValues)
         );
-        console.log(data);
+        
         setUsers(data);
       } catch (err) {
         console.log(err);

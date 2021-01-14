@@ -21,14 +21,14 @@ const ReportBooks = () => {
     var queryValues = {
       token: auth.authState.token
     }
-    console.log(queryValues);
+    
     const getBooksInfo = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
           'library/inventory/books?' + qs.stringify(queryValues)
         );
         setBooksInfo(data);
-        console.log(data);
+        
       } catch (err) {
         console.log(err);
       }

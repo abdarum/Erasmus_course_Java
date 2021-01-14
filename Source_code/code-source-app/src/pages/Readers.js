@@ -23,7 +23,7 @@ const Readers = () => {
       token: auth.authState.token,
       userTypeId: 3
     }
-    console.log(queryValues);
+    
     const getReaders = async () => {
       try {
         const { data } = await fetchContext.authAxios.get(
