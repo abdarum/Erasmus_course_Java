@@ -43,6 +43,7 @@
             "title": "Manage books"
         },
         "manage_orders_page": {
+            "no_orders_found": "Sorry, no orders found",
             "title": "Manage orders"
         },
         "account_page": {

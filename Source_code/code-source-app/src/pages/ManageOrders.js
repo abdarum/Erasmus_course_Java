@@ -117,6 +117,7 @@ const ManageOrders = () => {
               </Card>
             </div>
           ))}
+        {orders.length === 0 ? (t('pages.manage_orders_page.no_orders_found')) : (<> </>)}
       </div>
     </>
   );
