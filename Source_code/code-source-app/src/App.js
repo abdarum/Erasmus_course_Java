@@ -30,7 +30,9 @@ const Users = lazy(() => import('./pages/Users'));
 const ManageBooks = lazy(() => import('./pages/ManageBooks'));
 const ManageOrders = lazy(() => import('./pages/ManageOrders'));
 const Reports = lazy(() => import('./pages/Reports'));
-const SubmittedReport = lazy(() => import('./pages/SubmittedReport'));
+const ReportSubmitted = lazy(() => import('./pages/ReportSubmitted'));
+const ReportBooks = lazy(() => import('./pages/ReportBooks'));
+const ReportUsers = lazy(() => import('./pages/ReportUsers'));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -142,16 +144,16 @@ const AppRoutes = () => {
             <Reports />
           </AdminRoute>
           <AdminRoute path="/inventory/submitted">
-            <SubmittedReport />
+            <ReportSubmitted />
           </AdminRoute>
           <AdminRoute path="/inventory/books">
-            {/* <Order /> */}
+            <ReportBooks />
           </AdminRoute>
           <AdminRoute path="/inventory/users">
-            {/* <Order /> */}
+            <ReportUsers />
           </AdminRoute>
           <AdminRoute path="/inventory/userrating">
-            {/* <Order /> */}
+            {/* <ReportUserrating  /> */}
           </AdminRoute>
           <UnauthenticatedRoutes />
         </Switch>

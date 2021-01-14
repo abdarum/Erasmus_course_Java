@@ -78,10 +78,24 @@
             "no_books_found": "Sorry, no books found. Please try to search another filters",
             "set_filters_and_search": "Set filters and click Find button to see results"
         },
-        "submitted_report_page": {
+        "report_submitted_page": {
             "title": "Submitted report"
         },
-        
+        "report_books_page": {
+            "books_numbers_summary_component":
+            {
+                "number_of_books": "Number of books: ",
+                "number_of_available_books": "Number of available books: "
+            },
+            "title": "Books report"
+        },
+        "report_users_page": {
+            "title": "Books report"
+        },
+        "report_userrating_page": {
+            "title": "Users rating report"
+        },
+
 
 
         "remove_below_translations": "remove_below_translations", 
@@ -195,7 +209,15 @@
                 "birthdate": "Birthdate: ",
                 "address": "Address: ",
                 "city": "City: ",
-                "not_available": "Not available"
+                "not_available": "Not available",
+                "user_id": "User id: ",
+                "registrated": "Registrated: ",
+                "number_of_all_borrowed_books": "Number of all borrowed books: ",
+                "number_of_all_damaged_books": "Number of all damaged books: ",
+                "number_of_current_borrowed_books": "Number of current borrowed books: ",
+                "number_of_delayed_books": "Number of delayed books: ",
+                "book_id": "Book id: ",
+                "book_name": "Book name: "
             },
             "find_button": "Find",
             "borrow_button": "Borrow"

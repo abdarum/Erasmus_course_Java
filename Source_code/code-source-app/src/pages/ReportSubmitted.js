@@ -12,7 +12,7 @@ import { AuthContext } from '../context/AuthContext';
 import qs from 'query-string';
 
 
-const SubmittedReport = () => {
+const ReportSubmitted = () => {
   const auth = useContext(AuthContext);
   const fetchContext = useContext(FetchContext);
   const [users, setUsers] = useState([]);
@@ -40,7 +40,7 @@ const SubmittedReport = () => {
 
   return (
     <>
-      <PageTitle title={t('pages.submitted_report_page.title')} />
+      <PageTitle title={t('pages.report_submitted_page.title')} />
       {!!users.length &&
         users.map(user => (
           <div className="m-2">
@@ -53,4 +53,4 @@ const SubmittedReport = () => {
   );
 };
 
-export default SubmittedReport;
+export default ReportSubmitted;
