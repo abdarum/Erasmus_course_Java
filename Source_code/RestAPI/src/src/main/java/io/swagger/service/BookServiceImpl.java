@@ -65,7 +65,7 @@ public class BookServiceImpl implements BookService {
         book.setName("Murder on St. Mark's Place");
         book.setPageCount(277);
         book.setIsbn("9781494514945");
-        book.setSugeredPeriodId(Long.valueOf(46));
+        book.setSugeredPeriodId(Long.valueOf(47));
         book.setSugeredPlaceId(Long.valueOf(43));
         book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
@@ -155,7 +155,7 @@ public class BookServiceImpl implements BookService {
         book.setName("Stalk Me");
         book.setPageCount(327);
         book.setIsbn("9781497412897");
-        book.setSugeredPeriodId(Long.valueOf(46));
+        book.setSugeredPeriodId(Long.valueOf(48));
         book.setSugeredPlaceId(Long.valueOf(45));
         book.setStatus(StatusEnum.AVAILABLE);
         createBook(book);
