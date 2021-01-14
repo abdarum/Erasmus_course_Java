@@ -15,7 +15,6 @@ import { getCommonNameSelectOptions, getCommonNameDatabaseValues } from './Commo
 import BookItemOverviewShort from '../components/BookItemOverviewShort';
 import UserOverviewShort from '../components/UserOverviewShort';
 import qs from 'query-string';
-import Card from './common/Card';
 
 const OrderForm = ({ orderItem, disabled, librarianMode }) => {
   const history = useHistory();
@@ -33,10 +32,10 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
   const [bookGenresRaw, setBookGenresRaw] = useState([]);
   const [borrowPeriodsRaw, setBorrowPeriodsRaw] = useState([]);
   const [borrowPlaceRaw, setBorrowPlaceRaw] = useState([]);
+  const [borrowPlaceSelect, setBorrowPlaceSelect] = useState([]);
+  const [borrowPeriodsSelect, setBorrowPeriodsSelect] = useState([]);
   const auth = useContext(AuthContext);
   const formRef = useRef();
-  const selectPeriodRef = useRef();
-  const selectPlaceRef = useRef();
 
 
   const dumpOrderItem = Object.assign({
@@ -90,13 +89,8 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
           '/book/' + bookId + '?' + qs.stringify(queryValues)
         );
         setBook(data);
-        // formRef.current.values.placeId = data.sugeredPlaceId;
-        // formRef.current.values.periodId = data.sugeredPeriodId;
-
-        // selectPeriodRef.current.props.value = getCommonNameSelectOptions(borrowPeriodsRaw, data.sugeredPeriodId);
-        // formRef.current.values = setPeriodAndPlace(formRef.current.values, data);
         setPeriodAndPlace(data);
-        // console.log(selectPeriodRef.current.props.value);
+        // onClick();
       }
     } catch (err) {
       console.log('the err', err);
@@ -144,7 +138,6 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
         '/dataset/borrowPeriod'
       );
       setBorrowPeriodsRaw(data);
-      setPeriodAndPlace();
     } catch (err) {
       console.log(err);
     }
@@ -155,33 +148,18 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
         '/dataset/borrowPlace'
       );
       setBorrowPlaceRaw(data);
-      setPeriodAndPlace();
     } catch (err) {
       console.log(err);
     }
   };
 
   function setPeriodAndPlace(bookItem) {
-    if (bookItem === undefined) {
-      // setTimeout(() => {
-      //   setPeriodAndPlace(book);
-      // }, 1500);
-      console.log(book);
-      bookItem = book;
-    }
-    console.log(bookItem);
-    if (bookItem && borrowPeriodsRaw && borrowPlaceRaw) {
-      formRef.current.values.placeId = null;
-      formRef.current.values.periodId = null;
-      // // console.log(getCommonNameSelectOptions(borrowPlaceRaw, book.sugeredPlaceId));
-      // // console.log(getCommonNameSelectOptions(borrowPeriodsRaw, book.sugeredPeriodId));
-      formRef.current.values.placeId = getCommonNameSelectOptions(borrowPlaceRaw, bookItem.sugeredPlaceId);
-      formRef.current.values.periodId = getCommonNameSelectOptions(borrowPeriodsRaw, bookItem.sugeredPeriodId);
-    } else {
-      // console.log(book);
-      // console.log(borrowPeriodsRaw);
-      // console.log(borrowPlaceRaw);
-    }
+    var periodVal = getCommonNameSelectOptions(borrowPeriodsRaw, bookItem.sugeredPeriodId);
+    var placeVal = getCommonNameSelectOptions(borrowPlaceRaw, bookItem.sugeredPlaceId);
+    setBorrowPlaceSelect(placeVal);
+    setBorrowPeriodsSelect(periodVal);
+    formRef.current.values.placeId = placeVal;
+    formRef.current.values.periodId = periodVal;
   }
 
 
@@ -217,8 +195,17 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
       } else {
         saveLessonItem.borrowedDate = new Date();
       }
-      saveLessonItem.placeId = getCommonNameDatabaseValues(credentials.placeId);
-      saveLessonItem.periodId = getCommonNameDatabaseValues(credentials.periodId);
+      // console.log({orderPeriodId: order.periodId, orderPlaceId: order.placeId,  bookSugeredPeriodId: book.sugeredPeriodId, bookSugeredPlaceId: book.sugeredPlaceId});
+      // console.log({
+      //   credentialsPlaceId: getCommonNameDatabaseValues(credentials.placeId),
+      //   orderPlaceId: getCommonNameDatabaseValues(order.placeId),
+      //   bookSugeredPlaceId: book.sugeredPlaceId,
+      //   credentialsPeriodId: getCommonNameDatabaseValues(credentials.periodId),
+      //   orderPeriodId: getCommonNameDatabaseValues(order.periodId),
+      //   bookSugeredPeriodId: book.sugeredPeriodId
+      // });
+      saveLessonItem.placeId = getCommonNameDatabaseValues(credentials.placeId) ? getCommonNameDatabaseValues(credentials.placeId) : (order && order.placeId ? order.placeId : book.sugeredPlaceId);
+      saveLessonItem.periodId = getCommonNameDatabaseValues(credentials.periodId) ? getCommonNameDatabaseValues(credentials.periodId) : (order && order.periodId ? order.periodId : book.sugeredPeriodId);
       console.log(saveLessonItem);
 
       setSaveLoadingLessonItemForm(true);
@@ -251,6 +238,14 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
       setSaveSuccessLessonItemForm('');
     }
   };
+
+  function isBookNotAllowedToBorrow() {
+    return (book && (book.status === "in use" || book.status === "archived"));
+  }
+
+  function isReturnedDateNotEmpty() {
+    return (order && order.returnedDate);
+  }
 
   const SignupSchema = Yup.object().shape({
   });
@@ -353,11 +348,14 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
                   </div>
                   {borrowPeriodsRaw ? (
                     <Select
-                      value={values.periodId}
+                      value={borrowPeriodsSelect ? borrowPeriodsSelect : getCommonNameSelectOptions(borrowPeriodsRaw, book.sugeredPeriodId)}
                       options={getCommonNameSelectOptions(borrowPeriodsRaw)}
                       onChange={(opt, e) => {
                         setFieldValue("periodId", opt);
-                      }} />
+                        setBorrowPeriodsSelect(opt);
+                      }}
+                      isDisabled={disabled || isReturnedDateNotEmpty() || isBookNotAllowedToBorrow() || !librarianMode}
+                    />
                   ) : (
                       <p>Loading ...</p>
                     )}
@@ -368,11 +366,14 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
                   </div>
                   {borrowPlaceRaw ? (
                     <Select
-                      value={values.placeId}
+                      value={borrowPlaceSelect ? borrowPlaceSelect : getCommonNameSelectOptions(borrowPlaceRaw, book.sugeredPlaceId)}
                       options={getCommonNameSelectOptions(borrowPlaceRaw)}
                       onChange={(opt, e) => {
                         setFieldValue("placeId", opt);
-                      }} />
+                        setBorrowPlaceSelect(opt);
+                      }}
+                      isDisabled={disabled || isReturnedDateNotEmpty() || isBookNotAllowedToBorrow() || !librarianMode}
+                    />
                   ) : (
                       <p>Loading ...</p>
                     )}
@@ -408,17 +409,28 @@ const OrderForm = ({ orderItem, disabled, librarianMode }) => {
             </div>
             <div className="flex items-center">
               <div className="mt-2 mb-2">
-                {disabled || order && order.returnedDate ? (
+                {disabled || isReturnedDateNotEmpty() ? (
                   <></>
                 ) : (
                     librarianMode ? (
-                      <GradientButton
-                        type="submit"
-                        text={order ? t('components.order_form_component.return_book_button') : t('components.order_form_component.borrow_book_button')}
-                        loading={saveLoadingLessonItemForm}
-                      />
+
+                      order ? (
+                        <GradientButton
+                          type="submit"
+                          text={t('components.order_form_component.return_book_button')}
+                          loading={saveLoadingLessonItemForm}
+                        />
+                      ) : (
+                          isBookNotAllowedToBorrow() ? (<></>) : (
+                            <GradientButton
+                              type="submit"
+                              text={t('components.order_form_component.borrow_book_button')}
+                              loading={saveLoadingLessonItemForm}
+                            />
+                          )
+                        )
                     ) : (
-                        order && order.borrowedDate ? (<></>) : (
+                        isBookNotAllowedToBorrow() ? (<></>) : (
                           <GradientButton
                             type="submit"
                             text={t('components.order_form_component.borrow_book_button')}

@@ -20,7 +20,7 @@ const ReturnedDateLabel = ({
     const threeDaysToReturn = borrowedDateValue.addDays(periodValue - 3);
     const returnDate = borrowedDateValue.addDays(periodValue);
 
-    const diffValue = returnDate.getDate() - borrowedDateValue.getDate();
+    const diffValue = Math.floor((returnDate.getTime() - nowValue.getTime())/(1000*60*60*24));
 
     return (
         <>

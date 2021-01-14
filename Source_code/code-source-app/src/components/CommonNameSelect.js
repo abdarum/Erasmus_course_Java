@@ -15,6 +15,9 @@ const getCommonNameSelectOptions = (asyncList, initValue) => {
     }
 
     setStatusSelect();
+    if (Object.keys(commonNameSelectSingleValueSelect).length === 0 && commonNameSelectSingleValueSelect.constructor === Object) {
+        commonNameSelectSingleValueSelect = undefined;
+    }
 
     return commonNameSelectValuesSelect.length ? commonNameSelectValuesSelect : commonNameSelectSingleValueSelect;
 };
@@ -38,7 +41,11 @@ const getPeriodDaysValue = (asyncList, initValue) => {
 };
 
 const getCommonNameDatabaseValues = (initValue) => {
-    return initValue.value;
+    if (initValue) {
+        return initValue.value;
+    } else {
+        return undefined;
+    }
 }
 
 export { getCommonNameSelectOptions, getCommonNameDatabaseValues, getPeriodDaysValue };
