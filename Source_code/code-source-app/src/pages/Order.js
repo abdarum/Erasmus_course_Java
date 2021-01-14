@@ -7,19 +7,13 @@ import PageTitle from '../components/common/PageTitle';
 import { FetchContext } from '../context/FetchContext';
 import Card from '../components/common/Card';
 import OrderForm from '../components/OrderForm';
-import DangerButton from '../components/common/DangerButton';
-import FormError from '../components/FormError';
-import FormSuccess from '../components/FormSuccess';
-import qs from 'query-string';
+import { useTranslation } from "react-i18next";
 import { AuthContext } from '../context/AuthContext';
 
 
 const Order = () => {
-  const fetchContext = useContext(FetchContext);
-  const [order, setOrder] = useState();
-  const [successMessage, setSuccessMessage] = useState();
-  const [errorMessage, setErrorMessage] = useState();
   const auth = useContext(AuthContext);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
   }, []);
@@ -27,18 +21,12 @@ const Order = () => {
 
   return (
     <>
-      <PageTitle title="Order" />
-      {/* {order ? (
-        <></>
-      ) : ( */}
+      <PageTitle title={t('pages.order_page.title')} />
       <Card>
         <OrderForm
-          orderItem={order}
           librarianMode={auth.isLibrarian()}
         />
       </Card>
-      {/* )} */}
-
     </>
   );
 };

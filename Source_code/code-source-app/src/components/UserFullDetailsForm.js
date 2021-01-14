@@ -220,7 +220,7 @@ const UserFullDetailsForm = ({ user, userTypeId, key, passwordNotVisible, status
                 />
               </div>
               {passwordNotVisible ? <div /> : (
-                <div className="mb-2 mr-2 w-1/4">
+                <div className="mb-2 px-1 w-1/4">
                   <div className="mb-1">
                     <Label text={t('components.user_full_details_form_component.forms.data.password')} />
                   </div>
@@ -232,8 +232,20 @@ const UserFullDetailsForm = ({ user, userTypeId, key, passwordNotVisible, status
                   />
                 </div>
               )}
-              <div className="mb-2 ml-2 w-1/4">
-              </div>
+              {user && user.registrated ? (
+                <div className="mb-2 px-1 w-1/4">
+                  <div className="mb-1">
+                    <Label text={t('components.user_full_details_form_component.forms.data.registrated')} />
+                  </div>
+                  <FormInput
+                    ariaLabel={t('components.user_full_details_form_component.forms.data.registrated')}
+                    name="registrated"
+                    type="text"
+                    disabled={true}
+                    placeholder={t('components.user_full_details_form_component.forms.data.registrated')}
+                  />
+                </div>
+              ) : <div />}
             </div>
             <div className="flex">
               <div className="mb-2 px-1 w-1/4">

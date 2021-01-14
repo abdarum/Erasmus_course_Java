@@ -46,6 +46,25 @@
             "no_orders_found": "Sorry, no orders found",
             "title": "Manage orders"
         },
+        "order_page": {
+            "title": "Order"
+        },
+        "reports_page": {
+            "userrating_section":{
+                "header": "User rating"
+            },
+            "users_section":{
+                "header": "Users"
+            },
+            "books_section":{
+                "header": "Books"
+            },
+            "submitted_section":{
+                "header": "Submitted forms"
+            },
+            "get_report_button": "Get report",
+            "title": "Reports"
+        },
         "account_page": {
             "title": "Account",
             "personal_info_section": {
@@ -59,7 +78,9 @@
             "no_books_found": "Sorry, no books found. Please try to search another filters",
             "set_filters_and_search": "Set filters and click Find button to see results"
         },
-
+        "submitted_report_page": {
+            "title": "Submitted report"
+        },
         
 
 
@@ -111,6 +132,7 @@
                     "phone": "Phone",
                     "email": "Email",
                     "password": "Password",
+                    "registrated": "Registrated",
                     "birthdate": "Birthday",
                     "gender": "Gender",
                     "address": "Address",

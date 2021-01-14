@@ -29,6 +29,8 @@ const Readers = lazy(() => import('./pages/Readers'));
 const Users = lazy(() => import('./pages/Users'));
 const ManageBooks = lazy(() => import('./pages/ManageBooks'));
 const ManageOrders = lazy(() => import('./pages/ManageOrders'));
+const Reports = lazy(() => import('./pages/Reports'));
+const SubmittedReport = lazy(() => import('./pages/SubmittedReport'));
 
 const LoadingFallback = () => (
   <AppShell>
@@ -85,6 +87,22 @@ const AdminRoute = ({ children, ...rest }) => {
   );
 };
 
+const LibrarianRoute = ({ children, ...rest }) => {
+  const auth = useContext(AuthContext);
+  return (
+    <Route
+      {...rest}
+      render={() =>
+        auth.isAuthenticated() && auth.isLibrarian() ? (
+          <AppShell>{children}</AppShell>
+        ) : (
+            <Redirect to="/" />
+          )
+      }
+    ></Route>
+  );
+};
+
 const AppRoutes = () => {
   return (
     <>
@@ -93,9 +111,6 @@ const AppRoutes = () => {
           <AuthenticatedRoute path="/notimplemented">
             <FiveOOne />
           </AuthenticatedRoute>
-          <AdminRoute path="/inventory">
-            <Order />
-          </AdminRoute>
           <AuthenticatedRoute path="/find-books">
             <FindBooks />
           </AuthenticatedRoute>
@@ -108,18 +123,36 @@ const AppRoutes = () => {
           <AuthenticatedRoute path="/settings">
             <Settings />
           </AuthenticatedRoute>
-          <AuthenticatedRoute path="/users">
+          <AdminRoute path="/users">
             <Users />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute path="/readers">
+          </AdminRoute>
+          <AdminRoute path="/readers">
             <Readers />
-          </AuthenticatedRoute>
-          <AuthenticatedRoute path="/manage-books">
+          </AdminRoute>
+          <LibrarianRoute path="/readers">
+            <Readers />
+          </LibrarianRoute>
+          <LibrarianRoute path="/manage-books">
             <ManageBooks />
-          </AuthenticatedRoute>
+          </LibrarianRoute>
           <AuthenticatedRoute path="/manage-orders">
             <ManageOrders />
           </AuthenticatedRoute>
+          <AdminRoute path="/reports">
+            <Reports />
+          </AdminRoute>
+          <AdminRoute path="/inventory/submitted">
+            <SubmittedReport />
+          </AdminRoute>
+          <AdminRoute path="/inventory/books">
+            {/* <Order /> */}
+          </AdminRoute>
+          <AdminRoute path="/inventory/users">
+            {/* <Order /> */}
+          </AdminRoute>
+          <AdminRoute path="/inventory/userrating">
+            {/* <Order /> */}
+          </AdminRoute>
           <UnauthenticatedRoutes />
         </Switch>
       </Suspense>

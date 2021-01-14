@@ -24,55 +24,55 @@ var reader = 3;
 const navItems = [
   {
     label: 'components.sidebar_component.link_label.find_books',
-    path: 'find-books',
+    path: '/find-books',
     icon: faBook,
     allowedRoles: [reader, librarian]
   },
   {
     label: 'components.sidebar_component.link_label.orders',
-    path: 'manage-orders',
+    path: '/manage-orders',
     icon: faBookOpen,
     allowedRoles: [reader]
   },
   {
     label: 'components.sidebar_component.link_label.manage_books',
-    path: 'manage-books',
+    path: '/manage-books',
     icon: faEdit,
     allowedRoles: [librarian]
   },
   {
     label: 'components.sidebar_component.link_label.manage_orders',
-    path: 'manage-orders',
+    path: '/manage-orders',
     icon: faTasks,
     allowedRoles: [librarian]
   },
   {
     label: 'components.sidebar_component.link_label.all_users',
-    path: 'users',
+    path: '/users',
     icon: faUsersCog,
     allowedRoles: [admin]
   },
   {
     label: 'components.sidebar_component.link_label.readers',
-    path: 'readers',
+    path: '/readers',
     icon: faBookReader,
     allowedRoles: [admin, librarian]
   },
   {
     label: 'components.sidebar_component.link_label.reports',
-    path: 'notimplemented',
+    path: '/reports',
     icon: faList,
     allowedRoles: [admin]
   },
   {
     label: 'components.sidebar_component.link_label.account',
-    path: 'account',
+    path: '/account',
     icon: faAddressCard,
     allowedRoles: [reader,  librarian, admin]
   },
   {
     label: 'components.sidebar_component.link_label.settings',
-    path: 'settings',
+    path: '/settings',
     icon: faCogs,
     allowedRoles: []
   }
@@ -82,7 +82,7 @@ const NavItem = ({ navItem }) => {
   const { t  } = useTranslation('common');
   const location = useLocation();
   const isCurrentRoute =
-    location.pathname === `/${navItem.path}`;
+    location.pathname === `${navItem.path}`;
   const classes = classNames({
     'px-2 sm:px-6 justify-center sm:justify-start py-3 rounded-full flex': true,
     'text-gray-600 hover:text-blue-500 transform hover:translate-x-1 transition ease-in-out duration-100': !isCurrentRoute,
