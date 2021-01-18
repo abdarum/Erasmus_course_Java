@@ -8,3 +8,4 @@
 /Source_code/RestAPI/src/**/*.orig
 /Source_code/RestAPI/spring-server-generated
 /Source_code/RestAPI/spring-server-generated.zip
+/Source_code/javafxFrontend/lib/javafx-sdk-11.0.2/
