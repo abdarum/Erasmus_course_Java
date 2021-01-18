@@ -106,6 +106,22 @@ const LibrarianRoute = ({ children, ...rest }) => {
   );
 };
 
+const LibrarianOrAdminRoute = ({ children, ...rest }) => {
+  const auth = useContext(AuthContext);
+  return (
+    <Route
+      {...rest}
+      render={() =>
+        auth.isAuthenticated() && (auth.isLibrarian() || auth.isAdmin()) ? (
+          <AppShell>{children}</AppShell>
+        ) : (
+            <Redirect to="/" />
+          )
+      }
+    ></Route>
+  );
+};
+
 const AppRoutes = () => {
   return (
     <>
@@ -129,12 +145,9 @@ const AppRoutes = () => {
           <AdminRoute path="/users">
             <Users />
           </AdminRoute>
-          <AdminRoute path="/readers">
+          <LibrarianOrAdminRoute path="/readers">
             <Readers />
-          </AdminRoute>
-          <LibrarianRoute path="/readers">
-            <Readers />
-          </LibrarianRoute>
+          </LibrarianOrAdminRoute>
           <LibrarianRoute path="/manage-books">
             <ManageBooks />
           </LibrarianRoute>

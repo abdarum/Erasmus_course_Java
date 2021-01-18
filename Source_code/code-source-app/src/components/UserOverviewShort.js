@@ -45,7 +45,7 @@ const UserOverviewShort = ({
           {userIdVisible ? (
             <p className="text-gray-600 text-sm mr-2">{t('components.user_overview_short_component.labels.user_id') + userItem.id}</p>
           ) : (<> </>)}
-          {userItem.status ? (
+          {userItem.userTypeName ? (
             <p className="text-gray-600 text-sm rounded border border-blue-600 px-2 mr-2">{userItem.userTypeName}</p>
           ) : (<> </>)}
           <p className="text-gray-600 text-sm rounded border border-blue-600 px-2">{userItem.status}</p>
