@@ -361,9 +361,9 @@ public class Book   {
     name = book.getName();
     isbn = book.getIsbn();
     authorId = book.getAuthorId();
-    pageCount = getPageCount();
-    coverTypeId = getCoverTypeId();
-    genreId = getGenreId();
+    pageCount = book.getPageCount();
+    coverTypeId = book.getCoverTypeId();
+    genreId = book.getGenreId();
     sugeredPeriodId = book.getSugeredPeriodId();
     sugeredPlaceId = book.getSugeredPlaceId();
     status = book.getStatus();

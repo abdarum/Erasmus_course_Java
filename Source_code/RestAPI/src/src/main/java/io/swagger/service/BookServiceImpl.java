@@ -25,7 +25,8 @@ import io.swagger.repository.BookGenreRepository;
 import io.swagger.repository.BookRepository;
 import io.swagger.repository.CoverTypeRepository;
 import io.swagger.repository.UserRepository;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
@@ -47,6 +48,8 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private UserTypeService userTypeService;
+
+    private static final Logger log = LoggerFactory.getLogger(BookServiceImpl.class);
 
     @Override
     public Void initBookValues() {
@@ -242,6 +245,7 @@ public class BookServiceImpl implements BookService {
         // coverTypeId = coverTypeRepository.getCoverTypeIdByName("Paperback");
         // coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Case Wrap");
         // coverTypeId = coverTypeRepository.getCoverTypeIdByName("Hardcover Dust Jacket");
+        log.info("Added example books to the system");
         return null;
     }
 
@@ -259,6 +263,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public Book createBook(Book book) {
+        log.info("Book created:\n"+book.toString());
         return bookRepository.save(book);
     }	
 
@@ -270,7 +275,12 @@ public class BookServiceImpl implements BookService {
 	@Override
     public Book deleteBookById(Long id){
         Optional<Book> od = bookRepository.getBookById(id);
-        if(od.isPresent()) bookRepository.deleteBookById(id);
+        if(od.isPresent()) {
+            bookRepository.deleteBookById(id);
+            log.info("Deleted book with id: " + id.toString());
+        } else {
+            log.error("Sorry, book with id can not be delete. Book with id can not be found. ID: " + id.toString());
+        }
         return od.get();
     }
 
@@ -298,7 +308,10 @@ public class BookServiceImpl implements BookService {
         Optional<Book> od = bookRepository.getBookById(id);
         if(od.isPresent()) {
             if(body.getId() == null) body.setId(id);
+            log.info("Updated book with id: " + id.toString() + " content:\n"+ body.toString());
             return bookRepository.save(body);
+        } else {
+            log.error("Sorry, book can not be updated. Book with id can not be found. ID: " + id.toString());
         }
         return null;
     }
@@ -308,6 +321,7 @@ public class BookServiceImpl implements BookService {
         try{
             Book book = getBookById(id);
             book.setStatus(status);
+            log.info("Book with id: " + id.toString() + " status changed to: "+ status.toString());
             if(updateBookById(id, book) != null)
             {
                 return true;
