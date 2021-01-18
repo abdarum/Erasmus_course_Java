@@ -37,6 +37,8 @@ import io.swagger.repository.UserTypeRepository;
 import io.swagger.repository.BorrowPeriodRepository;
 import io.swagger.repository.BorrowPlaceRepository;
 import io.swagger.repository.BorrowedRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @Transactional
@@ -59,6 +61,8 @@ public class LibraryServiceImpl implements LibraryService {
     @Autowired
     private UserTypeService userTypeService; 
     
+    private static final Logger log = LoggerFactory.getLogger(LibraryServiceImpl.class);
+
     @Override
     public Void initBorrowPlaceValues() {
         borrowPlaceRepository.save(new BorrowPlace("Archive"));
@@ -197,8 +201,8 @@ public class LibraryServiceImpl implements LibraryService {
         borrowed.setPeriodId(Long.valueOf(47));
         createOrder(borrowed);
         // **************************
+        log.info("Added example borrow items to the system");
         return null;
-
     }
 
     @Override
@@ -217,8 +221,11 @@ public class LibraryServiceImpl implements LibraryService {
         Optional<Borrowed> od = borrowedRepository.getOrderById(orderId);
 		if(od.isPresent()){
             borrowedRepository.deleteOrderById(orderId);
+            log.info("Deleted order with id: " + orderId.toString());
             return od.get();
-        } 
+        } else {
+            log.error("Sorry, these order can not be found. ID: " + orderId.toString());
+        }
         return null;
     }
 
@@ -230,8 +237,11 @@ public class LibraryServiceImpl implements LibraryService {
             if(borrowed.getReturnedDate() == null){
                 bookService.updateBookStatus(borrowedInRepository.getBookId(), StatusEnum.IN_USE);
             }
+            log.info("Order created:\n"+borrowed.toString());
             return borrowedInRepository;
-        } 
+        } else {
+            log.error("Sorry, these order can not be created. It is present in the system or it is not valid.");
+        }
         return null;
     }
 
@@ -283,8 +293,10 @@ public class LibraryServiceImpl implements LibraryService {
                 body.setId(orderId);
             if(od.get().getReturnedDate() == null && body.getReturnedDate() != null) 
                 bookService.updateBookStatus(body.getBookId(), StatusEnum.AVAILABLE);
+            log.info("Update order with id: " + orderId.toString() + " content:\n"+ body.toString());
             return borrowedRepository.save(body);
         } else {
+            log.error("Sorry, these order can not be updated. It is not present in the system or it is not valid.");
             return null;
         } 
     }
@@ -435,7 +447,6 @@ public class LibraryServiceImpl implements LibraryService {
         booksReport.setNumberOfBooks(bookService.countBooks());
         for(Book book: availableBooks){
             BookReport bookReport = new BookReport(book);
-            System.out.println(book.toString());
             bookReport.setAuthorTypeName(bookService.getAuthorNameById(book.getAuthorId()));
             bookReport.setCoverTypeName(bookService.getCoverTypeNameById(book.getCoverTypeId()));
             bookReport.setGenreName(bookService.getBookGenreNameById(book.getGenreId()));

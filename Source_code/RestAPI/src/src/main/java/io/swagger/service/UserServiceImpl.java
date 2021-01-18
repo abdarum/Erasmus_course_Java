@@ -27,6 +27,8 @@ import io.swagger.model.UserType;
 import io.swagger.model.User.StatusEnum;
 import io.swagger.repository.UserRepository;
 import io.swagger.repository.UserTypeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @Transactional
@@ -41,6 +43,8 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private UserTypeService userTypeService;
+
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	@Override
     public Void initUserValues(){
@@ -87,6 +91,7 @@ public class UserServiceImpl implements UserService {
         reader.setCity("Varna");
         reader.setStatus(StatusEnum.TO_VERYFICATION);
         createUser(reader);
+        log.info("Added example users to the system");
         return null;
     }
     
@@ -102,7 +107,12 @@ public class UserServiceImpl implements UserService {
         user.setRegistrated(registrated);
         
         Optional<User> od = userRepository.getUserByEmail(user.getEmail());
-        if(!od.isPresent()) return userRepository.save(user);
+        if(!od.isPresent()) {
+            log.info("Create new user:\n"+user.toString());
+            return userRepository.save(user);
+        } else {
+            log.error("Sorry, user with  given email exist. Email: "+user.getEmail());
+        }
         return null;
     }	
 
@@ -167,8 +177,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> od = userRepository.getUserById(id);
         if(od.isPresent()) {
             if(body.getId() == null) body.setId(id);
+            log.info("Updated user with id: " + id.toString() + " content:\n"+ body.toString());
             return userRepository.save(body);
         } else {
+            log.error("Sorry, these user can not be updated. It is not present in the system.");
             return null;
         } 
     }
@@ -181,10 +193,12 @@ public class UserServiceImpl implements UserService {
             if (tmpUser.getPassword().equals(password)) {
                 if(tmpUser.getStatus().equals(StatusEnum.ACTIVE)){
                     userTokenService.createToken(tmpUser.getId());
+                    log.info("User with email: " + email + " logged in correctly.");
                     return tmpUser;
                 }
             }
         }
+        log.error("Sorry, user with email: " + email + " can not be logged in. It is inactive or credentials not mach.");
         return null;
     }
 
