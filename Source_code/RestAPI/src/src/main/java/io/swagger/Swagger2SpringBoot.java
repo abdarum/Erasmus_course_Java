@@ -6,7 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import io.swagger.app.JavaFxApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import javafx.application.Application;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -21,7 +24,8 @@ public class Swagger2SpringBoot implements CommandLineRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        new SpringApplication(Swagger2SpringBoot.class).run(args);
+        Application.launch(JavaFxApplication.class, args);
+        // new SpringApplication(Swagger2SpringBoot.class).run(args);
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
