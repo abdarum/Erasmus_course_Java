@@ -1,4 +1,8 @@
+package com.library.app;
+
 import java.io.Console;
+
+import com.library.app.login.LoginManager;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -9,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import login.LoginManager;
 
 public class App extends Application {
     public static void main(String[] args) {

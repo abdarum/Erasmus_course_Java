@@ -1,4 +1,4 @@
-package pages.account;
+package com.library.app.pages.account;
 
 import javafx.fxml.FXMLLoader;
 

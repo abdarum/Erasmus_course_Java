@@ -1,10 +1,12 @@
-package login;
+package com.library.app.login;
 
 import java.io.IOException;
 import java.util.logging.*;
+
+import com.library.app.pages.account.AccountManager;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
-import pages.account.AccountManager;
 
 /** Manages control flow for logins */
 public class LoginManager {
