@@ -4,6 +4,8 @@ import { AuthContext } from './../context/AuthContext';
 import GradientLink from '../components/common/GradientLink';
 import GradientBar from './../components/common/GradientBar';
 import logo from './../images/logo.png';
+import background from './../images/background.jpg';
+
 
 const Home = () => {
   const auth = useContext(AuthContext);
@@ -36,11 +38,11 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <div className="h-full bg-blue-900">
+      <div className="h-full bg-yellow-700">
         <div className="opacity-10">
           <img
             className="object-fill w-full"
-            src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjF9"
+            src={background}
             alt="Home"
           />
         </div>
@@ -58,7 +60,7 @@ const Home = () => {
                 size="lg"
                 to={
                   auth.isAuthenticated()
-                    ? '/find-books' 
+                    ? '/find-books'
                     : '/login'
                 }
               />
