@@ -4,6 +4,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import io.swagger.Swagger2SpringBoot;
+import io.swagger.app.controller.LoginController;
 import io.swagger.app.controller.MyController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -35,7 +36,7 @@ public class JavaFxApplication extends Application {
     @Override
     public void start(Stage stage) {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(MyController.class);
+        Parent root = fxWeaver.loadView(LoginController.class);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
