@@ -7,6 +7,7 @@ import io.swagger.app.service.LoginService;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import net.rgielen.fxweaver.core.FxmlView;
 
 /** Controls the login screen */
@@ -16,11 +17,13 @@ public class LoginController {
   private LoginService loginService;
 
   @FXML
-  private TextField user;
+  private TextField email;
   @FXML
-  private TextField password;
+  private PasswordField password;
   @FXML
   private Button loginButton;
+  @FXML
+  private Label statusLabel;
 
   @Autowired
   public LoginController(LoginService loginService) {
@@ -28,6 +31,12 @@ public class LoginController {
   }
 
   public void logInAction(ActionEvent actionEvent) {
-    System.out.print(loginService.authorize(user.getText(), password.getText()));
+    statusLabel.setText(loginService.authorize(email.getText(), password.getText()));
+    if (loginService.user != null) {
+      System.out.println(loginService.user.toString());
+      statusLabel.setTextFill(Color.GREEN);
+    } else {
+      statusLabel.setTextFill(Color.RED);
+    }
   }
 }

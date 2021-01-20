@@ -13,13 +13,14 @@ public class LoginService {
   @Autowired
   UserService  userService;
 
-  public String authorize(String email, String password) {
-    User user = userService.loginUser(email, password);
-    if(user != null){
-      return user.toString();
-    }
+  public User user;
 
-    return "no user";
+  public String authorize(String email, String password) {
+    this.user = userService.loginUser(email, password);
+    if(user != null){
+      return "Logged in correctly";
+    }
+    return "Sorry, user data does not mach";
   }
 
 }
