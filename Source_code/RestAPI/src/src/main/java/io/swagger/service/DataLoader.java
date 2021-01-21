@@ -25,7 +25,7 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         // Testing gear turn off before deployment
-        if(true){
+        if(false){
             // User
             if(userTypeService.countUserTypes() == 0){
                 userTypeService.initUserTypeValues();

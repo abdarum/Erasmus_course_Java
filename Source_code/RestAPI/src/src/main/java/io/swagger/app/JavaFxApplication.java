@@ -16,7 +16,8 @@ import net.rgielen.fxweaver.core.FxWeaver;
 
 public class JavaFxApplication extends Application {
 
-    private ConfigurableApplicationContext applicationContext;
+    static public ConfigurableApplicationContext applicationContext;
+    static public Stage stage;
 
     @Override
     public void init() {
@@ -34,9 +35,10 @@ public class JavaFxApplication extends Application {
     }
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage startStage) {
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(LoginController.class);
+        stage = startStage;
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
