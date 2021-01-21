@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import net.rgielen.fxweaver.core.FxmlView;
 
@@ -40,10 +41,13 @@ public class MainViewController {
     private VBox buttonsVBox;
     @FXML
     private Label buttonsHeadLabel;
+    @FXML
+    private BorderPane mainPane;
 
     @Autowired
     public MainViewController(MainViewService mainViewService) {
         this.mainViewService = mainViewService;
+        this.mainViewService.setController(this);
     }
 
     @FXML
@@ -56,85 +60,26 @@ public class MainViewController {
         if (buttonsVBox != null) {
             ObservableList<Node> nodes = FXCollections.observableArrayList(buttonsVBox.getChildren());
             for (Node node : nodes) {
-                if (!isButtonValidForUserType(node.idProperty().get())) {
+                if (!this.mainViewService.isButtonValidForUserType(node.idProperty().get())) {
                     buttonsVBox.getChildren().remove(node);
                 }
             }
         }
     }
 
-    private Boolean isButtonValidForUserType(String buttonId) {
-        if (LoginController.getUser() != null) {
-            if (buttonId.equals("findBooksButton")) {
-                return LoginController.isReader() || LoginController.isLibrarian();
-            }
-            if (buttonId.equals("ordersButton")) {
-                return LoginController.isReader();
-            }
-            if (buttonId.equals("manageBooksButton")) {
-                return LoginController.isLibrarian();
-            }
-            if (buttonId.equals("manageOrdersButton")) {
-                return LoginController.isLibrarian();
-            }
-            if (buttonId.equals("allUsersButton")) {
-                return LoginController.isAdmin();
-            }
-            if (buttonId.equals("readersButton")) {
-                return LoginController.isAdmin() || LoginController.isLibrarian();
-            }
-            if (buttonId.equals("reportsButton")) {
-                return LoginController.isAdmin();
-            }
-            if (buttonId.equals("accountButton")) {
-                return true;
-            }
-        }
-        return false;
+    public void sideBarButtonAction(ActionEvent actionEvent) {
+        updateMainPane(actionEvent);
     }
 
-    public void findBooksAction(ActionEvent actionEvent) {
-        System.out.println("findBooksAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    public void ordersAction(ActionEvent actionEvent) {
-        System.out.println("ordersAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    public void manageBooksAction(ActionEvent actionEvent) {
-        System.out.println("manageBooksAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    public void manageOrdersAction(ActionEvent actionEvent) {
-        System.out.println("manageOrdersAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    public void allUsersAction(ActionEvent actionEvent) {
-        System.out.println("allUsersAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    public void readersAction(ActionEvent actionEvent) {
-        System.out.println("readersAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    public void reportsAction(ActionEvent actionEvent) {
-        System.out.println("reportsAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    public void accountAction(ActionEvent actionEvent) {
-        System.out.println("accountAction");
-        setLastChoosedButtonAs(((Button) actionEvent.getSource()).getText());
-    }
-
-    private void setLastChoosedButtonAs(String buttonText) {
+    private void setLastChoseButtonAs(String buttonText) {
         buttonsHeadLabel.setText("Current selected: " + buttonText);
     }
 
+    public void updateMainPane(ActionEvent actionEvent) {
+        String buttonId = ((Button) actionEvent.getSource()).getId();
+        String buttonName = ((Button) actionEvent.getSource()).getText();
+        setLastChoseButtonAs(buttonName);
+        // System.out.println("buttonId: " + buttonId + " buttonName: " + buttonName);
+        mainPane.setCenter(mainViewService.getMainPane(buttonId));
+    }
 }
