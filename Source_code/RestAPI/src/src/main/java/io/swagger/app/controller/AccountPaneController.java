@@ -17,20 +17,10 @@ import io.swagger.app.service.WeatherService;
 @Component
 @FxmlView("accountPane.fxml")
 public class AccountPaneController {
-    private WeatherService weatherService;
-    
-    @FXML
-    private Label weatherLabel;
     @FXML
     private BorderPane userDetailsPane;
     @FXML
     private BorderPane passwordPane;
-    
-
-    @Autowired
-    public AccountPaneController(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
     
     @FXML
     public void initialize() {
@@ -39,13 +29,9 @@ public class AccountPaneController {
             FxWeaver fxWeaver = JavaFxApplication.applicationContext.getBean(FxWeaver.class);
             Node node = fxWeaver.loadView(UserDetailsFormController.class);
             userDetailsPane.setCenter(node);
+            // (UserDetailsFormController) userDetailsPane.centerProperty().setFormFromData(LoginController.getUser());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    public void loadWeatherForecast(ActionEvent actionEvent) {
-        this.weatherLabel.setText(weatherService.getWeatherForecast());
-    }
-
 }

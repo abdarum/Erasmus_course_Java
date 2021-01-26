@@ -2,8 +2,11 @@ package io.swagger.app.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -19,14 +22,15 @@ import org.threeten.bp.ZoneId;
 
 import io.swagger.app.service.WeatherService;
 import io.swagger.model.User;
+import io.swagger.model.User.StatusEnum;
+import io.swagger.service.UserTypeService;
 
 @Component
 @FxmlView("userDetailsForm.fxml")
 public class UserDetailsFormController {
-    private WeatherService weatherService;
+    @Autowired
+    private UserTypeService userTypeService;
     
-    @FXML
-    private Label weatherLabel;
     @FXML
     private TextField firstNameTextField;
     @FXML
@@ -45,19 +49,18 @@ public class UserDetailsFormController {
     private DatePicker birthdayDatePicker;
     @FXML
     private Label registratedLabel;
-    // @FXML
-    // private ToggleGroup genderRadioGroup;
+    @FXML
+    private ChoiceBox<String> statusChoiceBox;
+    @FXML
+    private ChoiceBox<String> genderChoiceBox;
+    @FXML
+    private ChoiceBox<String> userTypeChoiceBox;
 
-    @Autowired
-    public UserDetailsFormController(WeatherService weatherService) {
-        this.weatherService = weatherService;
-    }
-    
-    public void loadWeatherForecast(ActionEvent actionEvent) {
-        this.weatherLabel.setText(weatherService.getWeatherForecast());
+    @FXML
+    public void initialize() {
     }
 
-    public User getDataFromForm(){
+    public User getDataFromForm() {
         User user = new User();
         user.setFirstName(firstNameTextField.getText());
         user.setLastName(lastNameTextField.getText());
@@ -66,21 +69,40 @@ public class UserDetailsFormController {
         user.setPassword(passwordTextField.getText());
         user.setAdress(adressTextField.getText());
         user.setCity(cityTextField.getText());
-        if(birthdayDatePicker.getValue() != null){
-            OffsetDateTime birthdate = OffsetDateTime.parse(birthdayDatePicker.getValue().toString()+"T00:00:00+00:00" );
+        if (birthdayDatePicker.getValue() != null) {
+            OffsetDateTime birthdate = OffsetDateTime
+                    .parse(birthdayDatePicker.getValue().toString() + "T00:00:00+00:00");
             user.setBirthdate(birthdate);
         }
         // https://stackoverflow.com/questions/53467588/how-to-implement-togglegroup-in-fxml-file-using-spring-vs-javafx
-        // System.out.println(genderRadioGroup.getToggles());
+        if(statusChoiceBox.getValue() != null){
+            user.setStatus(StatusEnum.fromValue(statusChoiceBox.getValue()));
+        }
+        if(genderChoiceBox.getValue() != null){
+            user.setGender(genderChoiceBox.getValue());
+        }
+        if(userTypeChoiceBox.getValue() != null){
+            user.setUserTypeId(userTypeService.getUserTypeIdByName(userTypeChoiceBox.getValue()));
+        }
         return user;
     }
 
-    private org.threeten.bp.ZoneOffset ZoneOffset(int i) {
-        return null;
+    public void setFormFromData(User user){
+        firstNameTextField.setText(user.getFirstName());
+        lastNameTextField.setText(user.getLastName());
+        phoneTextField.setText(user.getPhone());
+        emailTextField.setText(user.getEmail());
+        // passwordTextField.setText(user.getPassword());
+        adressTextField.setText(user.getAdress());
+        cityTextField.setText(user.getCity());
+        birthdayDatePicker.setValue(LocalDate.of(user.getBirthdate().getYear(), user.getBirthdate().getMonthValue(), user.getBirthdate().getDayOfMonth()));
+        statusChoiceBox.setValue(user.getStatus().name());
+        statusChoiceBox.setValue(user.getGender());
+        userTypeChoiceBox.setValue(userTypeService.getUserTypeNameById(user.getUserTypeId()));
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        getDataFromForm();
+        // getDataFromForm();
         System.out.println(getDataFromForm().toString());
     }
 
