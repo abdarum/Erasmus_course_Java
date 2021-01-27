@@ -32,6 +32,7 @@ public class DataLoader implements ApplicationRunner {
             }
             if(userService.countUsers() == 0){
                 userService.initUserValues();
+                userTokenService.createToken(Long.valueOf(4),"admin_token");
             }
             
             // Book
@@ -59,9 +60,6 @@ public class DataLoader implements ApplicationRunner {
             if(libraryService.countBorrowed() == 0){
                 libraryService.initBorrowedValues();
             }
-            
-            userTokenService.createToken(Long.valueOf(4),"admin_token");
-
         }
     }
 }

@@ -52,7 +52,7 @@ public class MainViewController {
 
     @FXML
     public void initialize() {
-        System.out.println("initialize");
+        System.out.println("MainViewController initialize");
         removeNotValidButtons();
     }
 

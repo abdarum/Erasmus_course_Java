@@ -2,6 +2,7 @@ package io.swagger.app.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -24,10 +25,12 @@ public class AccountPaneController {
     
     @FXML
     public void initialize() {
-        System.out.println("initialize");
+        System.out.println("AccountPaneController initialize");
         try {
+            UserDetailsFormController userController = new UserDetailsFormController();
+            userController.setInitialUser(LoginController.getUser());
             FxWeaver fxWeaver = JavaFxApplication.applicationContext.getBean(FxWeaver.class);
-            Node node = fxWeaver.loadView(UserDetailsFormController.class);
+            Node node = fxWeaver.loadView(userController.getClass());
             userDetailsPane.setCenter(node);
         } catch (Exception e) {
             e.printStackTrace();

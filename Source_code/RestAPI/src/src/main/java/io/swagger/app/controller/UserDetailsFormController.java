@@ -67,8 +67,10 @@ public class UserDetailsFormController {
 
     @FXML
     public void initialize() {
-        if(initialUser != null){
-            setFormFromData(initialUser);
+        System.out.println("UserDetailsFormController initialize");
+        System.out.println(this.initialUser);
+        if(this.initialUser != null){
+            setFormFromData(this.initialUser);
         }
     }
 
@@ -116,8 +118,10 @@ public class UserDetailsFormController {
     }
 
     public void saveButtonOnAction(ActionEvent actionEvent) {
-        System.out.println(getDataFromForm().toString());
-        userService.updateUserById(getInitialUser().getId(), getDataFromForm());
+        if(getInitialUser() != null ){
+            System.out.println(getDataFromForm().toString());
+            userService.updateUserById(getInitialUser().getId(), getDataFromForm());
+        }
     }
 
     public void loadButtonOnAction(ActionEvent actionEvent) {
@@ -130,6 +134,8 @@ public class UserDetailsFormController {
     }
 
     public void setInitialUser(User initialUser) {
+        System.out.println("setInitialUser");
+        System.out.println(initialUser.toString());
         this.initialUser = initialUser;
     }
 
