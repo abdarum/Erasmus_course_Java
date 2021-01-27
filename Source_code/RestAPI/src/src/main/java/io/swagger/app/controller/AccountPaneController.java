@@ -29,7 +29,6 @@ public class AccountPaneController {
             FxWeaver fxWeaver = JavaFxApplication.applicationContext.getBean(FxWeaver.class);
             Node node = fxWeaver.loadView(UserDetailsFormController.class);
             userDetailsPane.setCenter(node);
-            // (UserDetailsFormController) userDetailsPane.centerProperty().setFormFromData(LoginController.getUser());
         } catch (Exception e) {
             e.printStackTrace();
         }
