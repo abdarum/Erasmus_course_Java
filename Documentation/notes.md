@@ -1,13 +1,13 @@
 - [x] a. Title page containing the name of the University, the Faculty, the Department, the Specialty, the Subject of the project, the Names of the students from the team, faculty numbers.
-- [ ] b. The full assignment (condition) of the project.
+- [x] b. The full assignment (condition) of the project.
 - [ ] c. Problem analysis:
 - [ ] d. Functional requirements.
 - [ ] e. Project structure.
-- [ ] f. Definition of system modules.
+- [x] f. Definition of system modules.
 - [ ] h. System design:
    - [ ] - Design of individual modules (database, GUI, business logic);
    - [ ] - UML - Use Case, Class Diagram, Sequence diagram and others;
-   - [ ] - Conceptual database model (ER diagram (Chen model))
+   - [x] - Conceptual database model (ER diagram (Chen model))
 - [ ] i. System implementation:
 - [ ] j. Database implementation (PostGres, Oracle, MS SQL, My SQL) - Relational schema table description
 - [ ] k. Implementation of the database layer (DAO (JDBC), JPA (Hibernate))

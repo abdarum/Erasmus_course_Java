@@ -1,0 +1,1233 @@
+swagger: '2.0'
+info:
+  description: Library API
+  version: 1.0.3
+  title: Library Varna
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: kornelstefanczyk@wp.pl
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+  - name: user
+    description: Operations about user
+  - name: book
+    description: Everything about your Books
+  - name: library
+    description: Everything about Library
+  - name: dataset
+    description: Print datasets stored in database
+host: localhost:8080
+# basePath: /
+schemes:
+- http
+paths:
+  /user:
+    post:
+      tags:
+      - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Created user object
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      - name: token
+        in: query
+        required: false
+        type: string
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: "Bad request"        
+        401:
+          description: Unauthorized, no access
+        403:
+          description: "Forbidden"
+      security:
+      - bearerAuth: []
+    get:
+      tags:
+        - user
+      summary: Finds user items by params
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findUsersByStatus
+      produces:
+        - application/json
+      parameters:
+        - name: token
+          in: query
+          required: false
+          type: string
+        - name: firstName
+          in: query
+          description: User first name
+          required: false
+          type: string
+        - name: lastName
+          in: query
+          description: User last name
+          required: false
+          type: string
+        - name: email
+          in: query
+          description: User last name
+          required: false
+          type: string
+        - name: userTypeId
+          in: query
+          description: User type id 
+          required: false
+          type: integer
+          format: int64
+        - name: status
+          in: query
+          description: User status
+          required: false
+          type: string
+          enum:
+            - active
+            - suspended
+            - inactive
+            - to veryfication
+          default: available
+        - name: gender
+          in: query
+          description: User gender, not implemented 
+          required: false
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: Invalid status value
+      security:
+        - bearerAuth: []
+
+  /user/login:
+    post:
+      tags:
+      - user
+      summary: Logs user into the system
+      operationId: loginUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Created user object
+        required: true
+        schema:
+          $ref: "#/definitions/UserLoginBody"
+      security:
+      - bearerAuth: []
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/User"
+          headers:
+            token:
+              type: string
+              description: Personal token generated for user
+            X-Rate-Limit:
+              type: integer
+              format: int32
+              description: calls per hour allowed by the user
+            X-Expires-After:
+              type: string
+              format: date-time
+              description: date in UTC when token expires
+        400:
+          description: Invalid username/password supplied
+  /user/logout:
+    get:
+      tags:
+      - user
+      summary: Logs out current logged in user session
+      operationId: logoutUser
+      parameters: 
+      - name: token
+        in: query
+        required: false
+        type: string
+      responses:                
+        200:
+          description: successful operation
+        401:
+          description: Unauthorized, no access
+        default:
+          description: successful operation
+      security:
+      - bearerAuth: []
+  "/user/{id}":
+    get:
+      tags:
+      - user
+      summary: Get user by id
+      operationId: getUserById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        type: integer
+        format: int64
+        description: The id that needs to be fetched.
+        required: true
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: Invalid id supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: User not found
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - user
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUserById
+      consumes:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Id that need to be updated
+        required: true
+        type: integer
+        format: int64
+      - in: body
+        name: body
+        description: Updated user object
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation        
+        400:
+          description: Invalid Id supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: User not found
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUserById
+      parameters:
+      - name: id
+        in: path
+        description: The Id that needs to be deleted
+        required: true
+        type: integer
+        format: int64
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation        
+        400:
+          description: Invalid Id supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: User not found
+      security:
+      - bearerAuth: []
+
+  "/user/{id}/stats":
+    get:
+      tags:
+      - user
+      summary: Get user statistics by user name
+      operationId: getStatsById
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int64
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/UserStatus'
+        400:
+          description: Invalid Id supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: User not found
+      security:
+        - bearerAuth: []
+  /book:
+    post:
+      tags:
+      - book
+      summary: Add a new book to the library
+      operationId: addBook
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: order placed for purchasing the book
+        required: true
+        schema:
+          $ref: '#/definitions/Book'
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: "Bad request"        
+        401:
+          description: Unauthorized, no access
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - book
+      summary: Get all books
+      description: Can be done only by librarian
+      operationId: getAllBooks
+      produces:
+      - application/json
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Book"
+        400:
+          description: Invalid status value
+      security:
+        - bearerAuth: []
+  "/book/{id}":
+        # ********************************************
+    get:
+      tags:
+      - book
+      summary: Get book by book id
+      operationId: getBookById
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id that needs to be fetched.
+          required: true
+          type: integer
+          format: int64
+        - name: token
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Book"
+        400:
+          description: Invalid id supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: Book not found
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - book
+      summary: Updated book
+      description: This can only be done by the logged in user.
+      operationId: updateBookById
+      consumes:
+      - application/json
+      parameters:
+        - name: id
+          in: path
+          description: id of book that need to be updated
+          required: true
+          type: integer
+          format: int64
+        - in: body
+          name: body
+          description: Updated user object
+          required: true
+          schema:
+            $ref: '#/definitions/Book'
+        - name: token
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: Invalid id supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: Book not found
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - book
+      summary: Delete book
+      description: This can only be done by the logged in user.
+      operationId: deleteBookById
+      parameters:
+        - name: id
+          in: path
+          description: The id of the book that needs to be deleted
+          required: true
+          type: integer
+          format: int64
+        - name: token
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: Invalid id supplied
+        401:
+          description: Unauthorized, no access
+        404:
+          description: Book not found
+      security:
+      - bearerAuth: []
+
+  /book/findByStatus:
+    get:
+      tags:
+        - book
+      summary: Finds Books by status
+      description: Multiple status values can be provided with comma separated strings
+      operationId: findBookByStatus
+      produces:
+      - application/json
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          type: array
+          items:
+            type: string
+            enum:
+              - available
+              - all
+            default: available
+        - name: author
+          in: query
+          description: Author of the book
+          required: false
+          type: string
+        - name: title
+          in: query
+          description: Title of the book
+          required: false
+          type: string
+        - name: genere
+          in: query
+          description: Genere of the book
+          required: false
+          type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Book"
+        400:
+          description: Invalid status value
+      security:
+        - bearerAuth: []
+  /dataset/author:
+    get:
+      tags:
+        - dataset
+      summary: Get authors dataset
+      description: Get authors dataset
+      operationId: getDatasetAuthors
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the author. If not entered then all authors are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Author"
+      security:
+        - bearerAuth: []
+  /dataset/coverType:
+    get:
+      tags:
+        - dataset
+      summary: Get cover type dataset
+      description: Get cover type dataset
+      operationId: getDatasetCoverType
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the cover type. If not entered then all cover types are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CoverType"
+      security:
+        - bearerAuth: []
+  /dataset/bookGenre:
+    get:
+      tags:
+        - dataset
+      summary: Get book genre dataset
+      description: Get book genre dataset
+      operationId: getDatasetBookGenre
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the book genre. If not entered then all book genre are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BookGenre"
+      security:
+        - bearerAuth: []
+
+  /dataset/borrowPeriod:
+    get:
+      tags:
+        - dataset
+      summary: Get borrow period dataset
+      description: Get borrow period dataset
+      operationId: getDatasetBorrowPeriod
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the borrow period. If not entered then all borrow period are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BorrowPeriod"
+      security:
+        - bearerAuth: []
+
+  /dataset/borrowPlace:
+    get:
+      tags:
+        - dataset
+      summary: Get borrow place dataset
+      description: Get borrow place dataset
+      operationId: getDatasetBorrowPlace
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          in: query
+          description: The id of the borrow place. If not entered then all borrow place are listed
+          required: false
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/BorrowPlace"
+      security:
+        - bearerAuth: []
+
+  /library/inventory/books:
+    get:
+      tags:
+      - library
+      summary: Returns library books
+      description: Returns a stats of the library inventory
+      operationId: getLibraryInventoryBooks
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/LibraryBooksReport"
+        401:
+          description: Unauthorized, no access                
+      security:
+        - bearerAuth: []
+  /library/inventory/users:
+    get:
+      tags:
+      - library
+      summary: Returns library users
+      description: Returns a stats of the library users
+      operationId: getLibraryInventoryUsers
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UserStatusReport"
+        401:
+          description: Unauthorized, no access                
+      security:
+        - bearerAuth: []
+  /library/inventory/submitted:
+    get:
+      tags:
+      - library
+      summary: Returns library submitted users
+      description: Returns a stats of the library submitted users
+      operationId: getLibraryInventorySubmittedUsers
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SubmitUserReport"
+        401:
+          description: Unauthorized, no access                
+      security:
+        - bearerAuth: []
+  /library/inventory/userrating:
+    get:
+      tags:
+      - library
+      summary: Returns library users rating
+      description: Returns a stats of the library users rating
+      operationId: getLibraryInventoryUsersRating
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UsersRatingReport"
+        401:
+          description: Unauthorized, no access                
+      security:
+        - bearerAuth: []
+  /library/order:
+    post:
+      tags:
+      - library
+      summary: Place an order for a book rent
+      operationId: placeOrder
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: order placed for borrow the book
+        required: true
+        schema:
+          $ref: "#/definitions/Borrowed"
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Borrowed"        
+        401:
+          description: Unauthorized, no access
+        400:
+          description: Invalid Order
+      security:
+      - bearerAuth: []
+    get:
+      tags:
+        - library
+      summary: Get orders
+      description: Librarian get all orders, Reader takes only owned orders
+      operationId: getAllOrders
+      produces:
+      - application/json
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Borrowed"
+        400:
+          description: Invalid status value
+      security:
+        - bearerAuth: []
+  "/library/order/{orderId}":
+    get:
+      tags:
+      - library
+      summary: Find book order by ID
+      operationId: getOrderById
+      produces:
+      - application/json
+      parameters:
+      - name: orderId
+        in: path
+        description: ID of borrow form that needs to be fetched
+        required: true
+        type: integer
+        format: int64
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Borrowed"
+        400:
+          description: Invalid ID supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: Order not found
+      security:
+      - bearerAuth: []
+    put:
+      tags:
+      - library
+      summary: Find purchase order by ID
+      operationId: putOrderById
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: orderId
+        in: path
+        description: ID of pet that needs to be fetched
+        required: true
+        type: integer
+        format: int64
+      - in: body
+        name: body
+        description: form ot the borrowed book that needs to update
+        required: true
+        schema:
+          $ref: "#/definitions/Borrowed"
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: "#/definitions/Borrowed"
+        400:
+          description: Invalid ID supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: Order not found
+      security:
+      - bearerAuth: []
+    delete:
+      tags:
+      - library
+      summary: Delete purchase order by ID
+      operationId: deleteOrder
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+        - name: orderId
+          in: path
+          description: ID of the order that needs to be deleted
+          required: true
+          type: integer
+          format: int64
+        - name: token
+          in: query
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful operation
+        400:
+          description: Invalid ID supplied        
+        401:
+          description: Unauthorized, no access
+        404:
+          description: Order not found
+      security:
+      - bearerAuth: []
+
+  /library/notyfication:
+    get:
+      tags:
+      - library
+      summary: Returns notyfications of library
+      description: Returns notyfications of library
+      operationId: getLibraryNotyfications
+      produces:
+      - application/json
+      parameters:
+      - name: token
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: array
+            format: chunked
+            items:
+              $ref: "#/definitions/NotificationForm"        
+        401:
+          description: Unauthorized, no access
+      security:
+      - bearerAuth: []
+      
+
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  UserLoginBody:
+    type: object
+    properties:
+      email:
+        description: The email for login
+        type: string
+        format: email
+      password:
+        description: The password for login in clear text
+        type: string
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      userTypeId:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      birthdate:
+        type: string
+        format: date-time
+      registrated:
+        type: string
+        format: date-time
+      gender:
+        type: string
+        enum:
+          - male
+          - female
+          - other
+      address:
+        type: string
+      city:
+        type: string
+      status:
+        type: string
+        description: User Status
+        enum:
+          - active
+          - suspended
+          - inactive
+          - to veryfication
+    xml:
+      name: User
+  UserType:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      permissions:
+        type: string
+    xml:
+      name: UserType
+  SubmitUserReport:
+    allOf:
+      - $ref: '#/definitions/User'
+      - type: object
+        properties:
+          userTypeName:
+            type: string
+  UserStatusReport:
+    allOf:
+      - $ref: '#/definitions/User'
+      - $ref: '#/definitions/UserStatus'
+      - type: object
+        properties:
+          userTypeName:
+            type: string
+          currentBorrowed:
+            type: array
+            items:
+              type: object
+              properties:
+                bookId:
+                  type: integer
+                  format: int64
+                bookName:
+                  type: string
+          
+  UsersRatingReport:
+    type: object
+    properties:
+      loyal:
+        type: array
+        items:
+          type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+            userName:
+              type: string
+      disloyal:
+        type: array
+        items:
+          type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+            userName:
+              type: string
+
+  Author:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+    xml:
+      name: Author
+  CoverType:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: CoverType
+  Borrowed:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      userId:
+        type: integer
+        format: int64
+      bookId:
+        type: integer
+        format: int64
+      borrowedDate:
+        type: string
+        format: date-time
+      returnedDate:
+        type: string
+        format: date-time
+      damageNotes:
+        type: string
+      placeId:
+        type: integer
+        format: int64
+      periodId:
+        type: integer
+        format: int64
+    xml:
+      name: Borrowed
+  Book:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      isbn:
+        type: string
+      authorId:
+        type: integer
+        format: int64
+      pageCount:
+        type: integer
+      coverTypeId:
+        type: integer
+        format: int64
+      genreId:
+        type: integer
+        format: int64
+      sugeredPeriodId:
+        type: integer
+        format: int64
+      sugeredPlaceId:
+        type: integer
+        format: int64
+      status:
+        type: string
+        description: Book Status
+        enum:
+          - available
+          - in use
+          - archived
+    xml:
+      name: Book
+  BookReport:
+    allOf:
+      - $ref: '#/definitions/Book'
+      - type: object
+        properties:
+          authorTypeName:
+            type: string
+          coverTypeName:
+            type: string
+          genreName:
+            type: string
+          sugeredPeriodName:
+            type: string
+          sugeredPlaceName:
+            type: string
+          statusName:
+            type: string
+
+  BookGenre:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: BookGenre
+  BorrowPeriod:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      period:
+        type: integer
+    xml:
+      name: BorrowPeriod
+  BorrowPlace:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: BorrowPlace
+  LibraryBooksReport:
+    type: object
+    properties:
+      numberOfBooks:
+        type: integer
+      numberOfAvailableBooks:
+        type: integer
+      books:
+        type: array
+        items:
+          $ref: '#/definitions/BookReport'
+    xml:
+      name: LibraryBooksReport
+  UserStatus:
+    type: object
+    properties:
+      numberOfAllBorrowedBooks:
+        type: integer
+      numberOfAllDamagedBooks:
+        type: integer
+      numberOfCurrentBorrowedBooks:
+        type: integer
+      numberOfDelayedBooks:
+        type: integer
+    xml:
+      name: UserStatus
+  NotificationForm:
+    type: object
+    properties: # also possible to model with oneOf+discriminator
+      id:
+        type: integer
+        description: my event id
+      event:
+        type: string
+        description: my event type
+      data:
+        type: object # object in case we have a complex structure, otherwise string, integer, ..., as usual
+    xml:
+      name: UserStatus
+  UserToken:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      addDatatime:
+        type: string
+        format: date-time
+      tokenName:
+        type: string
+      userId:
+        type: integer
+        format: int64
+      expireDatatime:
+        type: string
+        format: date-time
+
+externalDocs:
+  description: Find out more about Swagger
+  url: "http://swagger.io"

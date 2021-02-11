@@ -1,0 +1,38 @@
+\section{Requirements}
+Design and implementation of an information system - Library. The system must store and processing data for books and readers. The system allows multiple access (Many users in same time). The system supports two types of users - administrator and clients (operators and readers) with different roles to access the functionalities in the system.
+
+\subsection{Users}
+User operations:
+\begin{itemize}
+    \item Creation of operators by an administrator
+    \item Creating and unsubscribing readers from an operator
+    \item Form for creating a reader profile
+    \item Renting books
+\end{itemize}
+
+\subsection{Books}
+The system supports operations for working with books:
+\begin{itemize}
+    \item Adding new books (Inventory number, title, author, genre…)
+    \item Borrowing books (different level of security when borrowing books (reading room, for home))
+    \item Return of a book
+    \item Disposal of damaged books
+    \item Archiving of old editions (using only in the reading room)
+\end{itemize}
+
+\subsection{Reports}
+The system maintains reports for:
+\begin{itemize}
+    \item Submitted forms (date, status, content of the form)
+    \item Books (Book status, book information)
+    \item Users (approval date, book list, user information)
+    \item User rating (loyal and disloyal readers)
+\end{itemize}
+
+\subsection{Event Notifications}
+The system supports Event Notifications(working with threads):
+\begin{itemize}
+    \item Request for opening a reader profile
+    \item Notification of the need to archive a book
+    \item Delayed return of books
+\end{itemize}
