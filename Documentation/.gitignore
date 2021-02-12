@@ -9,3 +9,4 @@
 /Include/__latexindent_temp.tex
 *.tex.aux
 *.aux
+*.toc
