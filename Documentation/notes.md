@@ -1,0 +1,23 @@
+- [x] a. Title page containing the name of the University, the Faculty, the Department, the Specialty, the Subject of the project, the Names of the students from the team, faculty numbers.
+- [x] b. The full assignment (condition) of the project.
+- [ ] c. Problem analysis:
+- [ ] d. Functional requirements.
+- [ ] e. Project structure.
+- [x] f. Definition of system modules.
+- [ ] h. System design:
+   - [ ] - Design of individual modules (database, GUI, business logic);
+   - [ ] - UML - Use Case, Class Diagram, Sequence diagram and others;
+   - [x] - Conceptual database model (ER diagram (Chen model))
+- [ ] i. System implementation:
+- [ ] j. Database implementation (PostGres, Oracle, MS SQL, My SQL) - Relational schema table description
+- [ ] k. Implementation of the database layer (DAO (JDBC), JPA (Hibernate))
+- [ ] l. Implementation of business logic and graphical interface 
+- [ ] - Java, 
+- [ ] - Java Web (Werver side - Servlet, JSP, Client side – HTML, CSS, JavaScript)
+	- [ ] - Web server with Java web container – Apache Tomcat, Jetty
+- [ ] - Possible using of Spring or ActiveJ frameworks
+- [ ] m. Implementation of a module for logging events in the system - log4J
+- [ ] n. Test results:
+  -  JUnit tests
+  - Functional tests
+  - Integration tests

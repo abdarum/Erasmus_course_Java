@@ -1,0 +1,14 @@
+\section{System modules}
+
+OurLib project can be divided in three main modules.
+
+\subsection{Database}
+Database module is obligatory to store users and books data.
+
+\subsection{Backend}
+Backend module is the bridge between database module and GUI module. 
+
+This module is responsible for implementation of business logic. Backend receive data from GUI, validate it and communicate with database to read, create or modify data stored in database module.
+
+\subsection{GUI}
+Graphical user interface module is only available for system user module . This module is responsible for communication with backend module. GUI interface changes according to data get from backend module. It presents all features available for user using graphical elements.
