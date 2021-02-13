@@ -1,14 +1,14 @@
 \subsection{Backend}
 Backend of the system is based on two main sub modules: 
 \begin{itemize}
-    \item Business logic and data layer
-    \item RestAPI
+    \item Data layer
+    \item Business logic 
 \end{itemize}
-
-\subsubsection{Business logic and data layer}
 Backend uses Java SpringBoot technology.
 
+\subsubsection{Data layer}
 Data layer uses Hibernate. It allows to perform all CRUD methods using JPA api. Including setup of database.
 
-\subsubsection{RestAPI}
-RestApi was designed using Swagger API Documentation and Development tool. It allows to generate models of classes containing data and Rest points structure. Source code of RestAPI specification can be found in \hyperref[sec:appendix_a]{Appendix A}
+
+\subsubsection{Business logic}
+Services realizes all needed functionality of system. Data models were designed using Swagger API Documentation and Development tool. It allows to generate models of classes containing data and Rest points structure. Source code of Swagger specification can be found in \hyperref[sec:appendix_a]{Appendix A}

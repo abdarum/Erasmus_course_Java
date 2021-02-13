@@ -1,0 +1,337 @@
+swagger: '2.0'
+info:
+  description: Library API
+  version: 1.0.3_non_Rest
+  title: Library Varna
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: kornelstefanczyk@wp.pl
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: localhost:8080
+# basePath: /
+schemes:
+- http
+paths:
+  /rest:
+    get:
+      operationId: rest
+      responses:                
+        default:
+          description: successful operation
+
+definitions:
+  UserLoginBody:
+    type: object
+    properties:
+      email:
+        description: The email for login
+        type: string
+        format: email
+      password:
+        description: The password for login in clear text
+        type: string
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      userTypeId:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      birthdate:
+        type: string
+        format: date-time
+      registrated:
+        type: string
+        format: date-time
+      gender:
+        type: string
+        enum:
+          - male
+          - female
+          - other
+      address:
+        type: string
+      city:
+        type: string
+      status:
+        type: string
+        description: User Status
+        enum:
+          - active
+          - suspended
+          - inactive
+          - to veryfication
+    xml:
+      name: User
+  UserType:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      permissions:
+        type: string
+    xml:
+      name: UserType
+  SubmitUserReport:
+    allOf:
+      - $ref: '#/definitions/User'
+      - type: object
+        properties:
+          userTypeName:
+            type: string
+  UserStatusReport:
+    allOf:
+      - $ref: '#/definitions/User'
+      - $ref: '#/definitions/UserStatus'
+      - type: object
+        properties:
+          userTypeName:
+            type: string
+          currentBorrowed:
+            type: array
+            items:
+              type: object
+              properties:
+                bookId:
+                  type: integer
+                  format: int64
+                bookName:
+                  type: string
+          
+  UsersRatingReport:
+    type: object
+    properties:
+      loyal:
+        type: array
+        items:
+          type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+            userName:
+              type: string
+      disloyal:
+        type: array
+        items:
+          type: object
+          properties:
+            userId:
+              type: integer
+              format: int64
+            userName:
+              type: string
+
+  Author:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
+        type: string
+    xml:
+      name: Author
+  CoverType:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: CoverType
+  Borrowed:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      userId:
+        type: integer
+        format: int64
+      bookId:
+        type: integer
+        format: int64
+      borrowedDate:
+        type: string
+        format: date-time
+      returnedDate:
+        type: string
+        format: date-time
+      damageNotes:
+        type: string
+      placeId:
+        type: integer
+        format: int64
+      periodId:
+        type: integer
+        format: int64
+    xml:
+      name: Borrowed
+  Book:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      isbn:
+        type: string
+      authorId:
+        type: integer
+        format: int64
+      pageCount:
+        type: integer
+      coverTypeId:
+        type: integer
+        format: int64
+      genreId:
+        type: integer
+        format: int64
+      sugeredPeriodId:
+        type: integer
+        format: int64
+      sugeredPlaceId:
+        type: integer
+        format: int64
+      status:
+        type: string
+        description: Book Status
+        enum:
+          - available
+          - in use
+          - archived
+    xml:
+      name: Book
+  BookReport:
+    allOf:
+      - $ref: '#/definitions/Book'
+      - type: object
+        properties:
+          authorTypeName:
+            type: string
+          coverTypeName:
+            type: string
+          genreName:
+            type: string
+          sugeredPeriodName:
+            type: string
+          sugeredPlaceName:
+            type: string
+          statusName:
+            type: string
+
+  BookGenre:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: BookGenre
+  BorrowPeriod:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      period:
+        type: integer
+    xml:
+      name: BorrowPeriod
+  BorrowPlace:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+    xml:
+      name: BorrowPlace
+  LibraryBooksReport:
+    type: object
+    properties:
+      numberOfBooks:
+        type: integer
+      numberOfAvailableBooks:
+        type: integer
+      books:
+        type: array
+        items:
+          $ref: '#/definitions/BookReport'
+    xml:
+      name: LibraryBooksReport
+  UserStatus:
+    type: object
+    properties:
+      numberOfAllBorrowedBooks:
+        type: integer
+      numberOfAllDamagedBooks:
+        type: integer
+      numberOfCurrentBorrowedBooks:
+        type: integer
+      numberOfDelayedBooks:
+        type: integer
+    xml:
+      name: UserStatus
+  NotificationForm:
+    type: object
+    properties: # also possible to model with oneOf+discriminator
+      id:
+        type: integer
+        description: my event id
+      event:
+        type: string
+        description: my event type
+      data:
+        type: object # object in case we have a complex structure, otherwise string, integer, ..., as usual
+    xml:
+      name: UserStatus
+  UserToken:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      addDatatime:
+        type: string
+        format: date-time
+      tokenName:
+        type: string
+      userId:
+        type: integer
+        format: int64
+      expireDatatime:
+        type: string
+        format: date-time
+
+externalDocs:
+  description: Find out more about Swagger
+  url: "http://swagger.io"

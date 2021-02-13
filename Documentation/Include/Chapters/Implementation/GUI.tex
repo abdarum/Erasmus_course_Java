@@ -1,117 +1,256 @@
 \subsection{Graphical user interface}
-GUI was written in React framework.
+GUI was written in JavaFX framework.
 
 \subsubsection{Connection with backend}
-Connection with RestAPI was realized by HTTP requests like \textit{POST}, \textit{PUT}, \textit{GET}, \textit{DELETE}. Example of \textit{POST} and \textit{PUT} requests are in listing \ref{lst:GUIBackendConnector}.
+Connection with backend was realized by execution service methods. Example of service request is in listing \ref{lst:GUIBackendConnector}.
 
-\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUIBackendConnector}, caption={Connection with backend through RestAPI}]
-token: auth.authState.token
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUIBackendConnector}, caption={Connection with backend through \textit{userService}}, language=Java]
+public void saveButtonOnAction(ActionEvent actionEvent) {
+  if(getInitialUser() != null ){
+      System.out.println(getDataFromForm().toString());
+      userService.updateUserById(getInitialUser().getId(), getDataFromForm());
+  }
 }
-setSaveLoadingBookFullDetailsForm(true);
-const { data } = credentials.id ? (
-  await fetchContext.authAxios.put(
-    `/book/` + credentials.id + '?' + qs.stringify(queryValues),
-    saveBookItem
-  )
-) : (
-    await fetchContext.authAxios.post(
-      `/book?` + qs.stringify(queryValues),
-      saveBookItem
-    )
-  );
 \end{lstlisting}
 
 \subsubsection{Sidebar}
-Main navigation element of web app is sidebar. It changes according to logged in user. Each of user type has different set of visible buttons on sidebar. Listing \ref{lst:GUISidebarElements} contains possible endpoints with label and allowed role for each button. Button will be visible only when user type will be included in allowedRoles array.
+Main navigation element of web app is sidebar. It changes according to logged in user. Each of user type has different set of visible buttons on sidebar. Listing \ref{lst:GUISidebarIsButtonValid} contains id's of buttons and allowed role for each button. 
 
-\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUISidebarElements}, caption={Sidebar buttons with allowed user types}]
-const navItems = [
-  {
-    label: 'components.sidebar_component.link_label.find_books',
-    path: '/find-books',
-    icon: faBook,
-    allowedRoles: [reader, librarian]
-  },
-  {
-    label: 'components.sidebar_component.link_label.orders',
-    path: '/manage-orders',
-    icon: faBookOpen,
-    allowedRoles: [reader]
-  },
-  {
-    label: 'components.sidebar_component.link_label.manage_books',
-    path: '/manage-books',
-    icon: faEdit,
-    allowedRoles: [librarian]
-  },
-  {
-    label: 'components.sidebar_component.link_label.manage_orders',
-    path: '/manage-orders',
-    icon: faTasks,
-    allowedRoles: [librarian]
-  },
-  {
-    label: 'components.sidebar_component.link_label.all_users',
-    path: '/users',
-    icon: faUsersCog,
-    allowedRoles: [admin]
-  },
-  {
-    label: 'components.sidebar_component.link_label.readers',
-    path: '/readers',
-    icon: faBookReader,
-    allowedRoles: [admin, librarian]
-  },
-  {
-    label: 'components.sidebar_component.link_label.reports',
-    path: '/reports',
-    icon: faList,
-    allowedRoles: [admin]
-  },
-  {
-    label: 'components.sidebar_component.link_label.account',
-    path: '/account',
-    icon: faAddressCard,
-    allowedRoles: [reader,  librarian, admin]
+
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUISidebarIsButtonValid}, caption={Sidebar buttons with allowed user types}]
+public Boolean isButtonValidForUserType(String buttonId) {
+  if (LoginController.getUser() != null) {
+      if (buttonId.equals("findBooksButton")) {
+          return LoginController.isReader() || LoginController.isLibrarian();
+      }
+      if (buttonId.equals("ordersButton")) {
+          return LoginController.isReader();
+      }
+      if (buttonId.equals("manageBooksButton")) {
+          return LoginController.isLibrarian();
+      }
+      if (buttonId.equals("manageOrdersButton")) {
+          return LoginController.isLibrarian();
+      }
+      if (buttonId.equals("allUsersButton")) {
+          return LoginController.isAdmin();
+      }
+      if (buttonId.equals("readersButton")) {
+          return LoginController.isAdmin() || LoginController.isLibrarian();
+      }
+      if (buttonId.equals("reportsButton")) {
+          return LoginController.isAdmin();
+      }
+      if (buttonId.equals("accountButton")) {
+          return true;
+      }
   }
-];
+  return false;
+}
 \end{lstlisting}
 
-\subsubsection{Translations}
-Translations was realized using \textit{react-i18next} component. Translations are stored in common JSON file with translations. Translate of needed text is done by using \textit{useTranslation} hook. Example of execution is \textit{t('components.book\_item\_overview\_short\_component.labels.book\_id\_header')} that contains path of structure in JSON translation files that is used as an object. Adding new file with translated texts it is possible to change texts in whole web app without changing source code of app.
+Button will be visible only when user type will be valid else button will be deleted. Listing \ref{lst:GUISidebarRemoveNotValid}.
+
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUISidebarRemoveNotValid}, caption={Remove sidebar buttons not allowed for user types}]
+  private void removeNotValidButtons() {
+    if (buttonsVBox != null) {
+      ObservableList<Node> nodes = FXCollections.observableArrayList(buttonsVBox.getChildren());
+      for (Node node : nodes) {
+          if (!this.mainViewService.isButtonValidForUserType(node.idProperty().get())) {
+              buttonsVBox.getChildren().remove(node);
+          }
+      }
+    }
+  }
+\end{lstlisting}
+
+Different sidebar buttons can be seen at figures:
+\begin{itemize}
+  \item Admin - figure \ref{fig:ScreenshotGUIadminNotSelected}
+  \item Librarian - figure \ref{fig:ScreenshotGUIlibrarianNotImplemented}
+  \item Reader - figure \ref{fig:ScreenshotGUIreaderNotSelected}
+\end{itemize} 
+
+\subsubsection{Switching context}
+Beside sidebar buttons main view contains switching context. Right side is defined as \textit{BorderPane} - listing \ref{lst:GUISwitchingContext}.
+
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUISwitchingContext}, caption={Switching context of main view - FXML}]
+<ScrollPane prefHeight="-1.0" prefWidth="-1.0">
+<content>
+   <BorderPane fx:id="mainPane" />
+</content>
+</ScrollPane>
+\end{lstlisting}
+
+After pressing any button of sidebar new context is loaded - listings \ref{lst:GUISwitchingContextButtonDetection} and \ref{lst:GUISwitchingContextLoadingContext}.
+
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUISwitchingContextButtonDetection}, caption={Switching context - button detection}]
+public void updateMainPane(ActionEvent actionEvent) {
+  String buttonId = ((Button) actionEvent.getSource()).getId();
+  String buttonName = ((Button) actionEvent.getSource()).getText();
+  setLastChoseButtonAs(buttonName);
+  // System.out.println("buttonId: " + buttonId + " buttonName: " + buttonName);
+  mainPane.setCenter(mainViewService.getMainPane(buttonId));
+}
+\end{lstlisting}
+
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUISwitchingContextLoadingContext}, caption={Switching context of main view - loading new view}]
+public Pane getMainPane(String buttonId) {
+  // System.out.println(buttonId);
+  try {
+      FxWeaver fxWeaver = JavaFxApplication.applicationContext.getBean(FxWeaver.class);
+      Node node = fxWeaver.loadView(NotImplementedController.class);
+      if(buttonId.equals("accountButton")){
+          node = fxWeaver.loadView(AccountPaneController.class);
+      } 
+      return (Pane) node;
+  } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+  }
+}
+\end{lstlisting}
+
 
 \subsubsection{Forms}
-Forms was created using Formik component. Most of fields was standard text or number fields. The rest of input components was \textit{react-select} and \textit{react-date-picker} components.
+Forms was created using \textit{GridPane}, \textit{TextField} and \textit{ChoiceBox}. Forms are encapsulate in larger structures like main view \ref{lst:GUIaccountPane}.
+
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUIaccountPane}, caption={Encapsulation of userDetailsPane in main view Pane}]
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="100.0" prefWidth="350.0" spacing="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.swagger.app.controller.AccountPaneController">
+    <BorderPane fx:id="userDetailsPane" prefHeight="200.0" prefWidth="200.0">
+        <top>
+            <Label text="Personal Info" BorderPane.alignment="CENTER">
+            <font>
+               <Font size="24.0" />
+            </font></Label>
+        </top>
+    </BorderPane>
+    <BorderPane fx:id="passwordPane" prefHeight="200.0" prefWidth="200.0">
+        <top>
+            <Label text="Change Password" BorderPane.alignment="CENTER">
+            <font>
+               <Font size="24.0" />
+            </font></Label>
+        </top>
+    </BorderPane>
+</VBox>
+\end{lstlisting}
+
+User details form is presented in listing \ref{lst:GUIuserDetailsForm}.
+
+\begin{lstlisting}[breaklines=true, numbers=left, stepnumber=1, label={lst:GUIuserDetailsForm}, caption={Account personal data form}]
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String ?>
+<?import javafx.collections.FXCollections ?>
+<?import javafx.scene.control.Button ?>
+<?import javafx.scene.control.ChoiceBox ?>
+<?import javafx.scene.control.DatePicker ?>
+<?import javafx.scene.control.Label ?>
+<?import javafx.scene.control.Separator ?>
+<?import javafx.scene.control.TextField ?>
+<?import javafx.scene.layout.ColumnConstraints ?>
+<?import javafx.scene.layout.GridPane ?>
+<?import javafx.scene.layout.HBox ?>
+<?import javafx.scene.layout.RowConstraints ?>
+<?import javafx.scene.layout.VBox ?>
+
+<VBox fx:id="mainVBox" alignment="CENTER" prefWidth="350.0" spacing="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.swagger.app.controller.UserDetailsFormController">
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+        <children>
+            <Label text="First Name" GridPane.columnSpan="2" />
+            <TextField fx:id="firstNameTextField" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label text="Last Name" GridPane.columnIndex="1" />
+            <TextField fx:id="lastNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Status" GridPane.columnIndex="2" />
+            <ChoiceBox fx:id="statusChoiceBox" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="active" />
+                        <String fx:value="suspended" />
+                        <String fx:value="inactive" />
+                        <String fx:value="to veryfication" />
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+            <Label text="User type" GridPane.columnIndex="3" />
+            <ChoiceBox fx:id="userTypeChoiceBox" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Administrator" />
+                        <String fx:value="Librarian" />
+                        <String fx:value="Reader" />
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+            <Label text="Phone" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="phoneTextField" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Label text="Email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Password" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="passwordTextField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label text="Registrated" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Label fx:id="registratedLabel" GridPane.columnIndex="3" GridPane.rowIndex="3"  text="Not available"/>
+            <Label text="Birthday" GridPane.rowIndex="4" />
+            <DatePicker fx:id="birthdayDatePicker" GridPane.rowIndex="5" />
+            <Label text="Gender" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <ChoiceBox fx:id="genderChoiceBox" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="male" />
+                        <String fx:value="female" />
+                        <String fx:value="other" />
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+            <Label text="Adress" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <TextField fx:id="adressTextField" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Label text="City" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+            <TextField fx:id="cityTextField" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+        </children>
+    </GridPane>
+    <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+        <children>
+            <Button mnemonicParsing="false" onAction="#saveButtonOnAction" text="Save" />
+            <Separator orientation="VERTICAL" prefHeight="100.0" prefWidth="25.0" visible="false" />
+            <Button mnemonicParsing="false" onAction="#loadButtonOnAction" text="Load Current User" />
+        </children>
+    </HBox>
+</VBox>
+\end{lstlisting}
+
 
 \subsubsection{Screenshots of GUI}
-Screenshots of different web app views are presented below. 
-
-% signup
-% login
-% readerFindBooks
-% readerOrders
-% readerBorrow
-% librarianFindBooks
-% librarianFindBooks2
-% librarianReaders
-% librarianBorrow
-% librarianManageBooks
-% librarianManageOrders
-% librarianAccount
-% adminReaders
-% adminUsers
-% adminReports
-% adminSubmittedReport
-% adminBooksReports
-% adminUsersReport
+Screenshots of different application views are presented below. 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/signup.png}
-    \caption{Sign up page}
-    \label{fig:ScreenshotGUIsignup}
+    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/JavaFX/adminLogin.png}
+    \caption{Login window}
+    \label{fig:ScreenshotGUIadminLogin}
 \end{figure}
 
 
@@ -120,9 +259,9 @@ Screenshots of different web app views are presented below.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/login.png}
-    \caption{Log in page}
-    \label{fig:ScreenshotGUIlogin}
+    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/JavaFX/adminNotSelected.png}
+    \caption{View before selection}
+    \label{fig:ScreenshotGUIadminNotSelected}
 \end{figure}
 
 
@@ -131,9 +270,9 @@ Screenshots of different web app views are presented below.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/readerFindBooks.png}
-    \caption{Find books from reader account}
-    \label{fig:ScreenshotGUIreaderFindBooks}
+    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/JavaFX/adminNotImplemented.png}
+    \caption{View of not implemented section}
+    \label{fig:ScreenshotGUIadminNotImplemented}
 \end{figure}
 
 
@@ -142,9 +281,9 @@ Screenshots of different web app views are presented below.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/readerOrders.png}
-    \caption{Manage current reader orders}
-    \label{fig:ScreenshotGUIreaderOrders}
+    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/JavaFX/adminAccount.png}
+    \caption{Account section view}
+    \label{fig:ScreenshotGUIadminAccount}
 \end{figure}
 
 
@@ -153,9 +292,9 @@ Screenshots of different web app views are presented below.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/readerBorrow.png}
-    \caption{Borrow available book by reader}
-    \label{fig:ScreenshotGUIreaderBorrow}
+    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/JavaFX/librarianNotImplemented.png}
+    \caption{Librarian sidebar buttons}
+    \label{fig:ScreenshotGUIlibrarianNotImplemented}
 \end{figure}
 
 
@@ -164,130 +303,9 @@ Screenshots of different web app views are presented below.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/librarianFindBooks.png}
-    \caption{Find book page before find button was pressed}
-    \label{fig:ScreenshotGUIlibrarianFindBooks}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/librarianFindBooks2.png}
-    \caption{Searching phrase in search bar}
-    \label{fig:ScreenshotGUIlibrarianFindBooks2}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/librarianReaders.png}
-    \caption{Manage all readers available in system}
-    \label{fig:ScreenshotGUIlibrarianReaders}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/librarianBorrow.png}
-    \caption{Borrow any available book for any reader}
-    \label{fig:ScreenshotGUIlibrarianBorrow}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/librarianManageBooks.png}
-    \caption{Manage all books in system}
-    \label{fig:ScreenshotGUIlibrarianManageBooks}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/librarianManageOrders.png}
-    \caption{Manage all orders in system}
-    \label{fig:ScreenshotGUIlibrarianManageOrders}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/librarianAccount.png}
-    \caption{Change credentials of current user}
-    \label{fig:ScreenshotGUIlibrarianAccount}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/adminUsers.png}
-    \caption{Manage all users in system}
-    \label{fig:ScreenshotGUIadminUsers}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/adminReports.png}
-    \caption{Reports main navigation page}
-    \label{fig:ScreenshotGUIadminReports}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/adminSubmittedReport.png}
-    \caption{Manage new submitted readers}
-    \label{fig:ScreenshotGUIadminSubmittedReport}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/adminBooksReports.png}
-    \caption{Books in system report}
-    \label{fig:ScreenshotGUIadminBooksReports}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/React/adminUsersReport.png}
-    \caption{Users in system report}
-    \label{fig:ScreenshotGUIadminUsersReport}
+    \includegraphics[width=\textwidth]{Include/Resources/FrontendScreens/JavaFX/readerNotSelected.png}
+    \caption{Reader sidebar buttons}
+    \label{fig:ScreenshotGUIreaderNotSelected}
 \end{figure}
 
 
